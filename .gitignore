@@ -1,0 +1,8 @@
+# DialogFlow Account Key
+**/key.json
+
+# Properties file with credentials
+**/*-private.properties
+
+# Runtime Data
+**/data/

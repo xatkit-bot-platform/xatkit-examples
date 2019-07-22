@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="ASCII"?>
+<intent:Library xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:intent="com.xatkit.intent" name="CanYouBotLib">
+  <eventDefinitions xsi:type="intent:IntentDefinition" name="Greetings">
+    <trainingSentences>Hi</trainingSentences>
+    <trainingSentences>Hello</trainingSentences>
+    <trainingSentences>Greetings</trainingSentences>
+    <trainingSentences>Morning</trainingSentences>
+    <trainingSentences>Afternoon</trainingSentences>
+    <trainingSentences>Evening</trainingSentences>
+  </eventDefinitions>
+  <eventDefinitions xsi:type="intent:IntentDefinition" name="CanYou">
+    <outContexts name="Request">
+      <parameters name="request" textFragment="Placeholder7">
+        <entity xsi:type="intent:BaseEntityDefinitionReference">
+          <baseEntity/>
+        </entity>
+      </parameters>
+    </outContexts>
+    <trainingSentences>Can you Placeholder7</trainingSentences>
+    <trainingSentences>Have you seen Placeholder7</trainingSentences>
+    <trainingSentences>Do you know Placeholder7</trainingSentences>
+    <trainingSentences>Do you like Placeholder7</trainingSentences>
+    <trainingSentences>Any thoughts about Placeholder7</trainingSentences>
+    <trainingSentences>What do you think about Placeholder7</trainingSentences>
+  </eventDefinitions>
+</intent:Library>
