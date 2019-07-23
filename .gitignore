@@ -6,3 +6,10 @@
 
 # Runtime Data
 **/data/
+
+# Xatkit logs
+
+**/logs
+
+# Bin scripts
+**/bin
