@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="ASCII"?>
+<intent:Library xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:intent="com.xatkit.intent" name="twitterBotLib">
+  <eventDefinitions xsi:type="intent:IntentDefinition" name="PostTweet">
+    <outContexts name="Tweet">
+      <parameters name="content" textFragment="[CONTENT]">
+        <entity xsi:type="intent:BaseEntityDefinitionReference">
+          <baseEntity/>
+        </entity>
+      </parameters>
+    </outContexts>
+    <trainingSentences>post tweet [CONTENT]</trainingSentences>
+    <trainingSentences>can you tweet &quot;[CONTENT]?&quot;?</trainingSentences>
+    <trainingSentences>can you post &quot;[CONTENT]&quot;?</trainingSentences>
+    <trainingSentences>please tweet [CONTENT]</trainingSentences>
+    <trainingSentences>please post [CONTENT]</trainingSentences>
+    <trainingSentences>tweet [CONTENT]</trainingSentences>
+    <trainingSentences>post [CONTENT]</trainingSentences>
+    <trainingSentences>post this tweet: [CONTENT]</trainingSentences>
+    <trainingSentences>post this tweet [CONTENT]</trainingSentences>
+    <trainingSentences>just tweet [CONTENT]</trainingSentences>
+    <trainingSentences>just post [CONTENT]</trainingSentences>
+  </eventDefinitions>
+  <eventDefinitions xsi:type="intent:IntentDefinition" name="SearchTweets">
+    <outContexts name="Tweets">
+      <parameters name="query" textFragment="[TWEETS]">
+        <entity xsi:type="intent:BaseEntityDefinitionReference">
+          <baseEntity/>
+        </entity>
+      </parameters>
+    </outContexts>
+    <trainingSentences>search tweets with [TWEETS]</trainingSentences>
+    <trainingSentences>search for [TWEETS]</trainingSentences>
+    <trainingSentences>search for tweets [TWEETS]</trainingSentences>
+    <trainingSentences>search for tweets of [TWEETS]</trainingSentences>
+    <trainingSentences>search tweets about [TWEETS]</trainingSentences>
+    <trainingSentences>look for [TWEETS]</trainingSentences>
+    <trainingSentences>look for tweets [TWEETS]</trainingSentences>
+    <trainingSentences>find [TWEETS]</trainingSentences>
+    <trainingSentences>find tweets [TWEETS]</trainingSentences>
+    <trainingSentences>show tweets about [TWEETS]</trainingSentences>
+    <trainingSentences>show tweets of [TWEETS]</trainingSentences>
+  </eventDefinitions>
+  <eventDefinitions xsi:type="intent:IntentDefinition" name="SendDM" followedBy="//@eventDefinitions.3">
+    <outContexts name="DM">
+      <parameters name="user" textFragment="[USER]">
+        <entity xsi:type="intent:BaseEntityDefinitionReference">
+          <baseEntity/>
+        </entity>
+      </parameters>
+    </outContexts>
+    <trainingSentences>send dm to [USER]</trainingSentences>
+    <trainingSentences>send message to [USER]</trainingSentences>
+    <trainingSentences>send text to [USER]</trainingSentences>
+  </eventDefinitions>
+  <eventDefinitions xsi:type="intent:IntentDefinition" name="SpecifyDM" follows="//@eventDefinitions.2">
+    <outContexts name="DM">
+      <parameters name="text" textFragment="Placeholder1">
+        <entity xsi:type="intent:BaseEntityDefinitionReference">
+          <baseEntity/>
+        </entity>
+      </parameters>
+    </outContexts>
+    <trainingSentences>DM content: &quot;Placeholder1&quot;</trainingSentences>
+  </eventDefinitions>
+  <eventDefinitions xsi:type="intent:IntentDefinition" name="ReceiveDM">
+    <trainingSentences>show me my messages</trainingSentences>
+    <trainingSentences>show me messages</trainingSentences>
+    <trainingSentences>show me all messages</trainingSentences>
+    <trainingSentences>who wrote me</trainingSentences>
+    <trainingSentences>show messages</trainingSentences>
+    <trainingSentences>show dm</trainingSentences>
+    <trainingSentences>do I have messages</trainingSentences>
+    <trainingSentences>are there messages</trainingSentences>
+  </eventDefinitions>
+</intent:Library>
