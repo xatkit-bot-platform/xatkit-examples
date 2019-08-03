@@ -16,9 +16,9 @@
       </value>
     </instructions>
     <instructions xsi:type="execution:ActionInstance">
-      <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10"/>
+      <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.4"/>
       <values>
-        <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10/@parameters.0"/>
+        <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.4/@parameters.0"/>
         <expression xsi:type="common:OperationCall" name="+">
           <source xsi:type="common:StringLiteral" value="Sure! &lt;"/>
           <args xsi:type="common:OperationCall" name="+">
@@ -32,9 +32,9 @@
   <executionRules>
     <event href="pathmap://XATKIT_CUSTOM_LIBRARY/CanYouBotLib#//@eventDefinitions.0"/>
     <instructions xsi:type="execution:ActionInstance">
-      <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10"/>
+      <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.4"/>
       <values>
-        <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10/@parameters.0"/>
+        <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.4/@parameters.0"/>
         <expression xsi:type="common:StringLiteral" value="Hi, I can do many things, challenge me!&#xA;You can start with something like `Can you &lt;whatever you want>?`&#xA;This bot is inspired by &lt;https://uxdesign.cc/wanna-build-a-superbot-that-can-do-anything-heres-how-d8eeeeef1882|this article>"/>
       </values>
     </instructions>
@@ -42,9 +42,9 @@
   <executionRules>
     <event href="pathmap://XATKIT_CORE_LIBRARY/CoreLibrary.xmi#//@eventDefinitions.1"/>
     <instructions xsi:type="execution:ActionInstance">
-      <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10"/>
+      <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.4"/>
       <values>
-        <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10/@parameters.0"/>
+        <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.4/@parameters.0"/>
         <expression xsi:type="common:StringLiteral" value="Ask me if I can do something and I'll tell you!&#xA;You can start with something like `Can you &lt;whatever you want>?`"/>
       </values>
     </instructions>
@@ -52,9 +52,9 @@
   <executionRules>
     <event href="pathmap://XATKIT_CORE_LIBRARY/CoreLibrary.xmi#//@eventDefinitions.0"/>
     <instructions xsi:type="execution:ActionInstance">
-      <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10"/>
+      <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.4"/>
       <values>
-        <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10/@parameters.0"/>
+        <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.4/@parameters.0"/>
         <expression xsi:type="common:StringLiteral" value="Sorry I didn't get it :(&#xA;You can try something like `Can you &lt;whatever you want>?` to challenge me!"/>
       </values>
     </instructions>

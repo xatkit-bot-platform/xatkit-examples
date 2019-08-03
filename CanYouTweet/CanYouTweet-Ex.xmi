@@ -2,7 +2,7 @@
 <execution:ExecutionModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:common="com.xatkit.common" xmlns:execution="com.xatkit.execution">
   <eventProviderDefinitions href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@eventProviderDefinitions.0"/>
   <executionRules>
-    <event href="pathmap://XATKIT_CUSTOM_LIBRARY/twitterBotLib#//@eventDefinitions.0"/>
+    <event href="CanYouTweet-Lib.xmi#//@eventDefinitions.0"/>
     <instructions xsi:type="common:VariableDeclaration" name="content">
       <value xsi:type="common:OperationCall" name="get">
         <source xsi:type="common:ContextAccess" contextName="Tweet"/>
@@ -16,9 +16,9 @@
       </condition>
       <thenInstructions xsi:type="common:VariableDeclaration" name="result">
         <value xsi:type="execution:ActionInstance">
-          <action href="../twitter-platform/platform/twitterPlatform.xmi#//@actions.0"/>
+          <action href="CanYouTweet-Ex.execution#|3"/>
           <values>
-            <parameter href="../twitter-platform/platform/twitterPlatform.xmi#//@actions.0/@parameters.0"/>
+            <parameter href="CanYouTweet-Ex.execution#|4"/>
             <expression xsi:type="common:VariableAccess" referredVariable="//@executionRules.0/@instructions.0"/>
           </values>
         </value>
@@ -59,7 +59,7 @@
     </instructions>
   </executionRules>
   <executionRules>
-    <event href="pathmap://XATKIT_CUSTOM_LIBRARY/twitterBotLib#//@eventDefinitions.1"/>
+    <event href="CanYouTweet-Lib.xmi#//@eventDefinitions.1"/>
     <instructions xsi:type="common:VariableDeclaration" name="contentQuery">
       <value xsi:type="common:OperationCall" name="get">
         <source xsi:type="common:ContextAccess" contextName="Tweets"/>
@@ -73,9 +73,9 @@
       </condition>
       <thenInstructions xsi:type="common:VariableDeclaration" name="result">
         <value xsi:type="execution:ActionInstance">
-          <action href="../twitter-platform/platform/twitterPlatform.xmi#//@actions.1"/>
+          <action href="CanYouTweet-Ex.execution#|16"/>
           <values>
-            <parameter href="../twitter-platform/platform/twitterPlatform.xmi#//@actions.1/@parameters.0"/>
+            <parameter href="CanYouTweet-Ex.execution#|17"/>
             <expression xsi:type="common:VariableAccess" referredVariable="//@executionRules.1/@instructions.0"/>
           </values>
         </value>
@@ -111,27 +111,27 @@
             </values>
           </thenInstructions>
           <elseInstructions xsi:type="execution:ActionInstance">
-            <action href="twitterBot-Ex.execution#|26"/>
+            <action href="CanYouTweet-Ex.execution#|26"/>
             <values>
-              <parameter href="twitterBot-Ex.execution#|27"/>
+              <parameter href="CanYouTweet-Ex.execution#|27"/>
               <expression xsi:type="common:VariableAccess">
-                <referredVariable href="twitterBot-Ex.execution#|28"/>
+                <referredVariable href="CanYouTweet-Ex.execution#|28"/>
               </expression>
             </values>
           </elseInstructions>
         </elseInstructions>
       </thenInstructions>
       <elseInstructions xsi:type="execution:ActionInstance">
-        <action href="twitterBot-Ex.execution#|29"/>
+        <action href="CanYouTweet-Ex.execution#|29"/>
         <values>
-          <parameter href="twitterBot-Ex.execution#|30"/>
+          <parameter href="CanYouTweet-Ex.execution#|30"/>
           <expression xsi:type="common:StringLiteral" value="I can't search for that"/>
         </values>
       </elseInstructions>
     </instructions>
   </executionRules>
   <executionRules>
-    <event href="twitterBot-Ex.execution#|31"/>
+    <event href="CanYouTweet-Ex.execution#|31"/>
     <instructions xsi:type="common:IfExpression">
       <condition xsi:type="common:OperationCall" name="!=">
         <source xsi:type="common:OperationCall" name="get">
@@ -141,9 +141,9 @@
         <args xsi:type="common:StringLiteral" value=""/>
       </condition>
       <thenInstructions xsi:type="execution:ActionInstance">
-        <action href="twitterBot-Ex.execution#|32"/>
+        <action href="CanYouTweet-Ex.execution#|32"/>
         <values>
-          <parameter href="twitterBot-Ex.execution#|33"/>
+          <parameter href="CanYouTweet-Ex.execution#|33"/>
           <expression xsi:type="common:OperationCall" name="+">
             <source xsi:type="common:StringLiteral" value="Ok, so you want to send a DM to *@"/>
             <args xsi:type="common:OperationCall" name="+">
@@ -157,23 +157,23 @@
         </values>
       </thenInstructions>
       <thenInstructions xsi:type="execution:ActionInstance">
-        <action href="twitterBot-Ex.execution#|34"/>
+        <action href="CanYouTweet-Ex.execution#|34"/>
         <values>
-          <parameter href="twitterBot-Ex.execution#|35"/>
+          <parameter href="CanYouTweet-Ex.execution#|35"/>
           <expression xsi:type="common:StringLiteral" value="Write &quot;DM content:&quot; and then add what you want to say to him/her in double quotes."/>
         </values>
       </thenInstructions>
       <elseInstructions xsi:type="execution:ActionInstance">
-        <action href="twitterBot-Ex.execution#|36"/>
+        <action href="CanYouTweet-Ex.execution#|36"/>
         <values>
-          <parameter href="twitterBot-Ex.execution#|37"/>
+          <parameter href="CanYouTweet-Ex.execution#|37"/>
           <expression xsi:type="common:StringLiteral" value="I don't know anyone by that name"/>
         </values>
       </elseInstructions>
     </instructions>
   </executionRules>
   <executionRules>
-    <event href="twitterBot-Ex.execution#|38"/>
+    <event href="CanYouTweet-Ex.execution#|38"/>
     <instructions xsi:type="common:VariableDeclaration" name="DMcontent">
       <value xsi:type="common:OperationCall" name="get">
         <source xsi:type="common:ContextAccess" contextName="DM"/>
@@ -183,24 +183,24 @@
     <instructions xsi:type="common:IfExpression">
       <condition xsi:type="common:OperationCall" name="!=">
         <source xsi:type="common:VariableAccess">
-          <referredVariable href="twitterBot-Ex.execution#|39"/>
+          <referredVariable href="CanYouTweet-Ex.execution#|39"/>
         </source>
         <args xsi:type="common:StringLiteral" value=""/>
       </condition>
       <thenInstructions xsi:type="common:VariableDeclaration" name="result">
         <value xsi:type="execution:ActionInstance">
-          <action href="twitterBot-Ex.execution#|40"/>
+          <action href="CanYouTweet-Ex.execution#|40"/>
           <values>
-            <parameter href="twitterBot-Ex.execution#|41"/>
+            <parameter href="CanYouTweet-Ex.execution#|41"/>
             <expression xsi:type="common:OperationCall" name="get">
               <source xsi:type="common:ContextAccess" contextName="DM"/>
               <args xsi:type="common:StringLiteral" value="user"/>
             </expression>
           </values>
           <values>
-            <parameter href="twitterBot-Ex.execution#|42"/>
+            <parameter href="CanYouTweet-Ex.execution#|42"/>
             <expression xsi:type="common:VariableAccess">
-              <referredVariable href="twitterBot-Ex.execution#|43"/>
+              <referredVariable href="CanYouTweet-Ex.execution#|43"/>
             </expression>
           </values>
         </value>
@@ -208,75 +208,75 @@
       <thenInstructions xsi:type="common:IfExpression">
         <condition xsi:type="common:OperationCall" name="==">
           <source xsi:type="common:VariableAccess">
-            <referredVariable href="twitterBot-Ex.execution#|44"/>
+            <referredVariable href="CanYouTweet-Ex.execution#|44"/>
           </source>
           <args xsi:type="common:NumberLiteral"/>
         </condition>
         <thenInstructions xsi:type="execution:ActionInstance">
-          <action href="twitterBot-Ex.execution#|45"/>
+          <action href="CanYouTweet-Ex.execution#|45"/>
           <values>
-            <parameter href="twitterBot-Ex.execution#|46"/>
+            <parameter href="CanYouTweet-Ex.execution#|46"/>
             <expression xsi:type="common:StringLiteral" value="Message Sent! :smile:"/>
           </values>
         </thenInstructions>
         <elseInstructions xsi:type="execution:ActionInstance">
-          <action href="twitterBot-Ex.execution#|47"/>
+          <action href="CanYouTweet-Ex.execution#|47"/>
           <values>
-            <parameter href="twitterBot-Ex.execution#|48"/>
+            <parameter href="CanYouTweet-Ex.execution#|48"/>
             <expression xsi:type="common:StringLiteral" value="I couldn't send it :upside_down_face:"/>
           </values>
         </elseInstructions>
       </thenInstructions>
       <elseInstructions xsi:type="execution:ActionInstance">
-        <action href="twitterBot-Ex.execution#|49"/>
+        <action href="CanYouTweet-Ex.execution#|49"/>
         <values>
-          <parameter href="twitterBot-Ex.execution#|50"/>
+          <parameter href="CanYouTweet-Ex.execution#|50"/>
           <expression xsi:type="common:StringLiteral" value="I'm not going to send that"/>
         </values>
       </elseInstructions>
     </instructions>
   </executionRules>
   <executionRules>
-    <event href="twitterBot-Ex.execution#|51"/>
+    <event href="CanYouTweet-Ex.execution#|51"/>
     <instructions xsi:type="common:VariableDeclaration" name="result">
       <value xsi:type="execution:ActionInstance">
-        <action href="twitterBot-Ex.execution#|52"/>
+        <action href="CanYouTweet-Ex.execution#|52"/>
       </value>
     </instructions>
     <instructions xsi:type="common:IfExpression">
       <condition xsi:type="common:OperationCall" name="==">
         <source xsi:type="common:VariableAccess">
-          <referredVariable href="twitterBot-Ex.execution#|53"/>
+          <referredVariable href="CanYouTweet-Ex.execution#|53"/>
         </source>
         <args xsi:type="common:StringLiteral" value="1"/>
       </condition>
       <thenInstructions xsi:type="execution:ActionInstance">
-        <action href="twitterBot-Ex.execution#|54"/>
+        <action href="CanYouTweet-Ex.execution#|54"/>
         <values>
-          <parameter href="twitterBot-Ex.execution#|55"/>
+          <parameter href="CanYouTweet-Ex.execution#|55"/>
           <expression xsi:type="common:StringLiteral" value="I couldn't retrieve any message, try again later. :upside_down_face:"/>
         </values>
       </thenInstructions>
       <elseInstructions xsi:type="common:IfExpression">
         <condition xsi:type="common:OperationCall" name="==">
           <source xsi:type="common:VariableAccess">
-            <referredVariable href="twitterBot-Ex.execution#|56"/>
+            <referredVariable href="CanYouTweet-Ex.execution#|56"/>
           </source>
           <args xsi:type="common:StringLiteral" value="0"/>
         </condition>
         <thenInstructions xsi:type="execution:ActionInstance">
-          <action href="twitterBot-Ex.execution#|57"/>
+          <action href="CanYouTweet-Ex.execution#|57"/>
           <values>
-            <parameter href="twitterBot-Ex.execution#|58"/>
+            <parameter href="CanYouTweet-Ex.execution#|58"/>
             <expression xsi:type="common:StringLiteral" value="There are no messages..."/>
           </values>
         </thenInstructions>
         <elseInstructions xsi:type="execution:ActionInstance">
-          <action href="twitterBot-Ex.execution#|59"/>
+          <action href="CanYouTweet-Ex.execution#|59"/>
           <values>
-            <parameter href="twitterBot-Ex.execution#|60"/>
+            <parameter href="CanYouTweet-Ex.execution#|60"/>
             <expression xsi:type="common:VariableAccess">
-              <referredVariable href="twitterBot-Ex.execution#|61"/>
+              <referredVariable href="CanYouTweet-Ex.execution#|61"/>
             </expression>
           </values>
         </elseInstructions>
@@ -284,11 +284,11 @@
     </instructions>
   </executionRules>
   <executionRules>
-    <event href="twitterBot-Ex.execution#|62"/>
+    <event href="CanYouTweet-Ex.execution#|62"/>
     <instructions xsi:type="execution:ActionInstance">
-      <action href="twitterBot-Ex.execution#|63"/>
+      <action href="CanYouTweet-Ex.execution#|63"/>
       <values>
-        <parameter href="twitterBot-Ex.execution#|64"/>
+        <parameter href="CanYouTweet-Ex.execution#|64"/>
         <expression xsi:type="common:StringLiteral" value="Sorry I'll have to check that on my dictionary and get back to you later :("/>
       </values>
     </instructions>
@@ -296,5 +296,5 @@
   <imports xsi:type="common:PlatformImportDeclaration" path="SlackPlatform"/>
   <imports xsi:type="common:PlatformImportDeclaration" path="/twitter-platform/platform/twitterPlatform.xmi"/>
   <imports xsi:type="common:LibraryImportDeclaration" path="CoreLibrary"/>
-  <imports xsi:type="common:LibraryImportDeclaration" path="twitterBot/twitterBot-Lib.xmi" alias="twitterBotLib"/>
+  <imports xsi:type="common:LibraryImportDeclaration" path="CanYouTweet/CanYouTweet-Lib.xmi" alias="twitterBotLib"/>
 </execution:ExecutionModel>
