@@ -1,0 +1,77 @@
+import platform "SlackPlatform"
+import platform "/twitter-platform/platform/twitterPlatform.xmi"
+import library "CoreLibrary"
+import library "CanYouTweet/CanYouTweet-Lib.xmi" as twitterBotLib
+
+// este era el original use provider SlackPlatform.ChatProvider
+use provider SlackPlatform.SlackIntentProvider
+
+on intent PostTweet do
+	def content = context(Tweet).get("content") 
+	if(content != ""){
+		def result = action twitterPlatform.PostAtweet(content : content)
+		
+		if(result == 0){
+			action SlackPlatform.Reply(message : 'I just tweeted: _' + content + '_ for you.')
+		}else{
+			action SlackPlatform.Reply(message : "I couldn't tweet that for you right now.")
+		}		
+	}else{
+		action SlackPlatform.Reply(message : "I'm not going to post an empty tweet, look somewhere else")
+	}
+
+on intent SearchTweets do
+	def contentQuery = context(Tweets).get("query") 
+	if(contentQuery != ""){
+		def result = action twitterPlatform.LookForTweets(query : contentQuery)	
+		
+		if(result == "1"){
+			action SlackPlatform.Reply(message : "I couldn't do that search")
+		}else{
+			if(result == "0"){
+				action SlackPlatform.Reply(message : "No results for: _" + contentQuery + "_")
+			}else{
+				action SlackPlatform.ReplyAttachmentsMessage(attachments : result)
+			}
+		}		
+	}else{
+		action SlackPlatform.Reply(message : "I can't search for that")
+	}
+
+on intent SendDM do
+	if(context(DM).get("user") != ""){
+		action SlackPlatform.Reply(message : "Ok, so you want to send a DM to *@" + context(DM).get("user") + "*")
+		action SlackPlatform.Reply(message : 'Write "DM content:" and then add what you want to say to him/her in double quotes.')
+	}else{
+		action SlackPlatform.Reply(message : "I don't know anyone by that name")
+	}
+
+on intent SpecifyDM do
+	def DMcontent = context(DM).get("text")
+	if(DMcontent != ""){
+		def result = action twitterPlatform.SendDM(user : context(DM).get("user"), text : DMcontent)	
+		if(result == 0){
+			action SlackPlatform.Reply(message : 'Message Sent! :smile:')
+		}else{
+			action SlackPlatform.Reply(message : "I couldn't send it :upside_down_face:")
+		}		
+	}else{
+		action SlackPlatform.Reply(message : "I'm not going to send that")
+	}
+	
+on intent ReceiveDM do
+	def result = action twitterPlatform.ReceiveDM
+	if (result == "1"){
+		action SlackPlatform.Reply(message : "I couldn't retrieve any message, try again later. :upside_down_face:")
+	}else{
+		if(result == "0"){
+			action SlackPlatform.Reply(message : "There are no messages...")
+		}else{
+			action SlackPlatform.ReplyAttachmentsMessage(attachments : result)	
+		}
+	}
+	
+on intent Default_Fallback_Intent do
+	action SlackPlatform.Reply(message : "Sorry I'll have to check that on my dictionary and get back to you later :(")
+
+

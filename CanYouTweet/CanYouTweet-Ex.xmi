@@ -2,7 +2,7 @@
 <execution:ExecutionModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:common="com.xatkit.common" xmlns:execution="com.xatkit.execution">
   <eventProviderDefinitions href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@eventProviderDefinitions.0"/>
   <executionRules>
-    <event href="CanYouTweet-Lib.xmi#//@eventDefinitions.0"/>
+    <event href="pathmap://XATKIT_CUSTOM_LIBRARY/twitterBotLib#//@eventDefinitions.0"/>
     <instructions xsi:type="common:VariableDeclaration" name="content">
       <value xsi:type="common:OperationCall" name="get">
         <source xsi:type="common:ContextAccess" contextName="Tweet"/>
@@ -59,7 +59,7 @@
     </instructions>
   </executionRules>
   <executionRules>
-    <event href="CanYouTweet-Lib.xmi#//@eventDefinitions.1"/>
+    <event href="pathmap://XATKIT_CUSTOM_LIBRARY/twitterBotLib#//@eventDefinitions.1"/>
     <instructions xsi:type="common:VariableDeclaration" name="contentQuery">
       <value xsi:type="common:OperationCall" name="get">
         <source xsi:type="common:ContextAccess" contextName="Tweets"/>
