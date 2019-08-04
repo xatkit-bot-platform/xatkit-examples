@@ -1,0 +1,12 @@
+Platform TwitterPlatform
+
+path "com.xatkit.plugins.twitter.platform.TwitterPlatform"
+
+actions {
+
+	PostAtweet(content)
+	LookForTweets(query)
+	SendDM(user,text)
+	ReceiveDM
+
+}

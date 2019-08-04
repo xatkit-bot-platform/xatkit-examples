@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<platform:PlatformDefinition xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:platform="com.xatkit.platform" name="twitterPlatform" runtimePath="com.xatkit.plugins.twitter.platform.twitterPlatform">
+<platform:PlatformDefinition xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:platform="com.xatkit.platform" name="TwitterPlatform" runtimePath="com.xatkit.plugins.twitter.platform.TwitterPlatform">
   <actions name="PostAtweet">
     <parameters key="content"/>
   </actions>

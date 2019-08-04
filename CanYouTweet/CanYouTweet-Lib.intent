@@ -1,17 +1,27 @@
 Library CanYouTweetLib
 
+intent Greetings {
+	inputs {
+		"Hi"
+		"Hello"
+		"Greetings"
+		"Morning"
+		"Afternoon"
+		"Evening"
+	}
+}
 
 intent PostTweet{
 	inputs{
-		"post tweet [CONTENT]"
-		'can you tweet "[CONTENT]?"?'
-		'can you post "[CONTENT]"?'
-		"please tweet [CONTENT]"
-		"please post [CONTENT]"
+		'can you tweet [CONTENT]?'
+		'can you post [CONTENT]?'
+
 		"tweet [CONTENT]"
 		"post [CONTENT]"
+		"post tweet [CONTENT]"
 		"post this tweet: [CONTENT]"
-		"post this tweet [CONTENT]"
+		"please tweet [CONTENT]"
+		"please post [CONTENT]"		
 		"just tweet [CONTENT]"
 		"just post [CONTENT]"
 	}
@@ -22,17 +32,23 @@ intent PostTweet{
 
 intent SearchTweets{
 	inputs{
-		"search tweets with [TWEETS]"
+		"can you show tweets about [TWEETS]"
+		"can you search for [TWEETS]"
+		"can you search tweets with [TWEETS]"
+		"can you look for [TWEETS]"
+		"can you find [TWEETS]"
+		
+		"show tweets of [TWEETS]"
+		"show tweets about [TWEETS]"
 		'search for [TWEETS]'
 		'search for tweets [TWEETS]'
 		'search for tweets of [TWEETS]'
+		"search tweets with [TWEETS]"
 		'search tweets about [TWEETS]'
 		'look for [TWEETS]'
 		"look for tweets [TWEETS]"
 		"find [TWEETS]"
 		"find tweets [TWEETS]"
-		"show tweets about [TWEETS]"
-		"show tweets of [TWEETS]"
 	}
 	creates context Tweets {
 		sets parameter query from fragment "[TWEETS]" (entity any)
@@ -41,9 +57,19 @@ intent SearchTweets{
 
 intent SendDM {
 	inputs {
+		"can you send dm to [USER]"
+		"can you send message to [USER]"
+		"can you send text to [USER]"
+
+		"dm to [USER]"
+		"message to [USER]"
+		"text to [USER]"
 		"send dm to [USER]"
 		"send message to [USER]"
 		"send text to [USER]"
+		"please send dm to [USER]"
+		"please send message to [USER]"
+		"please text to [USER]"
 	}
 	creates context DM {
 		sets parameter user from fragment "[USER]" (entity any)
@@ -58,6 +84,11 @@ intent SpecifyDM follows SendDM {
 
 intent ReceiveDM{
 	inputs{
+		
+		"can you show me my messages"
+		"can you show me messages"
+		"can you show me all messages"
+		
 		"show me my messages"
 		"show me messages"
 		"show me all messages"

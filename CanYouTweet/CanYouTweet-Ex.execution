@@ -1,15 +1,21 @@
 import platform "SlackPlatform"
-import platform "/twitter-platform/platform/twitterPlatform.xmi"
+import platform "CanYouTweet/twitter-platform/platform/TwitterPlatform.xmi"
 import library "CoreLibrary"
-import library "CanYouTweet/CanYouTweet-Lib.xmi" as twitterBotLib
+import library "CanYouTweet/CanYouTweet-Lib.xmi" as CanYouTweetLib
 
-// este era el original use provider SlackPlatform.ChatProvider
-use provider SlackPlatform.SlackIntentProvider
+use provider SlackPlatform.ChatProvider
 
+on intent Greetings do
+	action SlackPlatform.Reply(message : "Hi, I can help you interact with twitter!\nYou can start with something like `Can you post <whatever you want>?")
+
+on intent Help do
+	action SlackPlatform.Reply(message : 'You can try "search for <whatever you want>"')
+
+//----Twitter specific----
 on intent PostTweet do
 	def content = context(Tweet).get("content") 
 	if(content != ""){
-		def result = action twitterPlatform.PostAtweet(content : content)
+		def result = action TwitterPlatform.PostAtweet(content : content)
 		
 		if(result == 0){
 			action SlackPlatform.Reply(message : 'I just tweeted: _' + content + '_ for you.')
@@ -23,7 +29,7 @@ on intent PostTweet do
 on intent SearchTweets do
 	def contentQuery = context(Tweets).get("query") 
 	if(contentQuery != ""){
-		def result = action twitterPlatform.LookForTweets(query : contentQuery)	
+		def result = action TwitterPlatform.LookForTweets(query : contentQuery)	
 		
 		if(result == "1"){
 			action SlackPlatform.Reply(message : "I couldn't do that search")
@@ -49,7 +55,7 @@ on intent SendDM do
 on intent SpecifyDM do
 	def DMcontent = context(DM).get("text")
 	if(DMcontent != ""){
-		def result = action twitterPlatform.SendDM(user : context(DM).get("user"), text : DMcontent)	
+		def result = action TwitterPlatform.SendDM(user : context(DM).get("user"), text : DMcontent)	
 		if(result == 0){
 			action SlackPlatform.Reply(message : 'Message Sent! :smile:')
 		}else{
@@ -60,7 +66,7 @@ on intent SpecifyDM do
 	}
 	
 on intent ReceiveDM do
-	def result = action twitterPlatform.ReceiveDM
+	def result = action TwitterPlatform.ReceiveDM
 	if (result == "1"){
 		action SlackPlatform.Reply(message : "I couldn't retrieve any message, try again later. :upside_down_face:")
 	}else{
