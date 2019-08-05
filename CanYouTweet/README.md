@@ -25,4 +25,4 @@ java -cp "xatkit.jar;twitter-platform.jar" com.xatkit.Xatkit ./CanYouTweet/CanYo
 
 ## Requirements
 
-Look [here](https://github.com/ffc91/xatkit-examples/blob/twitterBotExample/CanYouTweet/ExampleSnapshot.png "here") for how set up a Xatkit enviroment integrated with the twitter-platform 
+Look [here](https://raw.githubusercontent.com/ffc91/xatkit-examples/twitterBotExample/CanYouTweet/ExampleSnapshot.png "here") for how set up a Xatkit enviroment integrated with the twitter-platform 
