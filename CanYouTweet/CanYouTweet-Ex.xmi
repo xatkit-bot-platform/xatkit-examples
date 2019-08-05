@@ -36,9 +36,9 @@
       </condition>
       <thenInstructions xsi:type="common:VariableDeclaration" name="result">
         <value xsi:type="execution:ActionInstance">
-          <action href="file:/home/francisco/git/xatkit-examples/CanYouTweet/twitter-platform/platform/TwitterPlatform.xmi#//@actions.0"/>
+          <action href="../Twitter-platform/platform/TwitterPlatform.xmi#//@actions.0"/>
           <values>
-            <parameter href="file:/home/francisco/git/xatkit-examples/CanYouTweet/twitter-platform/platform/TwitterPlatform.xmi#//@actions.0/@parameters.0"/>
+            <parameter href="../Twitter-platform/platform/TwitterPlatform.xmi#//@actions.0/@parameters.0"/>
             <expression xsi:type="common:VariableAccess" referredVariable="//@executionRules.2/@instructions.0"/>
           </values>
         </value>
@@ -93,9 +93,9 @@
       </condition>
       <thenInstructions xsi:type="common:VariableDeclaration" name="result">
         <value xsi:type="execution:ActionInstance">
-          <action href="file:/home/francisco/git/xatkit-examples/CanYouTweet/twitter-platform/platform/TwitterPlatform.xmi#//@actions.1"/>
+          <action href="../Twitter-platform/platform/TwitterPlatform.xmi#//@actions.1"/>
           <values>
-            <parameter href="file:/home/francisco/git/xatkit-examples/CanYouTweet/twitter-platform/platform/TwitterPlatform.xmi#//@actions.1/@parameters.0"/>
+            <parameter href="../Twitter-platform/platform/TwitterPlatform.xmi#//@actions.1/@parameters.0"/>
             <expression xsi:type="common:VariableAccess" referredVariable="//@executionRules.3/@instructions.0"/>
           </values>
         </value>
@@ -205,16 +205,16 @@
       </condition>
       <thenInstructions xsi:type="common:VariableDeclaration" name="result">
         <value xsi:type="execution:ActionInstance">
-          <action href="file:/home/francisco/git/xatkit-examples/CanYouTweet/twitter-platform/platform/TwitterPlatform.xmi#//@actions.2"/>
+          <action href="../Twitter-platform/platform/TwitterPlatform.xmi#//@actions.2"/>
           <values>
-            <parameter href="file:/home/francisco/git/xatkit-examples/CanYouTweet/twitter-platform/platform/TwitterPlatform.xmi#//@actions.2/@parameters.0"/>
+            <parameter href="../Twitter-platform/platform/TwitterPlatform.xmi#//@actions.2/@parameters.0"/>
             <expression xsi:type="common:OperationCall" name="get">
               <source xsi:type="common:ContextAccess" contextName="DM"/>
               <args xsi:type="common:StringLiteral" value="user"/>
             </expression>
           </values>
           <values>
-            <parameter href="file:/home/francisco/git/xatkit-examples/CanYouTweet/twitter-platform/platform/TwitterPlatform.xmi#//@actions.2/@parameters.1"/>
+            <parameter href="../Twitter-platform/platform/TwitterPlatform.xmi#//@actions.2/@parameters.1"/>
             <expression xsi:type="common:VariableAccess" referredVariable="//@executionRules.5/@instructions.0"/>
           </values>
         </value>
@@ -252,7 +252,7 @@
     <event href="CanYouTweet-Lib.xmi#//@eventDefinitions.5"/>
     <instructions xsi:type="common:VariableDeclaration" name="result">
       <value xsi:type="execution:ActionInstance">
-        <action href="file:/home/francisco/git/xatkit-examples/CanYouTweet/twitter-platform/platform/TwitterPlatform.xmi#//@actions.3"/>
+        <action href="../Twitter-platform/platform/TwitterPlatform.xmi#//@actions.3"/>
       </value>
     </instructions>
     <instructions xsi:type="common:IfExpression">
