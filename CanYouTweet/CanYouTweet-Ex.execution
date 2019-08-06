@@ -1,5 +1,5 @@
 import platform "SlackPlatform"
-import platform "CanYouTweet/twitter-platform/platform/TwitterPlatform.xmi"
+import platform "CanYouTweet/twitter-platform/TwitterPlatform.xmi"
 import library "CoreLibrary"
 import library "CanYouTweet/CanYouTweet-Lib.xmi" as CanYouTweetLib
 

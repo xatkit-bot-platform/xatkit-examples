@@ -3,10 +3,10 @@
 An example bot that can send and receive messages from Twitter, as well as, search or post Tweets.
 
 Ask him:
-- Can you post <Whatever you want>?
-- Can you send a DM to <@User>?
+- Can you post &lt;Whatever you want&gt;?
+- Can you send a DM to &lt;@User&gt;?
 - Can you show me my messages?
-- Can you look for <Whatever you want>?
+- Can you look for &lt;Whatever you want&gt;?
 
 ![alt text](https://raw.githubusercontent.com/ffc91/xatkit-examples/twitterBotExample/CanYouTweet/ExampleSnapshot.png)
 
