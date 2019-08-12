@@ -10,17 +10,17 @@
   </eventDefinitions>
   <eventDefinitions xsi:type="intent:IntentDefinition" name="CanYou">
     <outContexts name="Request">
-      <parameters name="request" textFragment="Placeholder7">
+      <parameters name="request" textFragment="Placeholder1">
         <entity xsi:type="intent:BaseEntityDefinitionReference">
           <baseEntity/>
         </entity>
       </parameters>
     </outContexts>
-    <trainingSentences>Can you Placeholder7</trainingSentences>
-    <trainingSentences>Have you seen Placeholder7</trainingSentences>
-    <trainingSentences>Do you know Placeholder7</trainingSentences>
-    <trainingSentences>Do you like Placeholder7</trainingSentences>
-    <trainingSentences>Any thoughts about Placeholder7</trainingSentences>
-    <trainingSentences>What do you think about Placeholder7</trainingSentences>
+    <trainingSentences>Can you Placeholder1</trainingSentences>
+    <trainingSentences>Have you seen Placeholder1</trainingSentences>
+    <trainingSentences>Do you know Placeholder1</trainingSentences>
+    <trainingSentences>Do you like Placeholder1</trainingSentences>
+    <trainingSentences>Any thoughts about Placeholder1</trainingSentences>
+    <trainingSentences>What do you think about Placeholder1</trainingSentences>
   </eventDefinitions>
 </intent:Library>
