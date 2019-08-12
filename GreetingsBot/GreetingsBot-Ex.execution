@@ -1,0 +1,9 @@
+import library "GreetingsBot/GreetingsBot-Lib.xmi"
+import platform "ReactPlatform"
+
+use provider ReactPlatform.ChatProvider
+
+on intent HowAreYou do
+	action ReactPlatform.Reply(message : "Hi! I am fine and you?")
+	
+	
