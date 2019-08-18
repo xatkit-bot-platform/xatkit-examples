@@ -2,7 +2,7 @@
 <execution:ExecutionModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:common="com.xatkit.common" xmlns:execution="com.xatkit.execution">
   <eventProviderDefinitions href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@eventProviderDefinitions.1"/>
   <executionRules>
-    <event href="CanYouBot-Lib.xmi#//@eventDefinitions.1"/>
+    <event href="pathmap://XATKIT_CUSTOM_LIBRARY/CanYouBotLib#//@eventDefinitions.1"/>
     <instructions xsi:type="common:VariableDeclaration" name="res">
       <value xsi:type="execution:ActionInstance">
         <action href="pathmap://XATKIT_CORE_PLATFORM/GiphyPlatform.xmi#//@actions.0"/>
@@ -30,7 +30,7 @@
     </instructions>
   </executionRules>
   <executionRules>
-    <event href="CanYouBot-Lib.xmi#//@eventDefinitions.0"/>
+    <event href="pathmap://XATKIT_CUSTOM_LIBRARY/CanYouBotLib#//@eventDefinitions.0"/>
     <instructions xsi:type="execution:ActionInstance">
       <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14"/>
       <values>
