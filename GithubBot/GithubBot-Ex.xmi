@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="ASCII"?>
+<execution:ExecutionModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:common="com.xatkit.common" xmlns:execution="com.xatkit.execution">
+  <eventProviderDefinitions href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@eventProviderDefinitions.0"/>
+  <eventProviderDefinitions href="pathmap://XATKIT_CORE_PLATFORM/GithubPlatform.xmi#//@eventProviderDefinitions.0"/>
+  <executionRules>
+    <event href="pathmap://XATKIT_CORE_PLATFORM/GithubPlatform.xmi#//@eventProviderDefinitions.0/@eventDefinitions.0"/>
+    <instructions xsi:type="execution:ActionInstance">
+      <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.13"/>
+      <values>
+        <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.13/@parameters.0"/>
+        <expression xsi:type="common:OperationCall" name="+">
+          <source xsi:type="common:StringLiteral" value="An issue as been opened with number "/>
+          <args xsi:type="common:OperationCall" name="get">
+            <source xsi:type="common:ContextAccess" contextName="issue"/>
+            <args xsi:type="common:StringLiteral" value="issue->number"/>
+          </args>
+        </expression>
+      </values>
+      <values>
+        <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.13/@parameters.1"/>
+        <expression xsi:type="common:ConfigAccess" keyName="slack.channel"/>
+      </values>
+    </instructions>
+    <instructions xsi:type="common:VariableDeclaration" name="issue">
+      <value xsi:type="execution:ActionInstance">
+        <action href="pathmap://XATKIT_CORE_PLATFORM/GithubPlatform.xmi#//@actions.1"/>
+        <values>
+          <parameter href="pathmap://XATKIT_CORE_PLATFORM/GithubPlatform.xmi#//@actions.1/@parameters.0"/>
+          <expression xsi:type="common:ConfigAccess" keyName="github.repository.username"/>
+        </values>
+        <values>
+          <parameter href="pathmap://XATKIT_CORE_PLATFORM/GithubPlatform.xmi#//@actions.1/@parameters.1"/>
+          <expression xsi:type="common:ConfigAccess" keyName="github.repository.name"/>
+        </values>
+        <values>
+          <parameter href="pathmap://XATKIT_CORE_PLATFORM/GithubPlatform.xmi#//@actions.1/@parameters.2"/>
+          <expression xsi:type="common:OperationCall" name="get">
+            <source xsi:type="common:ContextAccess" contextName="issue"/>
+            <args xsi:type="common:StringLiteral" value="issue->number"/>
+          </expression>
+        </values>
+      </value>
+    </instructions>
+    <instructions xsi:type="common:OperationCall" name="store">
+      <source xsi:type="common:SessionAccess"/>
+      <args xsi:type="common:StringLiteral" value="issue"/>
+      <args xsi:type="common:VariableAccess" referredVariable="//@executionRules.0/@instructions.1"/>
+    </instructions>
+  </executionRules>
+  <executionRules>
+    <event href="pathmap://XATKIT_CUSTOM_LIBRARY/GithubBotLib#//@eventDefinitions.0"/>
+    <instructions xsi:type="common:VariableDeclaration" name="issue">
+      <value xsi:type="execution:ActionInstance">
+        <action href="pathmap://XATKIT_CORE_PLATFORM/GithubPlatform.xmi#//@actions.1"/>
+        <values>
+          <parameter href="pathmap://XATKIT_CORE_PLATFORM/GithubPlatform.xmi#//@actions.1/@parameters.0"/>
+          <expression xsi:type="common:ConfigAccess" keyName="github.repository.username"/>
+        </values>
+        <values>
+          <parameter href="pathmap://XATKIT_CORE_PLATFORM/GithubPlatform.xmi#//@actions.1/@parameters.1"/>
+          <expression xsi:type="common:ConfigAccess" keyName="github.repository.name"/>
+        </values>
+        <values>
+          <parameter href="pathmap://XATKIT_CORE_PLATFORM/GithubPlatform.xmi#//@actions.1/@parameters.2"/>
+          <expression xsi:type="common:OperationCall" name="get">
+            <source xsi:type="common:ContextAccess" contextName="issue"/>
+            <args xsi:type="common:StringLiteral" value="issueNumber"/>
+          </expression>
+        </values>
+      </value>
+    </instructions>
+    <instructions xsi:type="common:OperationCall" name="store">
+      <source xsi:type="common:SessionAccess"/>
+      <args xsi:type="common:StringLiteral" value="issue"/>
+      <args xsi:type="common:VariableAccess" referredVariable="//@executionRules.0/@instructions.1"/>
+    </instructions>
+    <instructions xsi:type="execution:ActionInstance">
+      <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14"/>
+      <values>
+        <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14/@parameters.0"/>
+        <expression xsi:type="common:OperationCall" name="+">
+          <source xsi:type="common:StringLiteral" value="Found issue "/>
+          <args xsi:type="common:OperationCall" name="number">
+            <source xsi:type="common:VariableAccess" referredVariable="//@executionRules.0/@instructions.1"/>
+          </args>
+        </expression>
+      </values>
+    </instructions>
+  </executionRules>
+  <executionRules>
+    <event href="pathmap://XATKIT_CUSTOM_LIBRARY/GithubBotLib#//@eventDefinitions.1"/>
+    <instructions xsi:type="execution:ActionInstance">
+      <action href="pathmap://XATKIT_CORE_PLATFORM/GithubPlatform.xmi#//@actions.3"/>
+      <values>
+        <parameter href="pathmap://XATKIT_CORE_PLATFORM/GithubPlatform.xmi#//@actions.3/@parameters.0"/>
+        <expression xsi:type="common:OperationCall" name="get">
+          <source xsi:type="common:SessionAccess"/>
+          <args xsi:type="common:StringLiteral" value="issue"/>
+        </expression>
+      </values>
+      <values>
+        <parameter href="pathmap://XATKIT_CORE_PLATFORM/GithubPlatform.xmi#//@actions.3/@parameters.1"/>
+        <expression xsi:type="common:OperationCall" name="get">
+          <source xsi:type="common:ContextAccess" contextName="issue"/>
+          <args xsi:type="common:StringLiteral" value="issueLabel"/>
+        </expression>
+      </values>
+    </instructions>
+    <instructions xsi:type="execution:ActionInstance">
+      <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14"/>
+      <values>
+        <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14/@parameters.0"/>
+        <expression xsi:type="common:StringLiteral" value="Done!"/>
+      </values>
+    </instructions>
+  </executionRules>
+  <executionRules>
+    <event href="pathmap://XATKIT_CUSTOM_LIBRARY/GithubBotLib#//@eventDefinitions.2"/>
+    <instructions xsi:type="execution:ActionInstance">
+      <action href="pathmap://XATKIT_CORE_PLATFORM/GithubPlatform.xmi#//@actions.4"/>
+      <values>
+        <parameter href="pathmap://XATKIT_CORE_PLATFORM/GithubPlatform.xmi#//@actions.4/@parameters.0"/>
+        <expression xsi:type="common:OperationCall" name="get">
+          <source xsi:type="common:SessionAccess"/>
+          <args xsi:type="common:StringLiteral" value="issue"/>
+        </expression>
+      </values>
+      <values>
+        <parameter href="pathmap://XATKIT_CORE_PLATFORM/GithubPlatform.xmi#//@actions.4/@parameters.1"/>
+        <expression xsi:type="common:OperationCall" name="get">
+          <source xsi:type="common:ContextAccess" contextName="issue"/>
+          <args xsi:type="common:StringLiteral" value="assignedUsername"/>
+        </expression>
+      </values>
+    </instructions>
+    <instructions xsi:type="execution:ActionInstance">
+      <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14"/>
+      <values>
+        <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14/@parameters.0"/>
+        <expression xsi:type="common:StringLiteral" value="Done!"/>
+      </values>
+    </instructions>
+  </executionRules>
+  <imports xsi:type="common:LibraryImportDeclaration" path="GithubBot/GithubBot-Lib.xmi" alias="GithubBotLib"/>
+  <imports xsi:type="common:PlatformImportDeclaration" path="GithubPlatform"/>
+  <imports xsi:type="common:PlatformImportDeclaration" path="SlackPlatform"/>
+</execution:ExecutionModel>

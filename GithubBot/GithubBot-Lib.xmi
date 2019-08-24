@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="ASCII"?>
+<intent:Library xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:intent="com.xatkit.intent" name="GithubBot">
+  <eventDefinitions xsi:type="intent:IntentDefinition" name="GetIssue">
+    <outContexts name="issue">
+      <parameters name="issueNumber" textFragment="IssueNumber">
+        <entity xsi:type="intent:BaseEntityDefinitionReference">
+          <baseEntity entityType="number"/>
+        </entity>
+      </parameters>
+    </outContexts>
+    <trainingSentences>Get issue IssueNumber</trainingSentences>
+  </eventDefinitions>
+  <eventDefinitions xsi:type="intent:IntentDefinition" name="SetLabel">
+    <outContexts name="issue">
+      <parameters name="issueLabel" textFragment="Label">
+        <entity xsi:type="intent:BaseEntityDefinitionReference">
+          <baseEntity/>
+        </entity>
+      </parameters>
+    </outContexts>
+    <inContexts name="issue"/>
+    <trainingSentences>Set label Label</trainingSentences>
+    <trainingSentences>Give label Label</trainingSentences>
+  </eventDefinitions>
+  <eventDefinitions xsi:type="intent:IntentDefinition" name="AssignUser">
+    <outContexts name="issue">
+      <parameters name="assignedUsername" textFragment="Username">
+        <entity xsi:type="intent:BaseEntityDefinitionReference">
+          <baseEntity/>
+        </entity>
+      </parameters>
+    </outContexts>
+    <inContexts name="issue"/>
+    <trainingSentences>Assign user Username</trainingSentences>
+    <trainingSentences>Username will take care of it</trainingSentences>
+  </eventDefinitions>
+</intent:Library>

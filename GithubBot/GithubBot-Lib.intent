@@ -1,0 +1,32 @@
+Library GithubBot
+
+intent GetIssue {
+	inputs {
+		"Get issue IssueNumber"
+	}
+	creates context issue {
+		sets parameter issueNumber from fragment IssueNumber (entity number)
+	}
+}
+
+intent SetLabel {
+	requires context issue
+	inputs {
+		"Set label Label"
+		"Give label Label"
+	}
+	creates context  issue {
+		sets parameter issueLabel from fragment Label (entity any)
+	}
+}
+
+intent AssignUser {
+	requires context issue
+	inputs {
+		"Assign user Username"
+		"Username will take care of it"
+	}
+	creates context  issue {
+		sets parameter assignedUsername from fragment Username (entity any)
+	}
+}

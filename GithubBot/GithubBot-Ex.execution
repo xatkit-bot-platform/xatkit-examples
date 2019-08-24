@@ -1,0 +1,25 @@
+import library "GithubBot/GithubBot-Lib.xmi" as GithubBotLib
+import platform "GithubPlatform"
+import platform "SlackPlatform"
+
+use provider SlackPlatform.SlackIntentProvider
+use provider GithubPlatform.GithubWebhookEventProvider
+
+on event Issue_Opened do
+	action SlackPlatform.PostMessage(message : "An issue as been opened with number " + context(issue).get("issue->number"), channel: config(slack.channel))
+	def issue = action GithubPlatform.GetIssue(user : config(github.repository.username), repository : config(github.repository.name), issueNumber : context(issue).get("issue->number"))
+	session.store("issue", issue)
+	
+on intent GetIssue do 
+	def issue = action GithubPlatform.GetIssue(user : config(github.repository.username), repository : config(github.repository.name), issueNumber : context(issue).get("issueNumber"))
+	session.store("issue", issue)
+	action SlackPlatform.Reply(message : "Found issue " + issue.number())
+	
+on intent SetLabel do
+	action GithubPlatform.SetLabel(issue : session.get("issue"), label : context(issue).get("issueLabel"))
+	action SlackPlatform.Reply(message : "Done!")
+	
+on intent AssignUser do
+	action GithubPlatform.AssignUser(issue : session.get("issue"), username : context(issue).get("assignedUsername"))
+	action SlackPlatform.Reply(message : "Done!")
+	
