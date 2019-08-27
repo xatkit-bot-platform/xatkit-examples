@@ -1,5 +1,14 @@
 Library TutorialIntentLibrary
 
+intent Welcome {
+	inputs {
+		"Hi"
+		"Hello"
+		"Good morning"
+		"Good afternoon"
+	}
+}
+
 intent HowAreYou {
 	inputs {
 		"How are you?"

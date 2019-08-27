@@ -1,11 +1,14 @@
-import library "GreetingsBot/GreetingsBot-Lib.xmi"
+import library "GreetingsBot/GreetingsBot-Lib.xmi" as GreetingsBotLib
 import library "CoreLibrary"
 import platform "ReactPlatform"
 
 use provider ReactPlatform.ChatProvider
 
+on intent Welcome do
+	action ReactPlatform.Reply(message : "Hi, nice to meet you!")
+
 on intent HowAreYou do
-	action ReactPlatform.Reply(message : "Hi! I am fine and you?")
+	action ReactPlatform.Reply(message : "I am fine and you?")
 	
 on intent Default_Fallback_Intent do
 	action ReactPlatform.Reply(message : "Sorry I didn't get it")
