@@ -14,7 +14,7 @@ xatkit.slack.token = <Your Slack app token>
 You can also set the channel used by the GithubBot to post messages (the `general` channel is used by default):
 
 ```properties
-slack.channel = "general"
+slack.channel = general
 ```
 
 **Do not forget to invite the bot to your channel, otherwise it won't be able to reply to you**
