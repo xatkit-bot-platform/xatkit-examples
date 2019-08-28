@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="ASCII"?>
 <execution:ExecutionModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:common="com.xatkit.common" xmlns:execution="com.xatkit.execution">
-  <eventProviderDefinitions href="pathmap://XATKIT_CORE_PLATFORM/ReactPlatform.xmi#//@eventProviderDefinitions.1"/>
+  <eventProviderDefinitions href="pathmap://XATKIT_CORE_PLATFORM/ChatPlatform.xmi#//@eventProviderDefinitions.0"/>
   <executionRules>
     <event href="pathmap://XATKIT_CUSTOM_LIBRARY/GreetingsBotLib#//@eventDefinitions.0"/>
     <instructions xsi:type="execution:ActionInstance">
-      <action href="pathmap://XATKIT_CORE_PLATFORM/ReactPlatform.xmi#//@actions.0"/>
+      <action href="pathmap://XATKIT_CORE_PLATFORM/ChatPlatform.xmi#//@actions.1"/>
       <values>
-        <parameter href="pathmap://XATKIT_CORE_PLATFORM/ReactPlatform.xmi#//@actions.0/@parameters.0"/>
+        <parameter href="pathmap://XATKIT_CORE_PLATFORM/ChatPlatform.xmi#//@actions.1/@parameters.0"/>
         <expression xsi:type="common:StringLiteral" value="Hi, nice to meet you!"/>
       </values>
     </instructions>
@@ -14,9 +14,9 @@
   <executionRules>
     <event href="pathmap://XATKIT_CUSTOM_LIBRARY/GreetingsBotLib#//@eventDefinitions.1"/>
     <instructions xsi:type="execution:ActionInstance">
-      <action href="pathmap://XATKIT_CORE_PLATFORM/ReactPlatform.xmi#//@actions.0"/>
+      <action href="pathmap://XATKIT_CORE_PLATFORM/ChatPlatform.xmi#//@actions.1"/>
       <values>
-        <parameter href="pathmap://XATKIT_CORE_PLATFORM/ReactPlatform.xmi#//@actions.0/@parameters.0"/>
+        <parameter href="pathmap://XATKIT_CORE_PLATFORM/ChatPlatform.xmi#//@actions.1/@parameters.0"/>
         <expression xsi:type="common:StringLiteral" value="I am fine and you?"/>
       </values>
     </instructions>
@@ -24,14 +24,14 @@
   <executionRules>
     <event href="pathmap://XATKIT_CORE_LIBRARY/CoreLibrary.xmi#//@eventDefinitions.0"/>
     <instructions xsi:type="execution:ActionInstance">
-      <action href="pathmap://XATKIT_CORE_PLATFORM/ReactPlatform.xmi#//@actions.0"/>
+      <action href="pathmap://XATKIT_CORE_PLATFORM/ChatPlatform.xmi#//@actions.1"/>
       <values>
-        <parameter href="pathmap://XATKIT_CORE_PLATFORM/ReactPlatform.xmi#//@actions.0/@parameters.0"/>
+        <parameter href="pathmap://XATKIT_CORE_PLATFORM/ChatPlatform.xmi#//@actions.1/@parameters.0"/>
         <expression xsi:type="common:StringLiteral" value="Sorry I didn't get it"/>
       </values>
     </instructions>
   </executionRules>
   <imports xsi:type="common:LibraryImportDeclaration" path="GreetingsBot/GreetingsBot-Lib.xmi" alias="GreetingsBotLib"/>
   <imports xsi:type="common:LibraryImportDeclaration" path="CoreLibrary"/>
-  <imports xsi:type="common:PlatformImportDeclaration" path="ReactPlatform"/>
+  <imports xsi:type="common:PlatformImportDeclaration" path="ChatPlatform"/>
 </execution:ExecutionModel>
