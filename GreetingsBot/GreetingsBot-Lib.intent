@@ -1,4 +1,4 @@
-Library TutorialIntentLibrary
+Library GreetingsBotLibrary
 
 intent Welcome {
 	inputs {
