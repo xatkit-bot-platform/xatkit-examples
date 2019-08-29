@@ -2,11 +2,11 @@
 <execution:ExecutionModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:common="com.xatkit.common" xmlns:execution="com.xatkit.execution">
   <eventProviderDefinitions href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@eventProviderDefinitions.1"/>
   <executionRules>
-    <event href="CanYouTweet-Lib.xmi#//@eventDefinitions.0"/>
+    <event href="pathmap://XATKIT_CUSTOM_LIBRARY/CanYouTweetLib#//@eventDefinitions.0"/>
     <instructions xsi:type="execution:ActionInstance">
-      <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10"/>
+      <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14"/>
       <values>
-        <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10/@parameters.0"/>
+        <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14/@parameters.0"/>
         <expression xsi:type="common:StringLiteral" value="Hi, I can help you interact with twitter!&#xA;You can start with something like `Can you post &lt;whatever you want>?"/>
       </values>
     </instructions>
@@ -14,15 +14,15 @@
   <executionRules>
     <event href="pathmap://XATKIT_CORE_LIBRARY/CoreLibrary.xmi#//@eventDefinitions.1"/>
     <instructions xsi:type="execution:ActionInstance">
-      <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10"/>
+      <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14"/>
       <values>
-        <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10/@parameters.0"/>
+        <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14/@parameters.0"/>
         <expression xsi:type="common:StringLiteral" value="You can try &quot;search for &lt;whatever you want>&quot;"/>
       </values>
     </instructions>
   </executionRules>
   <executionRules>
-    <event href="CanYouTweet-Lib.xmi#//@eventDefinitions.1"/>
+    <event href="pathmap://XATKIT_CUSTOM_LIBRARY/CanYouTweetLib#//@eventDefinitions.1"/>
     <instructions xsi:type="common:VariableDeclaration" name="content">
       <value xsi:type="common:OperationCall" name="get">
         <source xsi:type="common:ContextAccess" contextName="Tweet"/>
@@ -36,9 +36,9 @@
       </condition>
       <thenInstructions xsi:type="common:VariableDeclaration" name="result">
         <value xsi:type="execution:ActionInstance">
-          <action href="file:/C:/Users/ffc91/git/xatkit-examples/CanYouTweet/twitter-platform/TwitterPlatform.xmi#//@actions.0"/>
+          <action href="pathmap://XATKIT_CORE_PLATFORM/TwitterPlatform.xmi#//@actions.0"/>
           <values>
-            <parameter href="file:/C:/Users/ffc91/git/xatkit-examples/CanYouTweet/twitter-platform/TwitterPlatform.xmi#//@actions.0/@parameters.0"/>
+            <parameter href="pathmap://XATKIT_CORE_PLATFORM/TwitterPlatform.xmi#//@actions.0/@parameters.0"/>
             <expression xsi:type="common:VariableAccess" referredVariable="//@executionRules.2/@instructions.0"/>
           </values>
         </value>
@@ -46,12 +46,12 @@
       <thenInstructions xsi:type="common:IfExpression">
         <condition xsi:type="common:OperationCall" name="==">
           <source xsi:type="common:VariableAccess" referredVariable="//@executionRules.2/@instructions.1/@thenInstructions.0"/>
-          <args xsi:type="common:NumberLiteral"/>
+          <args xsi:type="common:IntegerLiteral"/>
         </condition>
         <thenInstructions xsi:type="execution:ActionInstance">
-          <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10"/>
+          <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14"/>
           <values>
-            <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10/@parameters.0"/>
+            <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14/@parameters.0"/>
             <expression xsi:type="common:OperationCall" name="+">
               <source xsi:type="common:StringLiteral" value="I just tweeted: _"/>
               <args xsi:type="common:OperationCall" name="+">
@@ -62,24 +62,24 @@
           </values>
         </thenInstructions>
         <elseInstructions xsi:type="execution:ActionInstance">
-          <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10"/>
+          <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14"/>
           <values>
-            <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10/@parameters.0"/>
+            <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14/@parameters.0"/>
             <expression xsi:type="common:StringLiteral" value="I couldn't tweet that for you right now."/>
           </values>
         </elseInstructions>
       </thenInstructions>
       <elseInstructions xsi:type="execution:ActionInstance">
-        <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10"/>
+        <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14"/>
         <values>
-          <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10/@parameters.0"/>
+          <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14/@parameters.0"/>
           <expression xsi:type="common:StringLiteral" value="I'm not going to post an empty tweet, look somewhere else"/>
         </values>
       </elseInstructions>
     </instructions>
   </executionRules>
   <executionRules>
-    <event href="CanYouTweet-Lib.xmi#//@eventDefinitions.2"/>
+    <event href="pathmap://XATKIT_CUSTOM_LIBRARY/CanYouTweetLib#//@eventDefinitions.2"/>
     <instructions xsi:type="common:VariableDeclaration" name="contentQuery">
       <value xsi:type="common:OperationCall" name="get">
         <source xsi:type="common:ContextAccess" contextName="Tweets"/>
@@ -93,9 +93,9 @@
       </condition>
       <thenInstructions xsi:type="common:VariableDeclaration" name="result">
         <value xsi:type="execution:ActionInstance">
-          <action href="file:/C:/Users/ffc91/git/xatkit-examples/CanYouTweet/twitter-platform/TwitterPlatform.xmi#//@actions.1"/>
+          <action href="pathmap://XATKIT_CORE_PLATFORM/TwitterPlatform.xmi#//@actions.1"/>
           <values>
-            <parameter href="file:/C:/Users/ffc91/git/xatkit-examples/CanYouTweet/twitter-platform/TwitterPlatform.xmi#//@actions.1/@parameters.0"/>
+            <parameter href="pathmap://XATKIT_CORE_PLATFORM/TwitterPlatform.xmi#//@actions.1/@parameters.0"/>
             <expression xsi:type="common:VariableAccess" referredVariable="//@executionRules.3/@instructions.0"/>
           </values>
         </value>
@@ -106,9 +106,9 @@
           <args xsi:type="common:StringLiteral" value="1"/>
         </condition>
         <thenInstructions xsi:type="execution:ActionInstance">
-          <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10"/>
+          <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14"/>
           <values>
-            <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10/@parameters.0"/>
+            <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14/@parameters.0"/>
             <expression xsi:type="common:StringLiteral" value="I couldn't do that search"/>
           </values>
         </thenInstructions>
@@ -118,9 +118,9 @@
             <args xsi:type="common:StringLiteral" value="0"/>
           </condition>
           <thenInstructions xsi:type="execution:ActionInstance">
-            <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10"/>
+            <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14"/>
             <values>
-              <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10/@parameters.0"/>
+              <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14/@parameters.0"/>
               <expression xsi:type="common:OperationCall" name="+">
                 <source xsi:type="common:StringLiteral" value="No results for: _"/>
                 <args xsi:type="common:OperationCall" name="+">
@@ -140,16 +140,16 @@
         </elseInstructions>
       </thenInstructions>
       <elseInstructions xsi:type="execution:ActionInstance">
-        <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10"/>
+        <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14"/>
         <values>
-          <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10/@parameters.0"/>
+          <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14/@parameters.0"/>
           <expression xsi:type="common:StringLiteral" value="I can't search for that"/>
         </values>
       </elseInstructions>
     </instructions>
   </executionRules>
   <executionRules>
-    <event href="CanYouTweet-Lib.xmi#//@eventDefinitions.3"/>
+    <event href="pathmap://XATKIT_CUSTOM_LIBRARY/CanYouTweetLib#//@eventDefinitions.3"/>
     <instructions xsi:type="common:IfExpression">
       <condition xsi:type="common:OperationCall" name="!=">
         <source xsi:type="common:OperationCall" name="get">
@@ -159,9 +159,9 @@
         <args xsi:type="common:StringLiteral" value=""/>
       </condition>
       <thenInstructions xsi:type="execution:ActionInstance">
-        <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10"/>
+        <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14"/>
         <values>
-          <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10/@parameters.0"/>
+          <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14/@parameters.0"/>
           <expression xsi:type="common:OperationCall" name="+">
             <source xsi:type="common:StringLiteral" value="Ok, so you want to send a DM to *@"/>
             <args xsi:type="common:OperationCall" name="+">
@@ -175,23 +175,23 @@
         </values>
       </thenInstructions>
       <thenInstructions xsi:type="execution:ActionInstance">
-        <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10"/>
+        <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14"/>
         <values>
-          <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10/@parameters.0"/>
+          <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14/@parameters.0"/>
           <expression xsi:type="common:StringLiteral" value="Write &quot;DM content:&quot; and then add what you want to say to him/her in double quotes."/>
         </values>
       </thenInstructions>
       <elseInstructions xsi:type="execution:ActionInstance">
-        <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10"/>
+        <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14"/>
         <values>
-          <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10/@parameters.0"/>
+          <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14/@parameters.0"/>
           <expression xsi:type="common:StringLiteral" value="I don't know anyone by that name"/>
         </values>
       </elseInstructions>
     </instructions>
   </executionRules>
   <executionRules>
-    <event href="CanYouTweet-Lib.xmi#//@eventDefinitions.4"/>
+    <event href="pathmap://XATKIT_CUSTOM_LIBRARY/CanYouTweetLib#//@eventDefinitions.4"/>
     <instructions xsi:type="common:VariableDeclaration" name="DMcontent">
       <value xsi:type="common:OperationCall" name="get">
         <source xsi:type="common:ContextAccess" contextName="DM"/>
@@ -205,16 +205,16 @@
       </condition>
       <thenInstructions xsi:type="common:VariableDeclaration" name="result">
         <value xsi:type="execution:ActionInstance">
-          <action href="file:/C:/Users/ffc91/git/xatkit-examples/CanYouTweet/twitter-platform/TwitterPlatform.xmi#//@actions.2"/>
+          <action href="pathmap://XATKIT_CORE_PLATFORM/TwitterPlatform.xmi#//@actions.2"/>
           <values>
-            <parameter href="file:/C:/Users/ffc91/git/xatkit-examples/CanYouTweet/twitter-platform/TwitterPlatform.xmi#//@actions.2/@parameters.0"/>
+            <parameter href="pathmap://XATKIT_CORE_PLATFORM/TwitterPlatform.xmi#//@actions.2/@parameters.0"/>
             <expression xsi:type="common:OperationCall" name="get">
               <source xsi:type="common:ContextAccess" contextName="DM"/>
               <args xsi:type="common:StringLiteral" value="user"/>
             </expression>
           </values>
           <values>
-            <parameter href="file:/C:/Users/ffc91/git/xatkit-examples/CanYouTweet/twitter-platform/TwitterPlatform.xmi#//@actions.2/@parameters.1"/>
+            <parameter href="pathmap://XATKIT_CORE_PLATFORM/TwitterPlatform.xmi#//@actions.2/@parameters.1"/>
             <expression xsi:type="common:VariableAccess" referredVariable="//@executionRules.5/@instructions.0"/>
           </values>
         </value>
@@ -222,37 +222,37 @@
       <thenInstructions xsi:type="common:IfExpression">
         <condition xsi:type="common:OperationCall" name="==">
           <source xsi:type="common:VariableAccess" referredVariable="//@executionRules.2/@instructions.1/@thenInstructions.0"/>
-          <args xsi:type="common:NumberLiteral"/>
+          <args xsi:type="common:IntegerLiteral"/>
         </condition>
         <thenInstructions xsi:type="execution:ActionInstance">
-          <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10"/>
+          <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14"/>
           <values>
-            <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10/@parameters.0"/>
+            <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14/@parameters.0"/>
             <expression xsi:type="common:StringLiteral" value="Message Sent! :smile:"/>
           </values>
         </thenInstructions>
         <elseInstructions xsi:type="execution:ActionInstance">
-          <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10"/>
+          <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14"/>
           <values>
-            <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10/@parameters.0"/>
+            <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14/@parameters.0"/>
             <expression xsi:type="common:StringLiteral" value="I couldn't send it :upside_down_face:"/>
           </values>
         </elseInstructions>
       </thenInstructions>
       <elseInstructions xsi:type="execution:ActionInstance">
-        <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10"/>
+        <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14"/>
         <values>
-          <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10/@parameters.0"/>
+          <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14/@parameters.0"/>
           <expression xsi:type="common:StringLiteral" value="I'm not going to send that"/>
         </values>
       </elseInstructions>
     </instructions>
   </executionRules>
   <executionRules>
-    <event href="CanYouTweet-Lib.xmi#//@eventDefinitions.5"/>
+    <event href="pathmap://XATKIT_CUSTOM_LIBRARY/CanYouTweetLib#//@eventDefinitions.5"/>
     <instructions xsi:type="common:VariableDeclaration" name="result">
       <value xsi:type="execution:ActionInstance">
-        <action href="file:/C:/Users/ffc91/git/xatkit-examples/CanYouTweet/twitter-platform/TwitterPlatform.xmi#//@actions.3"/>
+        <action href="pathmap://XATKIT_CORE_PLATFORM/TwitterPlatform.xmi#//@actions.3"/>
       </value>
     </instructions>
     <instructions xsi:type="common:IfExpression">
@@ -261,9 +261,9 @@
         <args xsi:type="common:StringLiteral" value="1"/>
       </condition>
       <thenInstructions xsi:type="execution:ActionInstance">
-        <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10"/>
+        <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14"/>
         <values>
-          <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10/@parameters.0"/>
+          <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14/@parameters.0"/>
           <expression xsi:type="common:StringLiteral" value="I couldn't retrieve any message, try again later. :upside_down_face:"/>
         </values>
       </thenInstructions>
@@ -273,9 +273,9 @@
           <args xsi:type="common:StringLiteral" value="0"/>
         </condition>
         <thenInstructions xsi:type="execution:ActionInstance">
-          <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10"/>
+          <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14"/>
           <values>
-            <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10/@parameters.0"/>
+            <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14/@parameters.0"/>
             <expression xsi:type="common:StringLiteral" value="There are no messages..."/>
           </values>
         </thenInstructions>
@@ -292,15 +292,15 @@
   <executionRules>
     <event href="pathmap://XATKIT_CORE_LIBRARY/CoreLibrary.xmi#//@eventDefinitions.0"/>
     <instructions xsi:type="execution:ActionInstance">
-      <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10"/>
+      <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14"/>
       <values>
-        <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.10/@parameters.0"/>
+        <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14/@parameters.0"/>
         <expression xsi:type="common:StringLiteral" value="Sorry I'll have to check that on my dictionary and get back to you later :("/>
       </values>
     </instructions>
   </executionRules>
   <imports xsi:type="common:PlatformImportDeclaration" path="SlackPlatform"/>
-  <imports xsi:type="common:PlatformImportDeclaration" path="CanYouTweet/twitter-platform/TwitterPlatform.xmi"/>
+  <imports xsi:type="common:PlatformImportDeclaration" path="TwitterPlatform"/>
   <imports xsi:type="common:LibraryImportDeclaration" path="CoreLibrary"/>
   <imports xsi:type="common:LibraryImportDeclaration" path="CanYouTweet/CanYouTweet-Lib.xmi" alias="CanYouTweetLib"/>
 </execution:ExecutionModel>

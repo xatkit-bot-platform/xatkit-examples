@@ -13,66 +13,66 @@ intent Greetings {
 
 intent PostTweet{
 	inputs{
-		'can you tweet [CONTENT]?'
-		'can you post [CONTENT]?'
+		'can you tweet CONTENT?'
+		'can you post CONTENT?'
 
-		"tweet [CONTENT]"
-		"post [CONTENT]"
-		"post tweet [CONTENT]"
-		"post this tweet: [CONTENT]"
-		"please tweet [CONTENT]"
-		"please post [CONTENT]"		
-		"just tweet [CONTENT]"
-		"just post [CONTENT]"
+		"tweet CONTENT"
+		"post CONTENT"
+		"post tweet CONTENT"
+		"post this tweet: CONTENT"
+		"please tweet CONTENT"
+		"please post CONTENT"		
+		"just tweet CONTENT"
+		"just post CONTENT"
 	}
 	creates context Tweet {
-		sets parameter content from fragment "[CONTENT]" (entity any)
+		sets parameter content from fragment "CONTENT" (entity any)
 	}
 }
 
 intent SearchTweets{
 	inputs{
-		"can you show tweets about [TWEETS]"
-		"can you search for [TWEETS]"
-		"can you search tweets with [TWEETS]"
-		"can you look for [TWEETS]"
-		"can you find [TWEETS]"
+		"can you show tweets about TWEETS"
+		"can you search for TWEETS"
+		"can you search tweets with TWEETS"
+		"can you look for TWEETS"
+		"can you find TWEETS"
 		
-		"show tweets of [TWEETS]"
-		"show tweets about [TWEETS]"
-		'search for [TWEETS]'
-		'search for tweets [TWEETS]'
-		'search for tweets of [TWEETS]'
-		"search tweets with [TWEETS]"
-		'search tweets about [TWEETS]'
-		'look for [TWEETS]'
-		"look for tweets [TWEETS]"
-		"find [TWEETS]"
-		"find tweets [TWEETS]"
+		"show tweets of TWEETS"
+		"show tweets about TWEETS"
+		'search for TWEETS'
+		'search for tweets TWEETS'
+		'search for tweets of TWEETS'
+		"search tweets with TWEETS"
+		'search tweets about TWEETS'
+		'look for TWEETS'
+		"look for tweets TWEETS"
+		"find TWEETS"
+		"find tweets TWEETS"
 	}
 	creates context Tweets {
-		sets parameter query from fragment "[TWEETS]" (entity any)
+		sets parameter query from fragment "TWEETS" (entity any)
 	}
 }
 
 intent SendDM {
 	inputs {
-		"can you send dm to [USER]"
-		"can you send message to [USER]"
-		"can you send text to [USER]"
+		"can you send dm to USER"
+		"can you send message to USER"
+		"can you send text to USER"
 
-		"dm to [USER]"
-		"message to [USER]"
-		"text to [USER]"
-		"send dm to [USER]"
-		"send message to [USER]"
-		"send text to [USER]"
-		"please send dm to [USER]"
-		"please send message to [USER]"
-		"please text to [USER]"
+		"dm to USER"
+		"message to USER"
+		"text to USER"
+		"send dm to USER"
+		"send message to USER"
+		"send text to USER"
+		"please send dm to USER"
+		"please send message to USER"
+		"please text to USER"
 	}
 	creates context DM {
-		sets parameter user from fragment "[USER]" (entity any)
+		sets parameter user from fragment "USER" (entity any)
 	}
 }
 
