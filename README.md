@@ -1,4 +1,7 @@
 # Xatkit Examples
+
+[![Wiki Badge](https://img.shields.io/badge/doc-wiki-blue)](https://github.com/xatkit-bot-platform/xatkit-releases/wiki)
+
 Example Bots built with the Xatkit framework
 
 ## Installation
