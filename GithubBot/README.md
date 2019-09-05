@@ -1,11 +1,11 @@
-# GithubBot Example
-An example bot using the [SlackPlatform](https://github.com/xatkit-bot-platform/xatkit-slack-platform) and the [GithubPlatform](https://github.com/xatkit-bot-platform/xatkit-github-platform) to receive events from Github and manage opened issues from Slack.
+# GitHubBot Example
+An example bot using the [SlackPlatform](https://github.com/xatkit-bot-platform/xatkit-slack-platform) and the [GitHubPlatform](https://github.com/xatkit-bot-platform/xatkit-github-platform) to receive events from GitHub and manage opened issues from Slack.
 
 ## Installation
 
 ### Setup Slack
 
-The GithubBot needs to be deployed on Slack. You can check [this article](https://github.com/xatkit-bot-platform/xatkit-releases/wiki/Deploying-on-Slack) to create a Slack app for Xatkit, and set its authentication token in `GithubBot.properties`:
+The GitHubBot needs to be deployed on Slack. You can check [this article](https://github.com/xatkit-bot-platform/xatkit-releases/wiki/Deploying-on-Slack) to create a Slack app for Xatkit, and set its authentication token in `GithubBot.properties`:
 
 ```properties
 xatkit.slack.token = <Your Slack app token>
@@ -19,9 +19,9 @@ slack.channel = general
 
 **Do not forget to invite the bot to your channel, otherwise it won't be able to reply to you**
 
-### Setup Github
+### Setup GitHub
 
-This bot requires Github credentials to receive events from the Github API and perform actions, you can navigate to [this page](https://github.com/settings/tokens) and click on **Generate new token** to create a new personal access token, give it a name, and select the **repo** scope. Copy the created access token in the `GithubBot.properties`:
+This bot requires GitHub credentials to receive events from the Github API and perform actions, you can navigate to [this page](https://github.com/settings/tokens) and click on **Generate new token** to create a new personal access token, give it a name, and select the **repo** scope. Copy the created access token in the `GithubBot.properties`:
 
 ```properties
 xatkit.github.oauth.token = <Your Github access token>
