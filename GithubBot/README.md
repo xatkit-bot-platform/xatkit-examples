@@ -34,10 +34,12 @@ Finally, you'll need to set the Github repository that is managed by the GithubB
   - **Content type**: *application/json*
   - Under the **Which events would you like to trigger this webhook?** menu select Send me **everything**.
   - Update the `github.repository.username` and `github.repository.name` properties in `GithubBot.properties` with your repository's information.
+  
+Serveo is used to forward the payload to your local port. If you're already running Xatkit in a public server just use that server URL. 
 
 ### Optional Step: setup DialogFlow
 
-The GithubBot example relies on Xatkit RegExp intent provider, that performs exact matching of user inputs to extract intents. If you want to use a more powerful intent provider such as DialogFlow you can take a look at [this article](https://github.com/xatkit-bot-platform/xatkit-runtime/wiki/Deploying-chatbots#create-a-dialogflow-project).
+The GithubBot example relies on Xatkit RegExp intent provider, that performs exact matching of user inputs to extract intents. If you want to use a more powerful intent provider such as DialogFlow you can take a look at [this article](https://github.com/xatkit-bot-platform/xatkit-releases/wiki/Integrating-DialogFlow).
 
 ## Run your bot
 
