@@ -5,7 +5,7 @@ An example bot using the [SlackPlatform](https://github.com/xatkit-bot-platform/
 
 ### Setup Slack
 
-The GithubBot needs to be deployed on Slack. You can check [this article](https://github.com/xatkit-bot-platform/xatkit-runtime/wiki/Deploying-chatbots#create-a-slack-app) to create a Slack app for Xatkit, and set its authentication token in `GithubBot.properties`:
+The GithubBot needs to be deployed on Slack. You can check [this article](https://github.com/xatkit-bot-platform/xatkit-releases/wiki/Deploying-on-Slack) to create a Slack app for Xatkit, and set its authentication token in `GithubBot.properties`:
 
 ```properties
 xatkit.slack.token = <Your Slack app token>
