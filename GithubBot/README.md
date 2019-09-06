@@ -35,7 +35,7 @@ Finally, you'll need to set the Github repository that is managed by the GithubB
   - Under the **Which events would you like to trigger this webhook?** menu select Send me **everything**.
   - Update the `github.repository.username` and `github.repository.name` properties in `GithubBot.properties` with your repository's information.
   
-Serveo is used to forward the payload to your local port. If you're already running Xatkit in a public server just use that server URL. 
+Serveo is used to forward the payload to your local port. If you're already running Xatkit in a public server just use that server URL. Instead of Serveo, you could also use ngrok.
 
 ### Optional Step: setup DialogFlow
 
