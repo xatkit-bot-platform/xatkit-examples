@@ -185,11 +185,11 @@
         <action href="pathmap://XATKIT_CORE_PLATFORM/GithubPlatform.xmi#//@actions.0"/>
         <values>
           <parameter href="pathmap://XATKIT_CORE_PLATFORM/GithubPlatform.xmi#//@actions.0/@parameters.0"/>
-          <expression xsi:type="common:StringLiteral" value="jcabot"/>
+          <expression xsi:type="common:ConfigAccess" keyName="github.repository.username"/>
         </values>
         <values>
           <parameter href="pathmap://XATKIT_CORE_PLATFORM/GithubPlatform.xmi#//@actions.0/@parameters.1"/>
-          <expression xsi:type="common:StringLiteral" value="xatkit-tests"/>
+          <expression xsi:type="common:ConfigAccess" keyName="github.repository.name"/>
         </values>
         <values>
           <parameter href="pathmap://XATKIT_CORE_PLATFORM/GithubPlatform.xmi#//@actions.0/@parameters.2"/>

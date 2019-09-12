@@ -34,7 +34,7 @@ on intent TellWPVersion do
 		
 on intent TellPHPVersion do
 	action SlackPlatform.Reply(message : "Thanks for your detailed info")	
-	def newissue = action GithubPlatform.OpenIssue(user : "jcabot", repository : "xatkit-tests", issueTitle : context(bug).get("title") , 
+	def newissue = action GithubPlatform.OpenIssue(user : config(github.repository.username), repository : config(github.repository.name), issueTitle : context(bug).get("title") , 
 			issueContent : "WP version is " + context(bug).get("wpversion") + " PHP version is " + context(bug).get("phpversion") 
 	)
 	action GithubPlatform.SetLabel(issue : newissue, label : "bug")
