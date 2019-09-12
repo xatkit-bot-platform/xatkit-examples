@@ -1,0 +1,27 @@
+Library SlackTrelloBotLibrary
+
+intent Presentation {
+	inputs {
+		"Can you introduce yourself?"
+		"Present yourself"
+		"Explain what you do"
+		"Why are you here?"
+	}
+}
+
+intent NewCard {
+	inputs {
+		"Create a card CardName"
+		"Create a card named CardName"
+		"Create a card with title CardName"
+		"Create a card called CardName"
+		"Create card CardName"
+		"New card CardName"
+		"New card with title CardName"
+		"Add card CardName"
+		"Add a card with title CardName"
+	}
+	creates context Card {
+		sets parameter name from fragment "CardName" (entity any)
+	}
+}

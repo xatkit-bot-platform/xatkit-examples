@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ASCII"?>
+<intent:Library xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:intent="com.xatkit.intent" name="SlackTrelloBotLibrary">
+  <eventDefinitions xsi:type="intent:IntentDefinition" name="Presentation">
+    <trainingSentences>Can you introduce yourself?</trainingSentences>
+    <trainingSentences>Present yourself</trainingSentences>
+    <trainingSentences>Explain what you do</trainingSentences>
+    <trainingSentences>Why are you here?</trainingSentences>
+  </eventDefinitions>
+  <eventDefinitions xsi:type="intent:IntentDefinition" name="NewCard">
+    <outContexts name="Card">
+      <parameters name="name" textFragment="CardName">
+        <entity xsi:type="intent:BaseEntityDefinitionReference">
+          <baseEntity/>
+        </entity>
+      </parameters>
+    </outContexts>
+    <trainingSentences>Create a card CardName</trainingSentences>
+    <trainingSentences>Create a card named CardName</trainingSentences>
+    <trainingSentences>Create a card with title CardName</trainingSentences>
+    <trainingSentences>Create a card called CardName</trainingSentences>
+    <trainingSentences>Create card CardName</trainingSentences>
+    <trainingSentences>New card CardName</trainingSentences>
+    <trainingSentences>New card with title CardName</trainingSentences>
+    <trainingSentences>Add card CardName</trainingSentences>
+    <trainingSentences>Add a card with title CardName</trainingSentences>
+  </eventDefinitions>
+</intent:Library>
