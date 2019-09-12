@@ -9,10 +9,10 @@
       <values>
         <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.13/@parameters.0"/>
         <expression xsi:type="common:OperationCall" name="+">
-          <source xsi:type="common:StringLiteral" value="An issue as been opened with number "/>
+          <source xsi:type="common:StringLiteral" value="An issue has been opened with the title "/>
           <args xsi:type="common:OperationCall" name="get">
             <source xsi:type="common:ContextAccess" contextName="issue"/>
-            <args xsi:type="common:StringLiteral" value="issue->number"/>
+            <args xsi:type="common:StringLiteral" value="issue->title"/>
           </args>
         </expression>
       </values>
@@ -138,6 +138,96 @@
       <values>
         <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14/@parameters.0"/>
         <expression xsi:type="common:StringLiteral" value="Done!"/>
+      </values>
+    </instructions>
+  </executionRules>
+  <executionRules>
+    <event href="pathmap://XATKIT_CUSTOM_LIBRARY/GithubBotLib#//@eventDefinitions.3"/>
+    <instructions xsi:type="execution:ActionInstance">
+      <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14"/>
+      <values>
+        <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14/@parameters.0"/>
+        <expression xsi:type="common:StringLiteral" value="Can you please describe what is wrong in a few words?"/>
+      </values>
+    </instructions>
+  </executionRules>
+  <executionRules>
+    <event href="pathmap://XATKIT_CUSTOM_LIBRARY/GithubBotLib#//@eventDefinitions.4"/>
+    <instructions xsi:type="execution:ActionInstance">
+      <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14"/>
+      <values>
+        <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14/@parameters.0"/>
+        <expression xsi:type="common:StringLiteral" value="Can you let us know the WordPress version you're using?"/>
+      </values>
+    </instructions>
+  </executionRules>
+  <executionRules>
+    <event href="pathmap://XATKIT_CUSTOM_LIBRARY/GithubBotLib#//@eventDefinitions.5"/>
+    <instructions xsi:type="execution:ActionInstance">
+      <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14"/>
+      <values>
+        <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14/@parameters.0"/>
+        <expression xsi:type="common:StringLiteral" value="Can you let us know the PHP version you're using?"/>
+      </values>
+    </instructions>
+  </executionRules>
+  <executionRules>
+    <event href="pathmap://XATKIT_CUSTOM_LIBRARY/GithubBotLib#//@eventDefinitions.6"/>
+    <instructions xsi:type="execution:ActionInstance">
+      <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14"/>
+      <values>
+        <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14/@parameters.0"/>
+        <expression xsi:type="common:StringLiteral" value="Thanks for your detailed info"/>
+      </values>
+    </instructions>
+    <instructions xsi:type="common:VariableDeclaration" name="newissue">
+      <value xsi:type="execution:ActionInstance">
+        <action href="pathmap://XATKIT_CORE_PLATFORM/GithubPlatform.xmi#//@actions.0"/>
+        <values>
+          <parameter href="pathmap://XATKIT_CORE_PLATFORM/GithubPlatform.xmi#//@actions.0/@parameters.0"/>
+          <expression xsi:type="common:StringLiteral" value="jcabot"/>
+        </values>
+        <values>
+          <parameter href="pathmap://XATKIT_CORE_PLATFORM/GithubPlatform.xmi#//@actions.0/@parameters.1"/>
+          <expression xsi:type="common:StringLiteral" value="xatkit-tests"/>
+        </values>
+        <values>
+          <parameter href="pathmap://XATKIT_CORE_PLATFORM/GithubPlatform.xmi#//@actions.0/@parameters.2"/>
+          <expression xsi:type="common:OperationCall" name="get">
+            <source xsi:type="common:ContextAccess" contextName="bug"/>
+            <args xsi:type="common:StringLiteral" value="title"/>
+          </expression>
+        </values>
+        <values>
+          <parameter href="pathmap://XATKIT_CORE_PLATFORM/GithubPlatform.xmi#//@actions.0/@parameters.3"/>
+          <expression xsi:type="common:OperationCall" name="+">
+            <source xsi:type="common:StringLiteral" value="WP version is "/>
+            <args xsi:type="common:OperationCall" name="+">
+              <source xsi:type="common:OperationCall" name="get">
+                <source xsi:type="common:ContextAccess" contextName="bug"/>
+                <args xsi:type="common:StringLiteral" value="wpversion"/>
+              </source>
+              <args xsi:type="common:OperationCall" name="+">
+                <source xsi:type="common:StringLiteral" value=" PHP version is "/>
+                <args xsi:type="common:OperationCall" name="get">
+                  <source xsi:type="common:ContextAccess" contextName="bug"/>
+                  <args xsi:type="common:StringLiteral" value="phpversion"/>
+                </args>
+              </args>
+            </args>
+          </expression>
+        </values>
+      </value>
+    </instructions>
+    <instructions xsi:type="execution:ActionInstance">
+      <action href="pathmap://XATKIT_CORE_PLATFORM/GithubPlatform.xmi#//@actions.3"/>
+      <values>
+        <parameter href="pathmap://XATKIT_CORE_PLATFORM/GithubPlatform.xmi#//@actions.3/@parameters.0"/>
+        <expression xsi:type="common:VariableAccess" referredVariable="//@executionRules.7/@instructions.1"/>
+      </values>
+      <values>
+        <parameter href="pathmap://XATKIT_CORE_PLATFORM/GithubPlatform.xmi#//@actions.3/@parameters.1"/>
+        <expression xsi:type="common:StringLiteral" value="bug"/>
       </values>
     </instructions>
   </executionRules>
