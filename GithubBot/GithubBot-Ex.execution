@@ -1,12 +1,12 @@
 import library "GithubBot/GithubBot-Lib.xmi" as GithubBotLib
 import platform "GithubPlatform"
-import platform "SlackPlatform"
+import platform "SlackPlatform" 
 
 use provider SlackPlatform.SlackIntentProvider
 use provider GithubPlatform.GithubWebhookEventProvider
 
 on event Issue_Opened do
-	action SlackPlatform.PostMessage(message : "An issue as been opened with number " + context(issue).get("issue->number"), channel: config(slack.channel))
+	action SlackPlatform.PostMessage(message : "An issue has been opened with the title " + context(issue).get("issue->title"), channel: config(slack.channel))
 	def issue = action GithubPlatform.GetIssue(user : config(github.repository.username), repository : config(github.repository.name), issueNumber : context(issue).get("issue->number"))
 	session.store("issue", issue)
 	
@@ -23,3 +23,28 @@ on intent AssignUser do
 	action GithubPlatform.AssignUser(issue : session.get("issue"), username : context(issue).get("assignedUsername"))
 	action SlackPlatform.Reply(message : "Done!")
 	
+on intent OpenBug do
+	action SlackPlatform.Reply(message : "Can you please describe what is wrong in a few words?")
+	
+on intent DescribeBug do
+	action SlackPlatform.Reply(message : "Can you let us know the WordPress version you're using?")
+	
+on intent TellWPVersion do
+	action SlackPlatform.Reply(message : "Can you let us know the PHP version you're using?")
+		
+on intent TellPHPVersion do
+	action SlackPlatform.Reply(message : "Thanks for your detailed info")	
+	def newissue = action GithubPlatform.OpenIssue(user : "jcabot", repository : "xatkit-tests", issueTitle : context(bug).get("title") , 
+			issueContent : "WP version is " + context(bug).get("wpversion") + " PHP version is " + context(bug).get("phpversion") 
+	)
+	action GithubPlatform.SetLabel(issue : newissue, label : "bug")
+	
+	
+		
+/* on intent CreateBug do
+	action GithubPlatform.OpenIssue(user : "jcabot", repository : "xatkit-tests", issueTitle : context(bug).get("title") , issueContent : "")
+	action GithubPlatform.SetLabel(issue : session.get("issue"), label : context(issue).get("issueLabel"))
+	
+	
+	action SlackPlatform.Reply(message : "Done!")
+*/		
