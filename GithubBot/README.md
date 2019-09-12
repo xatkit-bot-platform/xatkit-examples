@@ -30,7 +30,7 @@ xatkit.github.oauth.token = <Your Github access token>
 Finally, you'll need to set the Github repository that is managed by the GithubBot. To do so, create a new Github repository (or use an existing one) and perform the following actions:
 
 - Navigate in the **Settings** of your repository, open the **Webhooks** tab, click on **Add webhook**, and set the following informations:
-  - **Payload URL**: https://xatkit.serveo.net/
+  - **Payload URL**: https://xatkit.serveo.net/github/
   - **Content type**: *application/json*
   - Under the **Which events would you like to trigger this webhook?** menu select Send me **everything**.
   - Update the `github.repository.username` and `github.repository.name` properties in `GithubBot.properties` with your repository's information.
@@ -50,6 +50,9 @@ ssh -R xatkit.serveo.net:80:localhost:5000 serveo.net
 ```
 
 This will redirect the payloads sent by Github to your localhost, allowing Xatkit to capture them and trigger events.
+
+*Xatkit Tip*
+> If serveo is not up you can check out [ngrok](https://ngrok.com/) or [packetriot](https://packetriot.com/) that provide similar features. 
 
 Start your bot:
 
