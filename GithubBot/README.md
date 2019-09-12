@@ -1,5 +1,5 @@
 # GitHubBot Example
-An example bot using the [SlackPlatform](https://github.com/xatkit-bot-platform/xatkit-slack-platform) and the [GitHubPlatform](https://github.com/xatkit-bot-platform/xatkit-github-platform) to receive events from GitHub and manage opened issues from Slack.
+An example bot using the [SlackPlatform](https://github.com/xatkit-bot-platform/xatkit-slack-platform) and the [GitHubPlatform](https://github.com/xatkit-bot-platform/xatkit-github-platform) to receive events from GitHub and manage opened issues from Slack. You can check the [blog article](https://livablesoftware.com/slack-chatbot-github-repositories/) to know more about this bot!
 
 ## Installation
 
