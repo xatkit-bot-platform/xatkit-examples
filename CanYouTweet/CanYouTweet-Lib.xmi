@@ -75,13 +75,13 @@
   </eventDefinitions>
   <eventDefinitions xsi:type="intent:IntentDefinition" name="SpecifyDM" follows="//@eventDefinitions.3">
     <outContexts name="DM">
-      <parameters name="text" textFragment="Placeholder3">
+      <parameters name="text" textFragment="Placeholder1">
         <entity xsi:type="intent:BaseEntityDefinitionReference">
           <baseEntity/>
         </entity>
       </parameters>
     </outContexts>
-    <trainingSentences>DM content: &quot;Placeholder3&quot;</trainingSentences>
+    <trainingSentences>DM content: &quot;Placeholder1&quot;</trainingSentences>
   </eventDefinitions>
   <eventDefinitions xsi:type="intent:IntentDefinition" name="ReceiveDM">
     <trainingSentences>can you show me my messages</trainingSentences>
