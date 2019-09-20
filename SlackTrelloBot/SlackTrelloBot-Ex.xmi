@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="ASCII"?>
+<execution:ExecutionModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:common="com.xatkit.common" xmlns:execution="com.xatkit.execution">
+  <eventProviderDefinitions href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@eventProviderDefinitions.0"/>
+  <executionRules>
+    <event href="pathmap://XATKIT_CUSTOM_LIBRARY/SlackTrelloBotLib#//@eventDefinitions.0"/>
+    <instructions xsi:type="execution:ActionInstance">
+      <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14"/>
+      <values>
+        <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14/@parameters.0"/>
+        <expression xsi:type="common:StringLiteral" value="Hi! I am the Trello bot, you can ping me to store some information on Trello for you. I am configured to create cards here: Xatkit/Slack Triage&#xA;&#xD;&#xA;To ask me to remember something use the following pattern: `@XatkitTrello create card &lt;card name>`"/>
+      </values>
+    </instructions>
+  </executionRules>
+  <executionRules>
+    <event href="pathmap://XATKIT_CUSTOM_LIBRARY/SlackTrelloBotLib#//@eventDefinitions.1"/>
+    <instructions xsi:type="execution:ActionInstance">
+      <action href="pathmap://XATKIT_CORE_PLATFORM/ZapierPlatform.xmi#//@actions.0"/>
+      <values>
+        <parameter href="pathmap://XATKIT_CORE_PLATFORM/ZapierPlatform.xmi#//@actions.0/@parameters.0"/>
+        <expression xsi:type="common:ConfigAccess" keyName="zapier.endpoint"/>
+      </values>
+      <values>
+        <parameter href="pathmap://XATKIT_CORE_PLATFORM/ZapierPlatform.xmi#//@actions.0/@parameters.1"/>
+        <expression xsi:type="common:OperationCall" name="+">
+          <source xsi:type="common:StringLiteral" value="{ 'name' : '"/>
+          <args xsi:type="common:OperationCall" name="+">
+            <source xsi:type="common:OperationCall" name="get">
+              <source xsi:type="common:ContextAccess" contextName="Card"/>
+              <args xsi:type="common:StringLiteral" value="name"/>
+            </source>
+            <args xsi:type="common:StringLiteral" value="' }"/>
+          </args>
+        </expression>
+      </values>
+    </instructions>
+    <instructions xsi:type="execution:ActionInstance">
+      <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14"/>
+      <values>
+        <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14/@parameters.0"/>
+        <expression xsi:type="common:StringLiteral" value="Done!"/>
+      </values>
+    </instructions>
+  </executionRules>
+  <executionRules>
+    <event href="pathmap://XATKIT_CORE_LIBRARY/CoreLibrary.xmi#//@eventDefinitions.0"/>
+    <instructions xsi:type="execution:ActionInstance">
+      <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14"/>
+      <values>
+        <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.14/@parameters.0"/>
+        <expression xsi:type="common:StringLiteral" value="Sorry I didn't get it"/>
+      </values>
+    </instructions>
+  </executionRules>
+  <imports xsi:type="common:LibraryImportDeclaration" path="SlackTrelloBot/SlackTrelloBot-Lib.xmi" alias="SlackTrelloBotLib"/>
+  <imports xsi:type="common:LibraryImportDeclaration" path="CoreLibrary"/>
+  <imports xsi:type="common:PlatformImportDeclaration" path="ZapierPlatform"/>
+  <imports xsi:type="common:PlatformImportDeclaration" path="SlackPlatform"/>
+</execution:ExecutionModel>
