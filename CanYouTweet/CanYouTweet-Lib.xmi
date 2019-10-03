@@ -9,7 +9,7 @@
     <trainingSentences>Evening</trainingSentences>
   </eventDefinitions>
   <eventDefinitions xsi:type="intent:IntentDefinition" name="PostTweet">
-    <outContexts name="Tweet">
+    <outContexts name="Twitter">
       <parameters name="content" textFragment="CONTENT">
         <entity xsi:type="intent:BaseEntityDefinitionReference">
           <baseEntity/>
@@ -28,7 +28,7 @@
     <trainingSentences>just post CONTENT</trainingSentences>
   </eventDefinitions>
   <eventDefinitions xsi:type="intent:IntentDefinition" name="SearchTweets">
-    <outContexts name="Tweets">
+    <outContexts name="Twitter">
       <parameters name="query" textFragment="TWEETS">
         <entity xsi:type="intent:BaseEntityDefinitionReference">
           <baseEntity/>
@@ -53,7 +53,7 @@
     <trainingSentences>find tweets TWEETS</trainingSentences>
   </eventDefinitions>
   <eventDefinitions xsi:type="intent:IntentDefinition" name="SendDM" followedBy="//@eventDefinitions.4">
-    <outContexts name="DM">
+    <outContexts name="Twitter">
       <parameters name="user" textFragment="USER">
         <entity xsi:type="intent:BaseEntityDefinitionReference">
           <baseEntity/>
@@ -74,14 +74,14 @@
     <trainingSentences>please text to USER</trainingSentences>
   </eventDefinitions>
   <eventDefinitions xsi:type="intent:IntentDefinition" name="SpecifyDM" follows="//@eventDefinitions.3">
-    <outContexts name="DM">
-      <parameters name="text" textFragment="Placeholder1">
+    <outContexts name="Twitter">
+      <parameters name="text" textFragment="Placeholder4">
         <entity xsi:type="intent:BaseEntityDefinitionReference">
           <baseEntity/>
         </entity>
       </parameters>
     </outContexts>
-    <trainingSentences>DM content: &quot;Placeholder1&quot;</trainingSentences>
+    <trainingSentences>DM content: &quot;Placeholder4&quot;</trainingSentences>
   </eventDefinitions>
   <eventDefinitions xsi:type="intent:IntentDefinition" name="ReceiveDM">
     <trainingSentences>can you show me my messages</trainingSentences>
@@ -95,5 +95,31 @@
     <trainingSentences>show dm</trainingSentences>
     <trainingSentences>do I have messages</trainingSentences>
     <trainingSentences>are there messages</trainingSentences>
+  </eventDefinitions>
+  <eventDefinitions xsi:type="intent:IntentDefinition" name="GetTrends">
+    <outContexts name="Twitter">
+      <parameters name="woeid" textFragment="WOEID">
+        <entity xsi:type="intent:BaseEntityDefinitionReference">
+          <baseEntity entityType="integer"/>
+        </entity>
+      </parameters>
+      <parameters name="locationName" textFragment="Uruguay">
+        <entity xsi:type="intent:BaseEntityDefinitionReference">
+          <baseEntity/>
+        </entity>
+      </parameters>
+    </outContexts>
+    <trainingSentences>get trends</trainingSentences>
+    <trainingSentences>show trends</trainingSentences>
+    <trainingSentences>get trending topics</trainingSentences>
+    <trainingSentences>show trending topics</trainingSentences>
+    <trainingSentences>get trends from WOEID</trainingSentences>
+    <trainingSentences>show trends from WOEID</trainingSentences>
+    <trainingSentences>get trending topics from WOEID</trainingSentences>
+    <trainingSentences>show trending topics from WOEID</trainingSentences>
+    <trainingSentences>get trends from Uruguay</trainingSentences>
+    <trainingSentences>show trends from Uruguay</trainingSentences>
+    <trainingSentences>get trending topics from Uruguay</trainingSentences>
+    <trainingSentences>show trending topics from Uruguay</trainingSentences>
   </eventDefinitions>
 </intent:Library>
