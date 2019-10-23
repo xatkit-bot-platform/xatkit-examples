@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="ASCII"?>
+<execution:ExecutionModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:common="com.xatkit.common" xmlns:execution="com.xatkit.execution">
+  <eventProviderDefinitions href="pathmap://XATKIT_CORE_PLATFORM/GithubPlatform.xmi#//@eventProviderDefinitions.0"/>
+  <executionRules>
+    <event href="pathmap://XATKIT_CORE_PLATFORM/GithubPlatform.xmi#//@eventProviderDefinitions.0/@eventDefinitions.32"/>
+    <instructions xsi:type="execution:ActionInstance">
+      <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.13"/>
+      <values>
+        <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.13/@parameters.0"/>
+        <expression xsi:type="common:OperationCall" name="+">
+          <source xsi:type="common:StringLiteral" value=":tada: New star on &lt;"/>
+          <args xsi:type="common:OperationCall" name="+">
+            <source xsi:type="common:OperationCall" name="get">
+              <source xsi:type="common:ContextAccess" contextName="star"/>
+              <args xsi:type="common:StringLiteral" value="repository->html_url"/>
+            </source>
+            <args xsi:type="common:OperationCall" name="+">
+              <source xsi:type="common:StringLiteral" value=" | "/>
+              <args xsi:type="common:OperationCall" name="+">
+                <source xsi:type="common:OperationCall" name="get">
+                  <source xsi:type="common:ContextAccess" contextName="star"/>
+                  <args xsi:type="common:StringLiteral" value="repository->name"/>
+                </source>
+                <args xsi:type="common:OperationCall" name="+">
+                  <source xsi:type="common:StringLiteral" value="> by &lt;"/>
+                  <args xsi:type="common:OperationCall" name="+">
+                    <source xsi:type="common:OperationCall" name="get">
+                      <source xsi:type="common:ContextAccess" contextName="star"/>
+                      <args xsi:type="common:StringLiteral" value="sender->html_url"/>
+                    </source>
+                    <args xsi:type="common:OperationCall" name="+">
+                      <source xsi:type="common:StringLiteral" value=" | "/>
+                      <args xsi:type="common:OperationCall" name="+">
+                        <source xsi:type="common:OperationCall" name="get">
+                          <source xsi:type="common:ContextAccess" contextName="star"/>
+                          <args xsi:type="common:StringLiteral" value="sender->login"/>
+                        </source>
+                        <args xsi:type="common:OperationCall" name="+">
+                          <source xsi:type="common:StringLiteral" value="> :confetti_ball:&#xA;Current stargazers count: "/>
+                          <args xsi:type="common:OperationCall" name="+">
+                            <source xsi:type="common:OperationCall" name="get">
+                              <source xsi:type="common:ContextAccess" contextName="star"/>
+                              <args xsi:type="common:StringLiteral" value="repository->stargazers_count"/>
+                            </source>
+                            <args xsi:type="common:StringLiteral" value=":clap::champagne:"/>
+                          </args>
+                        </args>
+                      </args>
+                    </args>
+                  </args>
+                </args>
+              </args>
+            </args>
+          </args>
+        </expression>
+      </values>
+      <values>
+        <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.13/@parameters.1"/>
+        <expression xsi:type="common:ConfigAccess" keyName="slack.channel"/>
+      </values>
+    </instructions>
+  </executionRules>
+  <executionRules>
+    <event href="pathmap://XATKIT_CORE_PLATFORM/GithubPlatform.xmi#//@eventProviderDefinitions.0/@eventDefinitions.33"/>
+    <instructions xsi:type="execution:ActionInstance">
+      <action href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.13"/>
+      <values>
+        <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.13/@parameters.0"/>
+        <expression xsi:type="common:OperationCall" name="+">
+          <source xsi:type="common:StringLiteral" value=":sob: &lt;"/>
+          <args xsi:type="common:OperationCall" name="+">
+            <source xsi:type="common:OperationCall" name="get">
+              <source xsi:type="common:ContextAccess" contextName="star"/>
+              <args xsi:type="common:StringLiteral" value="sender->html_url"/>
+            </source>
+            <args xsi:type="common:OperationCall" name="+">
+              <source xsi:type="common:StringLiteral" value=" | "/>
+              <args xsi:type="common:OperationCall" name="+">
+                <source xsi:type="common:OperationCall" name="get">
+                  <source xsi:type="common:ContextAccess" contextName="star"/>
+                  <args xsi:type="common:StringLiteral" value="sender->login"/>
+                </source>
+                <args xsi:type="common:OperationCall" name="+">
+                  <source xsi:type="common:StringLiteral" value="> unstarred &lt;"/>
+                  <args xsi:type="common:OperationCall" name="+">
+                    <source xsi:type="common:OperationCall" name="get">
+                      <source xsi:type="common:ContextAccess" contextName="star"/>
+                      <args xsi:type="common:StringLiteral" value="repository->html_url"/>
+                    </source>
+                    <args xsi:type="common:OperationCall" name="+">
+                      <source xsi:type="common:StringLiteral" value=" | "/>
+                      <args xsi:type="common:OperationCall" name="+">
+                        <source xsi:type="common:OperationCall" name="get">
+                          <source xsi:type="common:ContextAccess" contextName="star"/>
+                          <args xsi:type="common:StringLiteral" value="repository->name"/>
+                        </source>
+                        <args xsi:type="common:OperationCall" name="+">
+                          <source xsi:type="common:StringLiteral" value="> :face_with_head_bandage: let's forget about it and build awesome features! :kissing_heart:&#xA;Current stargazer count: "/>
+                          <args xsi:type="common:OperationCall" name="+">
+                            <source xsi:type="common:OperationCall" name="get">
+                              <source xsi:type="common:ContextAccess" contextName="star"/>
+                              <args xsi:type="common:StringLiteral" value="repository->stargazers_count"/>
+                            </source>
+                            <args xsi:type="common:StringLiteral" value=":stars:"/>
+                          </args>
+                        </args>
+                      </args>
+                    </args>
+                  </args>
+                </args>
+              </args>
+            </args>
+          </args>
+        </expression>
+      </values>
+      <values>
+        <parameter href="pathmap://XATKIT_CORE_PLATFORM/SlackPlatform.xmi#//@actions.13/@parameters.1"/>
+        <expression xsi:type="common:ConfigAccess" keyName="slack.channel"/>
+      </values>
+    </instructions>
+  </executionRules>
+  <imports xsi:type="common:PlatformImportDeclaration" path="GithubPlatform"/>
+  <imports xsi:type="common:PlatformImportDeclaration" path="SlackPlatform"/>
+</execution:ExecutionModel>
