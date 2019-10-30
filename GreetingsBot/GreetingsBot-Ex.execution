@@ -5,11 +5,11 @@ import platform "ChatPlatform"
 use provider ChatPlatform.ChatProvider
 
 on intent Welcome do
-	action ChatPlatform.Reply(message : "Hi, nice to meet you!")
+	ChatPlatform.Reply("Hi, nice to meet you!")
 
 on intent HowAreYou do
-	action ChatPlatform.Reply(message : "I am fine and you?")
+	ChatPlatform.Reply("I am fine and you?")
 	
 on intent Default_Fallback_Intent do
-	action ChatPlatform.Reply(message : "Sorry I didn't get it")
+	ChatPlatform.Reply("Sorry I didn't get it")
 	
