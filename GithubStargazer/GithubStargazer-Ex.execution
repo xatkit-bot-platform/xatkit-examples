@@ -4,7 +4,11 @@ import platform "SlackPlatform"
 use provider GithubPlatform.GithubWebhookEventProvider
 
 on event Star_Created do 
-	action SlackPlatform.PostMessage(message : ":tada: New star on <" + context(star).get("repository->html_url") + " | " + context(star).get("repository->name") + "> by <" + context(star).get("sender->html_url") + " | " + context(star).get("sender->login") + "> :confetti_ball:\nCurrent stargazers count: " + context(star).get("repository->stargazers_count") + ":clap::champagne:", channel : config(slack.channel))
+	val starContext = context.get("star")
+	SlackPlatform.PostMessage(":tada: New star on <" + starContext.get("repository->html_url") + " | " + starContext.get("repository->name") + "> by <" + starContext.get("sender->html_url") + " | " + starContext.get("sender->login") + "> :confetti_ball:\nCurrent stargazers count: " + starContext.get("repository->stargazers_count") + ":clap::champagne:", config.get("slack.channel"))
 	
 on event Star_Deleted do
-	action SlackPlatform.PostMessage(message : ":sob: <" + context(star).get("sender->html_url") + " | " + context(star).get("sender->login") + "> unstarred <" + context(star).get("repository->html_url") + " | " + context(star).get("repository->name") + "> :face_with_head_bandage: let's forget about it and build awesome features! :kissing_heart:\nCurrent stargazer count: " + context(star).get("repository->stargazers_count") + ":stars:", channel : config(slack.channel))
+	val starContext = context.get("star")
+	SlackPlatform.PostMessage(":sob: <" + starContext.get("sender->html_url") + " | " + starContext.get("sender->login") + "> unstarred <" + starContext.get("repository->html_url") + " | " + starContext.get("repository->name") + "> :face_with_head_bandage: let's forget about it and build awesome features! :kissing_heart:\nCurrent stargazer count: " + starContext.get("repository->stargazers_count") + ":stars:", config.get("slack.channel"))
+
+	
