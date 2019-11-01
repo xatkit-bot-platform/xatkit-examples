@@ -6,7 +6,7 @@ import platform "SlackPlatform"
 use provider ChatPlatform.ChatProvider
 
 on intent Welcome do
-	ChatPlatform.Reply("Hi, nice to meet you again!")
+	ChatPlatform.Reply("Hi, nice to meet you!")
 	
 on intent HowAreYou do
 	ChatPlatform.Reply("I am fine and you?")
