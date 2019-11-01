@@ -1,15 +1,17 @@
-import library "GreetingsBot/GreetingsBot-Lib.xmi" as GreetingsBotLib
+import library "GreetingsBot/src/GreetingsBot.intent" as GreetingsBotLib
 import library "CoreLibrary"
 import platform "ChatPlatform"
+import platform "SlackPlatform"
 
 use provider ChatPlatform.ChatProvider
 
 on intent Welcome do
-	ChatPlatform.Reply("Hi, nice to meet you!")
-
+	ChatPlatform.Reply("Hi, nice to meet you again!")
+	
 on intent HowAreYou do
 	ChatPlatform.Reply("I am fine and you?")
 	
 on intent Default_Fallback_Intent do
 	ChatPlatform.Reply("Sorry I didn't get it")
+	
 	
