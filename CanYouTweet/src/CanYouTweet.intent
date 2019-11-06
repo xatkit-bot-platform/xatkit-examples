@@ -15,7 +15,6 @@ intent PostTweet{
 	inputs{
 		'can you tweet CONTENT?'
 		'can you post CONTENT?'
-
 		"tweet CONTENT"
 		"post CONTENT"
 		"post tweet CONTENT"
@@ -105,10 +104,10 @@ intent GetTrends {
 		"show trends"
 		"get trending topics"
 		"show trending topics"
-		"get trends from WOEID"
-		"show trends from WOEID"
-		"get trending topics from WOEID"
-		"show trending topics from WOEID"
+		"get trends from 123"
+		"show trends from 123"
+		"get trending topics from 123"
+		"show trending topics from 123"
 		"get trends from Uruguay"
 		"show trends from Uruguay"
 		"get trending topics from Uruguay"
@@ -116,7 +115,7 @@ intent GetTrends {
 	}
 	
 	creates context Twitter {
-		sets parameter woeid from fragment "WOEID" (entity integer)
-		sets parameter locationName from fragment "Uruguay" (entity any)
+		sets parameter woeid from fragment "123" (entity integer)
+		sets parameter locationName from fragment "Uruguay" (entity country)
 	}
 }
