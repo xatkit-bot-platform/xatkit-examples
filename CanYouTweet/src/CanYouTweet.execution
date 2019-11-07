@@ -82,17 +82,14 @@ on intent GetTrends do
 	var Object result = null;
 	var noResultsMessage = "";
 	if(context.get("Twitter").get("woeid") != ""){
-		SlackPlatform.Reply("WOEID")
 		result = TwitterPlatform.GetTrends(Integer.parseInt(context.get("Twitter").get("woeid") as String))
 		noResultsMessage = "No trending topics where found for the WOEID: " + context.get("Twitter").get("woeid")
 	}
 	else {
 		if (context.get("Twitter").get("locationName") != ""){
-			SlackPlatform.Reply("LOCATION")
 			result = TwitterPlatform.GetTrends(context.get("Twitter").get("locationName") as String)
 			noResultsMessage = "No trending topics where found for the location with name: " + context.get("Twitter").get("locationName")
 		}else {
-			SlackPlatform.Reply("null")
 			result = TwitterPlatform.GetTrends()
 			noResultsMessage = "No trending topics where found worldwide"
 		}
