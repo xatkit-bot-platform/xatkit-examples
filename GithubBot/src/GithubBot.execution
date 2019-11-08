@@ -7,22 +7,21 @@ use provider SlackPlatform.SlackIntentProvider
 use provider GithubPlatform.GithubWebhookEventProvider
 
 on event Issue_Opened do
-	SlackPlatform.PostMessage("An issue has been opened with the title " + context.get("issue").get("issue->title"), config.get("slack.channel"))
-	val issue = GithubPlatform.GetIssue(config.get("github.repository.username"), config.get("github.repository.name"), context.get("issue").get("issue->number"))
+	SlackPlatform.PostMessage("An issue has been opened with the title " + context.get("issue").get("issue->title"), config.get("slack.channel") as String)
+	val issue = GithubPlatform.GetIssue(config.get("github.repository.username") as String, config.get("github.repository.name") as String, context.get("issue").get("issue->number") as String)
 	session.put("issue", issue)
 	
 on intent GetIssue do 
-	val issue = GithubPlatform.GetIssue(config.get("github.repository.username"), config.get("github.repository.name"), context.get("issue").get("issueNumber"))
+	val com.jcabi.github.Issue issue = GithubPlatform.GetIssue(config.get("github.repository.username") as String, config.get("github.repository.name") as String, context.get("issue").get("issueNumber") as String)
 	session.put("issue", issue)
-//	SlackPlatform.Reply("Found issue " + issue.number())
-	SlackPlatform.Reply("Found issue " + issue.toString)
+	SlackPlatform.Reply("Found issue " + issue.number())
 	
 on intent SetLabel do
-	GithubPlatform.SetLabel(session.get("issue"), context.get("issue").get("issueLabel"))
+	GithubPlatform.SetLabel(session.get("issue") as com.jcabi.github.Issue, context.get("issue").get("issueLabel") as String)
 	SlackPlatform.Reply("Done!")
 	
 on intent AssignUser do
-	GithubPlatform.AssignUser(session.get("issue"), context.get("issue").get("assignedUsername"))
+	GithubPlatform.AssignUser(session.get("issue") as com.jcabi.github.Issue, context.get("issue").get("assignedUsername") as String)
 	SlackPlatform.Reply("Done!")
 	
 on intent OpenBug do
@@ -36,8 +35,8 @@ on intent TellWPVersion do
 		
 on intent TellPHPVersion do
 	SlackPlatform.Reply("Thanks for your detailed info")	
-	val newissue = GithubPlatform.OpenIssue(config.get("github.repository.username"), config.get("github.repository.name"), context.get("bug").get("title") , 
-			"WP version is " + context.get("bug").get("wpversion") + " PHP version is " + context.get("bug").get("phpversion") 
+	val com.jcabi.github.Issue newissue = GithubPlatform.OpenIssue(config.get("github.repository.username") as String, config.get("github.repository.name") as String, context.get("bug").get("title") as String, 
+			"WP version is " + context.get("bug").get("wpversion") as String + " PHP version is " + context.get("bug").get("phpversion") as String
 	)
 	GithubPlatform.SetLabel(newissue, "bug")
 	

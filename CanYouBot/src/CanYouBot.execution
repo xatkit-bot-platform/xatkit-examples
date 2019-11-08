@@ -6,7 +6,7 @@ import library "CanYouBot/src/CanYouBot.intent" as CanYouBotLib
 use provider SlackPlatform.SlackIntentProvider
  
 on intent CanYou do
-	val res = GiphyPlatform.GetGif(context.get("Request").get("request"))
+	val res = GiphyPlatform.GetGif(context.get("Request").get("request") as String)
 	SlackPlatform.Reply("Sure! <" + res + "|Look>")
 
 on intent Greetings do

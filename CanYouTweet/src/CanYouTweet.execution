@@ -38,7 +38,7 @@ on intent SearchTweets do
 			if(result == "0"){
 				SlackPlatform.Reply("No results for: _" + contentQuery + "_")
 			}else{
-				SlackPlatform.ReplyAttachmentsMessage(result)
+				SlackPlatform.ReplyAttachmentsMessage(result as java.util.List<com.github.seratch.jslack.api.model.Attachment>)
 			}
 		}		
 	}else{
@@ -74,7 +74,7 @@ on intent ReceiveDM do
 		if(result == "0"){
 			SlackPlatform.Reply("There are no messages...")
 		}else{
-			SlackPlatform.ReplyAttachmentsMessage(result)	
+			SlackPlatform.ReplyAttachmentsMessage(result as java.util.List<com.github.seratch.jslack.api.model.Attachment>)	
 		}
 	}
 
@@ -100,7 +100,7 @@ on intent GetTrends do
 		if(result == "0"){
 			SlackPlatform.Reply(noResultsMessage)
 		}else{
-			SlackPlatform.ReplyAttachmentsMessage(result)	
+			SlackPlatform.ReplyAttachmentsMessage(result as java.util.List<com.github.seratch.jslack.api.model.Attachment>)	
 		}
 	}
 	

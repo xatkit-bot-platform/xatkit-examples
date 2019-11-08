@@ -10,7 +10,7 @@ on intent Presentation do
 To ask me to remember something use the following pattern: `@XatkitTrello create card <card name>`")
 
 on intent NewCard do
-	ZapierPlatform.PostAction(config.get("zapier.endpoint"), "{ 'name' : '" + context.get("Card").get("name") + "' }")
+	ZapierPlatform.PostAction(config.get("zapier.endpoint") as String, "{ 'name' : '" + context.get("Card").get("name") + "' }")
 	SlackPlatform.Reply("Done!")
 	
 on intent Default_Fallback_Intent do
