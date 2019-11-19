@@ -1,0 +1,14 @@
+import platform "GithubPlatform"
+import platform "SlackPlatform"
+
+use provider GithubPlatform.GithubWebhookEventProvider
+
+on event Star_Created do 
+	val starContext = context.get("star")
+	SlackPlatform.PostMessage(":tada: New star on <" + starContext.get("repository->html_url") + " | " + starContext.get("repository->name") + "> by <" + starContext.get("sender->html_url") + " | " + starContext.get("sender->login") + "> :confetti_ball:\nCurrent stargazers count: " + starContext.get("repository->stargazers_count") + ":clap::champagne:", config.get("slack.channel") as String)
+	
+on event Star_Deleted do
+	val starContext = context.get("star")
+	SlackPlatform.PostMessage(":sob: <" + starContext.get("sender->html_url") + " | " + starContext.get("sender->login") + "> unstarred <" + starContext.get("repository->html_url") + " | " + starContext.get("repository->name") + "> :face_with_head_bandage: let's forget about it and build awesome features! :kissing_heart:\nCurrent stargazer count: " + starContext.get("repository->stargazers_count") + ":stars:", config.get("slack.channel") as String)
+
+	

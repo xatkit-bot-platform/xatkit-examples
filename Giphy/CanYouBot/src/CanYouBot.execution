@@ -1,0 +1,19 @@
+import platform "SlackPlatform"
+import platform "GiphyPlatform"
+import library "CoreLibrary"
+import library "CanYouBot/src/CanYouBot.intent" as CanYouBotLib
+
+use provider SlackPlatform.SlackIntentProvider
+ 
+on intent CanYou do
+	val res = GiphyPlatform.GetGif(context.get("Request").get("request") as String)
+	SlackPlatform.Reply("Sure! <" + res + "|Look>")
+
+on intent Greetings do
+	SlackPlatform.Reply("Hi, I can do many things, challenge me!\nYou can start with something like `Can you <whatever you want>?`\nThis bot is inspired by <https://uxdesign.cc/wanna-build-a-superbot-that-can-do-anything-heres-how-d8eeeeef1882|this article>")
+
+on intent Help do
+	SlackPlatform.Reply("Ask me if I can do something and I'll tell you!\nYou can start with something like `Can you <whatever you want>?`")
+	
+on intent Default_Fallback_Intent do
+	SlackPlatform.Reply("Sorry I didn't get it :(\nYou can try something like `Can you <whatever you want>?` to challenge me!")

@@ -21,3 +21,15 @@ cd $XATKIT/bin
 
 The execution logs of the bot will be printed in the current console, and a `data/` folder will be created to store runtime results and monitoring information.
 
+## List of sample bots 
+
+This repository includes a diverse set of bot examples, from simple bots to Greet you to bots that allow you *talk* with GitHub repos, create diagrams or automatically create Trello cards.
+
+A complete list of bots and full technical details behind some of them is available in the [Xatkit Examples page](https://xatkit.com/chatbot-examples/).
+
+
+## Contribute your own examples
+
+Have you created any cool bot with Xatkit? Let us know and we'll be happy to include in the list!
+
+
