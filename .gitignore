@@ -15,4 +15,4 @@
 **/bin
 
 # Manually imported libraries
-**/lib
+#**/lib
