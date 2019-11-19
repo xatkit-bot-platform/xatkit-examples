@@ -13,3 +13,6 @@
 
 # Bin scripts
 **/bin
+
+# Manually imported libraries
+**/lib

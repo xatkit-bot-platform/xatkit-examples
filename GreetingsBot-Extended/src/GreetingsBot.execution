@@ -1,0 +1,24 @@
+import library "GreetingsBot-Extended/src/GreetingsBot.intent" as GreetingsBotLib
+import library "CoreLibrary"
+import platform "ChatPlatform"
+
+use provider ChatPlatform.ChatProvider
+
+on intent Welcome do
+	ChatPlatform.Reply("Hi, nice to meet you!")
+
+on intent HowAreYou do
+	ChatPlatform.Reply("I am fine and you?")
+	
+on intent Fine do
+	ChatPlatform.Reply("Great!")
+	
+on intent Sad do
+	ChatPlatform.Reply("Oh, let me know if I can do something for you :/")
+	
+on intent Default_Fallback_Intent do
+	ChatPlatform.Reply("Sorry I didn't get it")
+	
+on intent Help do
+	ChatPlatform.Reply("I am the Xatkit example bot from the [getting started tutorial](https://github.com/xatkit-bot-platform/xatkit-releases/wiki/Getting-Started)")
+	
