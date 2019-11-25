@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ReactSlackLiveChat
+Bundle-SymbolicName: com.xatkit.examples.reactslacklivechat
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.eclipse.xtext.xbase.lib;bundle-version="2.15.0",
+ com.xatkit.metamodels-utils;bundle-version="1.0.1"
+Bundle-Vendor: SOM Research Lab

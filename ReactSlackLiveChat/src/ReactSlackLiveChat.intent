@@ -1,0 +1,13 @@
+Library ReactSlackLiveChat
+
+intent XatkitQuestion {
+	inputs {
+		"I am looking for a good bot solution"
+	}
+}
+
+intent WhoIsBehindXatkit {
+	inputs {
+		"Who is behind Xatkit?"
+	}
+}
