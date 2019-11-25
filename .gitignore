@@ -2,7 +2,7 @@
 **/*key.json
 
 # Properties file with credentials
-**/*-private.properties
+**/*-private*.properties
 
 # Runtime Data
 **/data/
@@ -13,6 +13,3 @@
 
 # Bin scripts
 **/bin
-
-# Manually imported libraries
-#**/lib
