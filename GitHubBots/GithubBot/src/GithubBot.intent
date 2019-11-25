@@ -10,10 +10,14 @@ intent GetIssue {
 	}
 }
 
+
+
 intent SetLabel {
 	requires context issue
 	inputs {
 		"Set label Label"
+		"Set as Label"
+		"Set as a Label"
 		"Give label Label"
 	}
 	creates context  issue {
@@ -24,6 +28,7 @@ intent SetLabel {
 intent AssignUser {
 	requires context issue
 	inputs {
+		"Assign Username"
 		"Assign user Username"
 		"Username will take care of it"
 	}
@@ -80,6 +85,7 @@ intent TellPHPVersion follows TellWPVersion {
 		"I use PHPVersion"
 		"It's version PHPVersion"
 		"The server is on php version PHPVersion"
+		"PHPVersion"
 	}
 	creates context bug {
 		sets parameter phpversion from fragment PHPVersion (entity number)
