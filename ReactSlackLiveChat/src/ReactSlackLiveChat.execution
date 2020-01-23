@@ -14,7 +14,7 @@ on event Client_Closed do
 	val reactSlackMap = session.get("react-slack-map") as com.google.common.collect.BiMap<String, String>
 	if(reactSlackMap !== null) {
 		val slackTs = reactSlackMap.remove(context.get("react").get("channel"))
-		SlackPlatform.PostMessage("_The client has closed the connection_", config.get("slack.channel") as String, slackTs)
+		SlackPlatform.PostMessage("_The client has closed the connection_", config.get("slack.channel") as String, config.get("slack.team") as String, slackTs)
 	}
 
 on intent XatkitQuestion from ReactPlatform do
@@ -33,13 +33,19 @@ on intent Default_Fallback_Intent from ReactPlatform do
 		session.put("react-slack-map", reactSlackMap)
 	}
 	val storedSlackTs = reactSlackMap.get(reactChannel)
-	if(storedSlackTs === null) {
-		ReactPlatform.Reply("Sorry I didn't get it, I forward your request to the closest human being")
-		val slackTs = SlackPlatform.PostMessage("[" + context.get("chat").get("username") + "] " + intent.matchedInput, config.get("slack.channel") as String) as String
-		reactSlackMap.put(reactChannel, slackTs)
-		SlackPlatform.PostMessage("_Replies in this thread will be forwarded to the user_", config.get("slack.channel") as String, slackTs)
+	
+	val userOnline = SlackPlatform.IsOnline(config.get("slack.username") as String, config.get("slack.team") as String) as Boolean
+	if(userOnline) {
+		if(storedSlackTs === null) {
+			ReactPlatform.Reply("Sorry I didn't get it, I forward your request to the closest human being")
+			val slackTs = SlackPlatform.PostMessage("[" + context.get("chat").get("username") + "] " + intent.matchedInput, config.get("slack.channel") as String, config.get("slack.team") as String) as String
+			reactSlackMap.put(reactChannel, slackTs)
+			SlackPlatform.PostMessage("_Replies in this thread will be forwarded to the user_", config.get("slack.channel") as String, config.get("slack.team") as String, slackTs)
+		} else {
+			SlackPlatform.PostMessage("[" + context.get("chat").get("username") + "] " + intent.matchedInput, config.get("slack.channel") as String, config.get("slack.team") as String, storedSlackTs)
+		}
 	} else {
-		SlackPlatform.PostMessage("[" + context.get("chat").get("username") + "] " + intent.matchedInput, config.get("slack.channel") as String, storedSlackTs)
+		ReactPlatform.Reply("Sorry, all our human beings are away for now, you can drop us an email at example@example.com")
 	}
 	
 on intent Default_Fallback_Intent from SlackPlatform do
