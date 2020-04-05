@@ -13,3 +13,6 @@
 
 # Bin scripts
 **/bin
+
+# Eclipse's .settings
+**/.settings
