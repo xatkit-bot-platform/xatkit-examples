@@ -1,16 +1,5 @@
 Library CanYouBotLib
 
-intent Greetings {
-	inputs {
-		"Hi"
-		"Hello"
-		"Greetings"
-		"Morning"
-		"Afternoon"
-		"Evening"
-	}
-}
-
 intent CanYou {
 	inputs {
 		"Can you this?"
