@@ -13,7 +13,6 @@ intent GetIssue {
 
 
 intent SetLabel {
-	requires context issue
 	inputs {
 		"Set label Label"
 		"Set as Label"
@@ -26,7 +25,6 @@ intent SetLabel {
 }
 
 intent AssignUser {
-	requires context issue
 	inputs {
 		"Assign Username"
 		"Assign user Username"
@@ -51,7 +49,7 @@ intent OpenBug {
 	
 }
 
-intent DescribeBug follows OpenBug {
+intent DescribeBug {
 	inputs {
 		"My error is Error"
 		"The problem is Error"
@@ -66,8 +64,7 @@ intent DescribeBug follows OpenBug {
 }
 
 //as before, we assume the repo is a WordPress plugin and therefore we always need to know the WP and PHP version the user is running to locate the potential problemç
-intent TellWPVersion follows DescribeBug {
-	requires context bug
+intent TellWPVersion {
 	inputs {
 		"My version number is WPVersion"
 		"I use number WPVersion"
@@ -78,8 +75,7 @@ intent TellWPVersion follows DescribeBug {
 	}
 }
 
-intent TellPHPVersion follows TellWPVersion {
-	requires context bug
+intent TellPHPVersion {
 	inputs {
 		"My version is PHPVersion"
 		"I use PHPVersion"
