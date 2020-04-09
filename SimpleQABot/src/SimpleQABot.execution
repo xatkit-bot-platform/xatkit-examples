@@ -54,7 +54,7 @@ AskBotSize {
 		ReactPlatform.Reply("Sure, how many intents do you want?")
 	}
 	Next {
-		intent == GiveNumberOfIntents && (Integer.valueOf(intent.context.get("BotInfo").get("numberOfIntents") as String)) < 10 
+		intent == GiveNumberOfIntents && (Integer.valueOf(intent.context.get("BotInfo").get("numberOfIntents") as String)) <= 10 
 			--> AnswerSmallBot
 		intent == GiveNumberOfIntents && (Integer.valueOf(intent.context.get("BotInfo").get("numberOfIntents") as String)) > 10
 			--> AnswerBigBot
