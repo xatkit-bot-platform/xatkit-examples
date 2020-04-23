@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: SimpleQABot
+Bundle-ManifestVersion: 2
+Bundle-Name: SimpleQABot
+Bundle-Vendor: My Company
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: SimpleQABot; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.eclipse.xtext.xbase.lib;bundle-version="2.15.0",
+ com.xatkit.metamodels-utils;bundle-version="2.0.1"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

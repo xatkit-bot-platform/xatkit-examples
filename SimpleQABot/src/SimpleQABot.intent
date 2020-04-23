@@ -1,0 +1,39 @@
+Library SimpleQABot
+
+intent Welcome {
+	inputs {
+		"Hi"
+		"Hello"
+		"Good morning"
+		"Good afternoon"
+	}
+}
+
+
+
+intent XatkitInfos {
+	inputs {
+		"What is Xatkit?"
+	}
+}
+
+intent WhoIsInvolved {
+	inputs {
+		"Who is involved?"
+	}
+}
+
+intent WantBot {
+	inputs {
+		"I want a bot"
+	}
+}
+
+intent GiveNumberOfIntents {
+	inputs {
+		"NUMBER"
+	}
+	creates context BotInfo {
+		sets parameter numberOfIntents from fragment "NUMBER" (entity number)
+	}
+}

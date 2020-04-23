@@ -5,13 +5,35 @@ import platform "SlackPlatform"
 
 use provider SlackPlatform.SlackIntentProvider
 
-on intent Presentation do
-	SlackPlatform.Reply("Hi! I am the Trello bot, you can ping me to store some information on Trello for you. I am configured to create cards here: Xatkit/Slack Triage\n
-To ask me to remember something use the following pattern: `@XatkitTrello create card <card name>`")
+Init {
+	Next {
+		intent == Presentation --> HandlePresentation
+		intent == NewCard --> HandleNewCard
+	}
+}
 
-on intent NewCard do
-	ZapierPlatform.PostAction(config.get("zapier.endpoint") as String, "{ 'name' : '" + context.get("Card").get("name") + "' }")
-	SlackPlatform.Reply("Done!")
-	
-on intent Default_Fallback_Intent do
-	SlackPlatform.Reply("Sorry I didn't get it")
+HandlePresentation {
+	Body {
+		SlackPlatform.Reply("Hi! I am the Trello bot, you can ping me to store some information on Trello for you. I am configured to create cards here: Xatkit/Slack Triage\n
+To ask me to remember something use the following pattern: `@XatkitTrello create card <card name>`")
+	}
+	Next {
+		_ --> Init
+	}
+}
+
+HandleNewCard {
+	Body {
+		ZapierPlatform.PostAction(config.get("zapier.endpoint") as String, "{ 'name' : '" + context.get("Card").get("name") + "' }")
+		SlackPlatform.Reply("Done!")
+	}
+	Next {
+		_ --> Init
+	}
+}
+
+Default_Fallback {
+	Body {
+		SlackPlatform.Reply("Sorry, I didn't get it")
+	}
+}

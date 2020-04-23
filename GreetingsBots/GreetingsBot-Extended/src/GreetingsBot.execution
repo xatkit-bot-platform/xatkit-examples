@@ -4,21 +4,65 @@ import platform "ChatPlatform"
 
 use provider ChatPlatform.ChatProvider
 
-on intent Welcome do
-	ChatPlatform.Reply("Hi, nice to meet you!")
+Init {
+	Next {
+		intent == Welcome --> HandleWelcome
+		intent == WhatsUp --> HandleWhatsUp
+		intent == Help --> HandleHelp
+	}
+}
 
-on intent HowAreYou do
-	ChatPlatform.Reply("I am fine and you?")
-	
-on intent Fine do
-	ChatPlatform.Reply("Great!")
-	
-on intent Sad do
-	ChatPlatform.Reply("Oh, let me know if I can do something for you :/")
-	
-on intent Default_Fallback_Intent do
-	ChatPlatform.Reply("Sorry I didn't get it")
-	
-on intent Help do
-	ChatPlatform.Reply("I am the Xatkit example bot from the [getting started tutorial](https://github.com/xatkit-bot-platform/xatkit-releases/wiki/Getting-Started)")
-	
+HandleWelcome {
+	Body {
+		ChatPlatform.Reply("Hi, nice to meet you!")
+	}
+	Next {
+		_ --> Init
+	}
+}
+
+HandleWhatsUp {
+	Body {
+		ChatPlatform.Reply("I am fine and you?")
+	}
+	Next {
+		intent == Fine --> HandleFine
+		intent == Sad --> HandleSad
+	}
+	Fallback {
+		ChatPlatform.Reply("Sorry, I am a simple bot, try answering something like *fine* or *sad*")
+	}
+}
+
+HandleFine {
+	Body {
+		ChatPlatform.Reply("Great!")
+	}
+	Next {
+		_ --> Init
+	}
+}
+
+HandleSad {
+	Body {
+		ChatPlatform.Reply("Oh, let me know if I can do something for you :/")
+	}
+	Next {
+		_ --> Init
+	}
+}
+
+HandleHelp {
+	Body {
+		ChatPlatform.Reply("I am the Xatkit example bot from the [getting started tutorial](https://github.com/xatkit-bot-platform/xatkit-releases/wiki/Getting-Started)")
+	}
+	Next {
+		_ --> Init
+	}
+}
+
+Default_Fallback {
+	Body {
+		ChatPlatform.Reply("Sorry I didn't get it")
+	}
+}

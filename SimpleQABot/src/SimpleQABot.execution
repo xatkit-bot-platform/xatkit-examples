@@ -1,0 +1,98 @@
+import library "SimpleQABot/src/SimpleQABot.intent" as SimpleQABotLib
+import platform "ReactPlatform"
+import platform "LogPlatform"
+
+use provider ReactPlatform.ReactIntentProvider
+use provider ReactPlatform.ReactEventProvider
+
+Init {
+	Body {
+		LogPlatform.LogInfo("Executing Init state body")
+	} 
+	Next {
+		event == Client_Ready --> MainState
+	}
+}
+
+MainState {
+	Body {
+		ReactPlatform.Reply("Hi, I can help you, ask me a question!")
+	}
+	Next {
+		_ --> AwaitQuestion
+	}
+}
+
+AwaitQuestion {
+	Next {
+		intent == Welcome --> HandleWelcome
+		intent == XatkitInfos --> GiveInfos
+		intent == WantBot --> AskBotSize
+	}
+}
+
+HandleWelcome {
+	Body {
+		ReactPlatform.Reply("Hi, what can I do for you?")
+	}
+	Next {
+		_ --> AwaitQuestion
+	}
+}
+
+GiveInfos {
+	Body {
+		ReactPlatform.Reply("It's an amazing platform!")
+	}
+	Next {
+		_ --> AwaitQuestion
+	}
+}
+
+AskBotSize {
+	Body {
+		ReactPlatform.Reply("Sure, how many intents do you want?")
+	}
+	Next {
+		intent == GiveNumberOfIntents && (Integer.valueOf(intent.context.get("BotInfo").get("numberOfIntents") as String)) <= 10 
+			--> AnswerSmallBot
+		intent == GiveNumberOfIntents && (Integer.valueOf(intent.context.get("BotInfo").get("numberOfIntents") as String)) > 10
+			--> AnswerBigBot
+	}
+	Fallback {
+		var retries = session.get("botsize.fallback") as Integer ?: 0
+		retries++
+		session.put("botsize.fallback", retries)
+		if(retries < 3) {
+			ReactPlatform.Reply("Sorry I didn't get it, could you give me a number?")
+		} else {
+			ReactPlatform.Reply("Maybe you don't know what is a number ...")
+			ReactPlatform.Reply("Anyway I am done with you, come back when you'll have a number to give")
+		}
+	}
+}
+
+AnswerSmallBot {
+	Body {
+		ReactPlatform.Reply("It's 10$!")
+	}
+	Next {
+		_ --> AwaitQuestion
+	}
+}
+
+AnswerBigBot {
+	Body {
+		ReactPlatform.Reply("It's 1000000$!")
+	}
+	Next {
+		_ --> AwaitQuestion
+	}
+}
+
+	
+Default_Fallback {
+	Body {
+		ReactPlatform.Reply("Sorry, I didn't get it")
+	}
+}

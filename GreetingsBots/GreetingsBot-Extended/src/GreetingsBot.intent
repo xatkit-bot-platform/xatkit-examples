@@ -12,7 +12,7 @@ intent Welcome {
 	}
 }
 
-intent HowAreYou {
+intent WhatsUp {
 	inputs {
 		"How are you?"
 		"how are you?"

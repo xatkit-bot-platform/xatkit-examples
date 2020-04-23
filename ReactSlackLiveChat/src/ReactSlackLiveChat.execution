@@ -7,62 +7,105 @@ use provider ReactPlatform.ReactIntentProvider
 use provider ReactPlatform.ReactEventProvider
 use provider SlackPlatform.SlackIntentProvider
 
-on event Client_Ready do
-	ReactPlatform.Reply("Hi, I am a semi-autonomous bot and I'll do my best to answer your questions!")
-
-on event Client_Closed do
-	val reactSlackMap = session.get("react-slack-map") as com.google.common.collect.BiMap<String, String>
-	if(reactSlackMap !== null) {
-		val slackTs = reactSlackMap.remove(context.get("react").get("channel"))
-		SlackPlatform.PostMessage("_The client has closed the connection_", config.get("slack.channel") as String, config.get("slack.team") as String, slackTs)
+Init {
+	Next {
+		event == Client_Ready --> GreetUser
 	}
+}
 
-on intent XatkitQuestion from ReactPlatform do
-	ReactPlatform.Reply("What about [Xatkit](https://xatkit.com/)? It's an awesome low-code platform for bot development!")
-
-on intent WhoIsBehindXatkit from ReactPlatform do
-	ReactPlatform.Reply("Xatkit is developed by [gdaniel](https://github.com/gdaniel) and [jcabot](https://github.com/jcabot), take a look at their profile to know more about them!")
-
-on intent Default_Fallback_Intent from ReactPlatform do
-	
-	val reactChannel = context.get("chat").get("channel") as String
-	
-	var reactSlackMap = session.get("react-slack-map") as com.google.common.collect.BiMap<String, String>
-	if(reactSlackMap === null) {
-		reactSlackMap = com.google.common.collect.HashBiMap.<String, String>create
-		session.put("react-slack-map", reactSlackMap)
+GreetUser {
+	Body {
+		ReactPlatform.Reply("Hi, I am a semi-autonomous bot and I'll do my best to answer your questions!")
 	}
-	val storedSlackTs = reactSlackMap.get(reactChannel)
-	
-	val userOnline = SlackPlatform.IsOnline(config.get("slack.username") as String, config.get("slack.team") as String) as Boolean
-	if(userOnline) {
-		if(storedSlackTs === null) {
-			ReactPlatform.Reply("Sorry I didn't get it, I forward your request to the closest human being")
-			val slackTs = SlackPlatform.PostMessage("[" + context.get("chat").get("username") + "] " + intent.matchedInput, config.get("slack.channel") as String, config.get("slack.team") as String) as String
-			reactSlackMap.put(reactChannel, slackTs)
-			SlackPlatform.PostMessage("_Replies in this thread will be forwarded to the user_", config.get("slack.channel") as String, config.get("slack.team") as String, slackTs)
-		} else {
-			SlackPlatform.PostMessage("[" + context.get("chat").get("username") + "] " + intent.matchedInput, config.get("slack.channel") as String, config.get("slack.team") as String, storedSlackTs)
+	Next {
+		_ --> AwaitQuestion
+	}
+}
+
+AwaitQuestion {
+	Next {
+		intent == XatkitQuestion --> HandleXatkitQuestion
+		intent == WhoIsBehindXatkit --> HandleWhoIsBehindXatkit
+		event == Client_Closed --> HandleClientClosed
+	}
+}
+
+HandleXatkitQuestion {
+	Body {
+		if(intent.fromPlatform == "ReactPlatform") {
+			ReactPlatform.Reply("What about [Xatkit](https://xatkit.com/)? It's an awesome low-code platform for bot development!")
 		}
-	} else {
-		ReactPlatform.Reply("Sorry, all our human beings are away for now, you can drop us an email at example@example.com")
 	}
-	
-on intent Default_Fallback_Intent from SlackPlatform do
-	val reactSlackMap = session.get("react-slack-map") as com.google.common.collect.BiMap<String, String>
-	if(reactSlackMap !== null) {
-		val slackTs = context.get("slack").get("threadTs") as String
-		val reactChannel = reactSlackMap.inverse.get(slackTs)
-		if(reactChannel === null) {
-			if(slackTs.empty) {
-				/*
-				 * No threadTs means we are in the top-level conversation
-				 */
-				 SlackPlatform.Reply("You cannot reply in the top-level conversation, please use the dedicated threads")
-			} else {
-				SlackPlatform.Reply("_Sorry, I cannot forward your message, the client may have closed the session_")
+	Next {
+		_ --> AwaitQuestion endOfPath
+	}
+}
+
+HandleWhoIsBehindXatkit {
+	Body {
+		if(intent.fromPlatform == "ReactPlatform") {
+			ReactPlatform.Reply("Xatkit is developed by [gdaniel](https://github.com/gdaniel) and [jcabot](https://github.com/jcabot), take a look at their profile to know more about them!")
+		}
+	}
+	Next {
+		_ --> AwaitQuestion endOfPath
+	}
+}
+
+HandleClientClosed {
+	Body {
+		val reactSlackMap = session.get("react-slack-map") as com.google.common.collect.BiMap<String, String>
+		if(reactSlackMap !== null) {
+			val slackTs = reactSlackMap.remove(context.get("react").get("channel"))
+			SlackPlatform.PostMessage("_The client has closed the connection_", config.get("slack.channel") as String, config.get("slack.team") as String, slackTs)
+		}
+	}
+	Next {
+		_ --> Init endOfPath
+	}
+}
+
+Default_Fallback {
+	Body {
+		if(intent.fromPlatform == "ReactPlatform") {
+			val reactChannel = context.get("chat").get("channel") as String
+			var reactSlackMap = session.get("react-slack-map") as com.google.common.collect.BiMap<String, String>
+			if(reactSlackMap === null) {
+				reactSlackMap = com.google.common.collect.HashBiMap.<String, String>create
+				session.put("react-slack-map", reactSlackMap)
 			}
-		} else {
-			ReactPlatform.PostMessage("[Real Human " + context.get("chat").get("username") + "] " + intent.matchedInput, reactChannel)
+			val storedSlackTs = reactSlackMap.get(reactChannel)
+			val userOnline = SlackPlatform.IsOnline(config.get("slack.username") as String, config.get("slack.team") as String)
+			if(userOnline) {
+				if(storedSlackTs === null) {
+					ReactPlatform.Reply("Sorry I didn't get it, I forward your request to the closed human being")
+					val slackTs = SlackPlatform.PostMessage("[" + context.get("chat").get("username") + "] " + intent.matchedInput, config.get("slack.channel") as String, config.get("slack.team") as String) as String
+					reactSlackMap.put(reactChannel, slackTs)
+					SlackPlatform.PostMessage("_Replies in this thread will be forwarded to the user_", config.get("slack.channel") as String, config.get("slack.team") as String, slackTs)
+				} else {
+					SlackPlatform.PostMessage("[" + context.get("chat").get("username") + "] " + intent.matchedInput, config.get("slack.channel") as String, config.get("slack.team") as String, storedSlackTs)
+				}
+			} else {
+				ReactPlatform.Reply("Sorry, all our human beings are away for now, you can drop us an email at example@example.com")
+			}
+		} else if(intent.fromPlatform == "SlackPlatform") {
+			val reactSlackMap = session.get("react-slack-map") as com.google.common.collect.BiMap<String, String>
+			if(reactSlackMap !== null) {
+				val slackTs = context.get("slack").get("threadTs") as String
+				val reactChannel = reactSlackMap.inverse.get(slackTs)
+				if(reactChannel === null) {
+					if(slackTs.empty) {
+						/*
+						 * No threadTs means we are in the top-level conversation
+						 */
+						 SlackPlatform.Reply("You cannot reply in the top-level conversation, please use the dedicated threads")
+					} else {
+						SlackPlatform.Reply("_Sorry, I cannot forward your message, the client may have closed the session_")
+					}
+				} else {
+					ReactPlatform.PostMessage("[Real Human " + context.get("chat").get("username") + "] " + intent.matchedInput, reactChannel)
+				}
+			}
 		}
 	}
+}

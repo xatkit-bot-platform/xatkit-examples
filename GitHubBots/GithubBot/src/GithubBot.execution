@@ -6,49 +6,123 @@ import library "CoreLibrary"
 use provider SlackPlatform.SlackIntentProvider
 use provider GithubPlatform.GithubWebhookEventProvider
 
-on event Issue_Opened do
-	val issue = GithubPlatform.GetIssue(config.get("github.repository.username") as String, config.get("github.repository.name") as String, context.get("issue").get("issue->number") as String)
-	session.put("issue", issue)
-	SlackPlatform.PostAttachmentsMessage("A new issue has been opened on <" + context.get("issue").get("repository->html_url") + " | " + context.get("issue").get("repository->name") +">",
-		context.get("issue").get("issue->title") as String,
-		(if(issue.body.empty) "No description provided" else issue.body) + "\n(<" + context.get("issue").get("issue->html_url") + " | open on Github>)",
-		"#D21F3C",
-		config.get("slack.channel") as String
-	)
+Init {
+	Next {
+		event == Issue_Opened --> HandleIssueOpened
+		intent == GetIssue --> HandleGetIssue
+		intent == OpenBug --> HandleOpenBug
+	}
+}
+
+/*
+ * "Developer" part: receive events when an issue is opened, and set label/assign users to it from Slack
+ */
+
+HandleIssueOpened {
+	Body {
+		val issue = GithubPlatform.GetIssue(config.get("github.repository.username") as String, config.get("github.repository.name") as String, context.get("issue").get("issue->number") as String)
+		session.put("issue", issue)
+		SlackPlatform.PostAttachmentsMessage("A new issue has been opened on <" + context.get("issue").get("repository->html_url") + " | " + context.get("issue").get("repository->name") +">",
+			context.get("issue").get("issue->title") as String,
+			(if(issue.body.empty) "No description provided" else issue.body) + "\n(<" + context.get("issue").get("issue->html_url") + " | open on Github>)",
+			"#D21F3C",
+			config.get("slack.channel") as String,
+			config.get("slack.team") as String
+		)
+	}
+	Next {
+		intent == SetLabel --> HandleSetLabel
+		intent == AssignUser --> HandleAssignUser
+		intent == GetIssue --> HandleGetIssue endOfPath
+	}
+}
+
+HandleGetIssue {
+	Body {
+		val com.jcabi.github.Issue issue = GithubPlatform.GetIssue(config.get("github.repository.username") as String, config.get("github.repository.name") as String, context.get("issue").get("issueNumber") as String)
+		session.put("issue", issue)
+		SlackPlatform.Reply("Found issue " + issue.number())
+	}
+	Next {
+		intent == SetLabel --> HandleSetLabel
+		intent == AssignUser --> HandleAssignUser
+		intent == GetIssue --> HandleGetIssue endOfPath
+	}
+}
+
+HandleSetLabel {
+	Body {
+		val issue = session.get("issue") as com.jcabi.github.Issue.Smart
+		GithubPlatform.SetLabel(issue, context.get("issue").get("issueLabel") as String)
+		SlackPlatform.Reply("Issue " + issue.number + " labeled " + context.get("issue").get("issueLabel"))
+	}
+	Next {
+		intent == AssignUser --> HandleAssignUser
+		intent == SetLabel --> HandleSetLabel
+		intent == GetIssue --> HandleGetIssue endOfPath
+	}
+}
+
+HandleAssignUser {
+	Body {
+		val issue = session.get("issue") as com.jcabi.github.Issue.Smart
+		GithubPlatform.AssignUser(issue, context.get("issue").get("assignedUsername") as String)
+		SlackPlatform.Reply("Issue " + issue.number + " assigned to " + context.get("issue").get("assignedUsername"))
+	}
+	Next {
+		intent == SetLabel --> HandleSetLabel
+		intent == AssignUser --> HandleAssignUser
+		intent == GetIssue --> HandleGetIssue endOfPath
+	}
+}
+
+/*
+ * "Newcomer" part: open an issue on Github from Slack
+ */
+HandleOpenBug {
+	Body {
+		SlackPlatform.Reply("Can you please describe what is wrong in a few words?")
+	}
+	Next {
+		intent == DescribeBug --> HandleDescribeBug
+	}
+}
+
+HandleDescribeBug {
+	Body {
+		SlackPlatform.Reply("Can you let us know the WordPress version you're using?")
+	}
+	Next {
+		intent == TellWPVersion --> HandleWPVersion
+	}
+}
+
+HandleWPVersion {
+	Body {
+		SlackPlatform.Reply("Can you let us know the PHP version you're using?")
+	}
+	Next {
+		intent == TellPHPVersion --> HandlePHPVersion
+	}
+}
+
+HandlePHPVersion {
+	Body {
+		val newIssue = GithubPlatform.OpenIssue(config.get("github.repository.username") as String, config.get("github.repository.name") as String, context.get("bug").get("title") as String, 
+				"WP version is " + context.get("bug").get("wpversion") as String + " PHP version is " + context.get("bug").get("phpversion") as String
+		)
+		GithubPlatform.SetLabel(newIssue, "bug")
+		SlackPlatform.Reply("Thanks for your detailed info, I have opened an <" + newIssue.htmlUrl + " |issue> on Github for you")
+	}
+	Next {
+		_ --> Init endOfPath
+	}
+}
+
+Default_Fallback {
+	Body {
+		SlackPlatform.Reply("Sorry, I didn't get it")
+	}
+}
 	
 	
-on intent GetIssue do 
-	val com.jcabi.github.Issue issue = GithubPlatform.GetIssue(config.get("github.repository.username") as String, config.get("github.repository.name") as String, context.get("issue").get("issueNumber") as String)
-	session.put("issue", issue)
-	SlackPlatform.Reply("Found issue " + issue.number())
-	
-on intent SetLabel do
-	val issue = session.get("issue") as com.jcabi.github.Issue.Smart
-	GithubPlatform.SetLabel(issue, context.get("issue").get("issueLabel") as String)
-	SlackPlatform.Reply("Issue " + issue.number + " labeled " + context.get("issue").get("issueLabel"))
-	
-	
-on intent AssignUser do
-	val issue = session.get("issue") as com.jcabi.github.Issue.Smart
-	GithubPlatform.AssignUser(issue, context.get("issue").get("assignedUsername") as String)
-	SlackPlatform.Reply("Issue " + issue.number + " assigned to " + context.get("issue").get("assignedUsername"))
-	
-	
-on intent OpenBug do
-	SlackPlatform.Reply("Can you please describe what is wrong in a few words?")
-	
-on intent DescribeBug do
-	SlackPlatform.Reply("Can you let us know the WordPress version you're using?")
-	
-on intent TellWPVersion do
-	SlackPlatform.Reply("Can you let us know the PHP version you're using?")
-		
-on intent TellPHPVersion do	
-	val newIssue = GithubPlatform.OpenIssue(config.get("github.repository.username") as String, config.get("github.repository.name") as String, context.get("bug").get("title") as String, 
-			"WP version is " + context.get("bug").get("wpversion") as String + " PHP version is " + context.get("bug").get("phpversion") as String
-	)
-	GithubPlatform.SetLabel(newIssue, "bug")
-	SlackPlatform.Reply("Thanks for your detailed info, I have opened an <" + newIssue.htmlUrl + " |issue> on Github for you")
-	
-on intent Default_Fallback_Intent do
-	SlackPlatform.Reply("Sorry I didn't get it")
