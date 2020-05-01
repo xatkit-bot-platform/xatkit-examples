@@ -6,11 +6,11 @@ Example Bots built with the Xatkit framework
 
 ## Installation
 
-The bots in this repository require the [latest version of Xatkit](https://github.com/xatkit-bot-platform/xatkit-releases), unless stated explicitly in the bot directory's README. Installing the Eclipse plugins is not required to execute the bot, but is needed to open/edit their execution models and intent libraries.
+The bots in this repository work with the [latest version of Xatkit](https://github.com/xatkit-bot-platform/xatkit), unless stated explicitly in the bot directory's README. Installing the Eclipse plugins is not required to execute the bot, but needed to open/edit their execution models and intent libraries with the Xatkit language auto-completion, syntax highlighting and other advanced IDE features.
 
 ## Running a Bot Example
 
-Each bot directory contains a `.properties` file you need to edit to deploy the bot in your own environment. You can read [this article](https://github.com/xatkit-bot-platform/xatkit/wiki/Deploying-chatbots) to setup DialogFlow and Slack credentials, and additional information is provided in the comments of the `.properties` file. If you have any issue to run your bot do not hesitate to report is on our [issue tracker](https://github.com/xatkit-bot-platform/xatkit-examples/issues)!
+Each bot directory contains a `.properties` file you need to edit to deploy the bot in your own environment. You can read [this article](https://github.com/xatkit-bot-platform/xatkit/wiki/Deploying-chatbots) to setup DialogFlow and Slack credentials for those that need them, and additional information is provided in the comments of the `.properties` file. If you have any issue to run your bot do not hesitate to report is on our [issue tracker](https://github.com/xatkit-bot-platform/xatkit-examples/issues)!
 
 Once you have set up the credentials and required information in the `.properties` file you can run the following command to execute your bot:
 
