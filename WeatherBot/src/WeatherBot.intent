@@ -1,0 +1,13 @@
+Library WeatherBotLibrary
+
+
+////////// API //////////////
+intent HowIsTheWeather {
+	inputs {
+		"How is the weather today in XXX?"
+		"What is the forecast for today in XXX?"
+	}
+	creates context Weather {
+		sets parameter "cityName" from fragment "XXX" (entity any)
+	}
+}
