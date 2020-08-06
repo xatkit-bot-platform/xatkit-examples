@@ -135,7 +135,7 @@
                                 <mainClass>com.xatkit.example.GreetingsBotExtended</mainClass>
                             </manifest>
                         </archive>
-                        <finalName>greetings-bot</finalName>
+                        <finalName>greetings-bot-extended</finalName>
                     </configuration>
                 </plugin>
 
