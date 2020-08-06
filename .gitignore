@@ -6,13 +6,19 @@
 
 # Runtime Data
 **/data/
+**/public/
 
 # Xatkit logs
-
 **/logs
 
 # Bin scripts
 **/bin
+**/target
+
 
 # Eclipse's .settings
 **/.settings
+
+# IntelliJ settings
+**/.idea
+*.iml
