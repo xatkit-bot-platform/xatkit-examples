@@ -1,0 +1,174 @@
+package com.xatkit.example;
+
+import com.xatkit.core.XatkitCore;
+import com.xatkit.library.CoreLibrary;
+import com.xatkit.plugins.giphy.platform.GiphyPlatform;
+import com.xatkit.plugins.react.platform.ReactPlatform;
+import com.xatkit.plugins.react.platform.io.ReactEventProvider;
+import com.xatkit.plugins.react.platform.io.ReactIntentProvider;
+import lombok.val;
+import org.apache.commons.configuration2.BaseConfiguration;
+import org.apache.commons.configuration2.Configuration;
+
+import static com.xatkit.dsl.DSL.any;
+import static com.xatkit.dsl.DSL.eventIs;
+import static com.xatkit.dsl.DSL.fallbackState;
+import static com.xatkit.dsl.DSL.intent;
+import static com.xatkit.dsl.DSL.intentIs;
+import static com.xatkit.dsl.DSL.model;
+import static com.xatkit.dsl.DSL.state;
+
+public class GiphyBot {
+
+    /*
+     * Your bot is a plain Java application: you need to define a main method to make the created jar executable.
+     */
+    public static void main(String[] args) {
+
+        /*
+         * Define the intents our bot will react to.
+         */
+        val canYou = intent("CanYou")
+                .trainingSentence("Can you this?")
+                .trainingSentence("Have you seen this?")
+                .trainingSentence("Do you know this?")
+                .trainingSentence("Any thoughts about this?")
+                .trainingSentence("What do you think about this?")
+                .context("Request")
+                .parameter("request")
+                .fromFragment("this")
+                .entity(any());
+
+        /*
+         * Instantiate the platforms we will use in the bot definition.
+         */
+        ReactPlatform reactPlatform = new ReactPlatform();
+        GiphyPlatform giphyPlatform = new GiphyPlatform();
+        /*
+         * Similarly, instantiate the intent/event providers we want to use.
+         */
+        ReactEventProvider reactEventProvider = new ReactEventProvider(reactPlatform);
+        ReactIntentProvider reactIntentProvider = new ReactIntentProvider(reactPlatform);
+
+        /*
+         * Create the states we want to use in our bot.
+         */
+        val init = state("Init");
+        val awaitingInput = state("AwaitingInput");
+        val handleGreetings = state("HandleGreetings");
+        val handleCanYou = state("HandleCanYou");
+        val handleHelp = state("HandleHelp");
+
+        /*
+         * We use the Greetings and Help intents defined in the CoreLibrary.
+         */
+        CoreLibrary coreLibrary = new CoreLibrary();
+
+        /*
+         * Specify the content of the bot states (i.e. the behavior of the bot).
+         */
+        init
+                .next()
+                /*
+                 * We check that the received event matches the ClientReady event defined in the
+                 * ReactEventProvider. The list of events defined in a provider is available in the provider's
+                 * wiki page.
+                 */
+                .when(eventIs(ReactEventProvider.ClientReady)).moveTo(awaitingInput);
+
+        awaitingInput
+                .next()
+                /*
+                 * The Xatkit DSL offers dedicated predicates (intentIs(IntentDefinition) and eventIs
+                 * (EventDefinition) to check received intents/events.
+                 * <p>
+                 * You can also check a condition over the underlying bot state using the following syntax:
+                 * <pre>
+                 * {@code
+                 * .when(context -> [condition manipulating the context]).moveTo(state);
+                 * }
+                 * </pre>
+                 */
+                .when(intentIs(coreLibrary.Greetings)).moveTo(handleGreetings)
+                .when(intentIs(canYou)).moveTo(handleCanYou)
+                .when(intentIs(coreLibrary.Help)).moveTo(handleHelp);
+
+
+        handleGreetings
+                .body(context -> reactPlatform.reply(context, "Hi, I can do many things, challenge me!  \nYou can " +
+                        "start with something like `Can you <whatever you want>?`  \nThis bot is inspired by [this " +
+                        "article](https://uxdesign.cc/wanna-build-a-superbot-that-can-do-anything-heres-how-d8eeeeef1882)"))
+                .next()
+                    .moveTo(awaitingInput);
+
+        handleCanYou
+                .body(context -> {
+                    String url = giphyPlatform.getGif(context, (String) context.getNlpContext().get("Request").get(
+                            "request"));
+                    reactPlatform.reply(context, "Sure! [look](" + url + ")");
+                })
+                .next()
+                    .moveTo(awaitingInput);
+
+        handleHelp
+                .body(context -> reactPlatform.reply(context, "Ask me if I can do something and I'll tell you!  \nYou" +
+                        " can start with something like `Can you <whatever you want>?`"))
+                .next()
+                    .moveTo(awaitingInput);
+
+        /*
+         * The state that is executed if the engine doesn't find any navigable transition in a state and the state
+         * doesn't contain a fallback.
+         */
+        val defaultFallback = fallbackState()
+                .body(context -> reactPlatform.reply(context, "Sorry, I didn't, get it"));
+
+        /*
+         * Creates the bot model that will be executed by the Xatkit engine.
+         * <p>
+         * A bot model contains:
+         * - A list of intents/events (or libraries) used by the bot. This allows to register the events/intents to the NLP
+         * service.
+         * - A list of platforms used by the bot. Xatkit will take care of starting and initializing the platforms
+         * when starting the bot.
+         * - A list of providers the bot should listen to for events/intents. As for the platforms Xatkit will take
+         * care of initializing the provider when starting the bot.
+         * - The list of states the compose the bot (this list can contain the init/fallback state, but it is optional)
+         * - The entry point of the bot (a.k.a init state)
+         * - The default fallback state: the state that is executed if the engine doesn't find any navigable
+         * transition in a state and the state doesn't contain a fallback.
+         */
+        val botModel = model()
+                .useIntent(coreLibrary.Greetings)
+                .useIntent(coreLibrary.Help)
+                .useIntent(canYou)
+                .usePlatform(reactPlatform)
+                .usePlatform(giphyPlatform)
+                .listenTo(reactEventProvider)
+                .listenTo(reactIntentProvider)
+                .state(awaitingInput)
+                .state(handleGreetings)
+                .state(handleCanYou)
+                .state(handleHelp)
+                .initState(init)
+                .defaultFallbackState(defaultFallback);
+
+        Configuration botConfiguration = new BaseConfiguration();
+        /*
+         * Add you Giphy token here to have access to the Giphy API (this is required by the Giphy platform).
+         */
+        botConfiguration.addProperty("xatkit.giphy.token", "<Your Giphy API token>");
+        /*
+         * Add configuration properties (e.g. authentication tokens, platform tuning, intent provider to use).
+         * Check the corresponding platform's wiki page for further information on optional/mandatory parameters and
+         * their values.
+         */
+
+        XatkitCore xatkitCore = new XatkitCore(botModel, botConfiguration);
+        xatkitCore.run();
+        /*
+         * The bot is now started, you can check http://localhost:5000/admin to test it.
+         * The logs of the bot are stored in the logs folder at the root of this project.
+         */
+    }
+}

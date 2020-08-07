@@ -1,8 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: CanYouBot
-Bundle-SymbolicName: com.xatkit.examples.canyoubot
-Bundle-Version: 1.0.0.qualifier
-Require-Bundle: com.xatkit.metamodels-utils;bundle-version="3.0.0",
- org.eclipse.xtext.xbase.lib;bundle-version="2.15.0"
-Bundle-Vendor: SOM Research Lab
