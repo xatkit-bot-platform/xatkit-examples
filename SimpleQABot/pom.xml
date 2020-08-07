@@ -141,7 +141,7 @@
                                 <mainClass>com.xatkit.example.SimpleQABot</mainClass>
                             </manifest>
                         </archive>
-                        <finalName>giphy-bot</finalName>
+                        <finalName>simple-qa-bot</finalName>
                     </configuration>
                 </plugin>
 
