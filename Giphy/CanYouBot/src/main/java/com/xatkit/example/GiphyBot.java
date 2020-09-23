@@ -150,7 +150,7 @@ public class GiphyBot {
         /*
          * Add you Giphy token here to have access to the Giphy API (this is required by the Giphy platform).
          */
-        botConfiguration.addProperty("xatkit.giphy.token", "5v8GNpVPXgpFom69swCBv7QQRuJOJ1Ee");
+        botConfiguration.addProperty("xatkit.giphy.token", "<Your Giphy API token>");
         /*
          * Add configuration properties (e.g. authentication tokens, platform tuning, intent provider to use).
          * Check the corresponding platform's wiki page for further information on optional/mandatory parameters and
