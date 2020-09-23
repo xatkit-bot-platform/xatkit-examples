@@ -36,19 +36,19 @@
 
         <dependency>
             <groupId>com.xatkit</groupId>
-            <artifactId>chat-platform-runtime</artifactId>
+            <artifactId>chat-platform</artifactId>
             <version>3.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>com.xatkit</groupId>
-            <artifactId>react-platform-runtime</artifactId>
+            <artifactId>react-platform</artifactId>
             <version>4.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>com.xatkit</groupId>
-            <artifactId>giphy-platform-runtime</artifactId>
+            <artifactId>giphy-platform</artifactId>
             <version>3.0.1-SNAPSHOT</version>
         </dependency>
 

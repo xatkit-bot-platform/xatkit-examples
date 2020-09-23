@@ -1,7 +1,7 @@
 package com.xatkit.example;
 
-import com.xatkit.core.XatkitCore;
-import com.xatkit.library.CoreLibrary;
+import com.xatkit.core.XatkitBot;
+import com.xatkit.library.core.CoreLibrary;
 import com.xatkit.plugins.giphy.platform.GiphyPlatform;
 import com.xatkit.plugins.react.platform.ReactPlatform;
 import com.xatkit.plugins.react.platform.io.ReactEventProvider;
@@ -34,7 +34,6 @@ public class GiphyBot {
                 .trainingSentence("Do you know this?")
                 .trainingSentence("Any thoughts about this?")
                 .trainingSentence("What do you think about this?")
-                .context("Request")
                 .parameter("request")
                 .fromFragment("this")
                 .entity(any());
@@ -58,11 +57,6 @@ public class GiphyBot {
         val handleGreetings = state("HandleGreetings");
         val handleCanYou = state("HandleCanYou");
         val handleHelp = state("HandleHelp");
-
-        /*
-         * We use the Greetings and Help intents defined in the CoreLibrary.
-         */
-        CoreLibrary coreLibrary = new CoreLibrary();
 
         /*
          * Specify the content of the bot states (i.e. the behavior of the bot).
@@ -89,9 +83,9 @@ public class GiphyBot {
                  * }
                  * </pre>
                  */
-                .when(intentIs(coreLibrary.Greetings)).moveTo(handleGreetings)
+                .when(intentIs(CoreLibrary.Greetings)).moveTo(handleGreetings)
                 .when(intentIs(canYou)).moveTo(handleCanYou)
-                .when(intentIs(coreLibrary.Help)).moveTo(handleHelp);
+                .when(intentIs(CoreLibrary.Help)).moveTo(handleHelp);
 
 
         handleGreetings
@@ -103,8 +97,7 @@ public class GiphyBot {
 
         handleCanYou
                 .body(context -> {
-                    String url = giphyPlatform.getGif(context, (String) context.getNlpContext().get("Request").get(
-                            "request"));
+                    String url = giphyPlatform.getGif(context, (String) context.getIntent().getValue("request"));
                     reactPlatform.reply(context, "Sure! [look](" + url + ")");
                 })
                 .next()
@@ -139,17 +132,17 @@ public class GiphyBot {
          * transition in a state and the state doesn't contain a fallback.
          */
         val botModel = model()
-                .useIntent(coreLibrary.Greetings)
-                .useIntent(coreLibrary.Help)
+                .useIntent(CoreLibrary.Greetings)
+                .useIntent(CoreLibrary.Help)
                 .useIntent(canYou)
                 .usePlatform(reactPlatform)
                 .usePlatform(giphyPlatform)
                 .listenTo(reactEventProvider)
                 .listenTo(reactIntentProvider)
-                .state(awaitingInput)
-                .state(handleGreetings)
-                .state(handleCanYou)
-                .state(handleHelp)
+                .useState(awaitingInput)
+                .useState(handleGreetings)
+                .useState(handleCanYou)
+                .useState(handleHelp)
                 .initState(init)
                 .defaultFallbackState(defaultFallback);
 
@@ -157,15 +150,15 @@ public class GiphyBot {
         /*
          * Add you Giphy token here to have access to the Giphy API (this is required by the Giphy platform).
          */
-        botConfiguration.addProperty("xatkit.giphy.token", "<Your Giphy API token>");
+        botConfiguration.addProperty("xatkit.giphy.token", "5v8GNpVPXgpFom69swCBv7QQRuJOJ1Ee");
         /*
          * Add configuration properties (e.g. authentication tokens, platform tuning, intent provider to use).
          * Check the corresponding platform's wiki page for further information on optional/mandatory parameters and
          * their values.
          */
 
-        XatkitCore xatkitCore = new XatkitCore(botModel, botConfiguration);
-        xatkitCore.run();
+        XatkitBot xatkitBot = new XatkitBot(botModel, botConfiguration);
+        xatkitBot.run();
         /*
          * The bot is now started, you can check http://localhost:5000/admin to test it.
          * The logs of the bot are stored in the logs folder at the root of this project.
