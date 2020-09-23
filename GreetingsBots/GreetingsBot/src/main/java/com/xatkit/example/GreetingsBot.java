@@ -1,6 +1,6 @@
 package com.xatkit.example;
 
-import com.xatkit.core.XatkitCore;
+import com.xatkit.core.XatkitBot;
 import com.xatkit.plugins.react.platform.ReactPlatform;
 import com.xatkit.plugins.react.platform.io.ReactEventProvider;
 import com.xatkit.plugins.react.platform.io.ReactIntentProvider;
@@ -178,9 +178,9 @@ public class GreetingsBot {
                 .usePlatform(reactPlatform)
                 .listenTo(reactEventProvider)
                 .listenTo(reactIntentProvider)
-                .state(awaitingInput)
-                .state(handleWelcome)
-                .state(handleWhatsUp)
+                .useState(awaitingInput)
+                .useState(handleWelcome)
+                .useState(handleWhatsUp)
                 .initState(init)
                 .defaultFallbackState(defaultFallback);
 
@@ -191,8 +191,8 @@ public class GreetingsBot {
          * their values.
          */
 
-        XatkitCore xatkitCore = new XatkitCore(botModel, botConfiguration);
-        xatkitCore.run();
+        XatkitBot xatkitBot = new XatkitBot(botModel, botConfiguration);
+        xatkitBot.run();
         /*
          * The bot is now started, you can check http://localhost:5000/admin to test it.
          * The logs of the bot are stored in the logs folder at the root of this project.
