@@ -1,8 +1,7 @@
 package com.xatkit.example;
 
-import com.xatkit.core.XatkitCore;
-import com.xatkit.library.CoreLibrary;
-import com.xatkit.plugins.giphy.platform.GiphyPlatform;
+import com.xatkit.core.XatkitBot;
+import com.xatkit.library.core.CoreLibrary;
 import com.xatkit.plugins.react.platform.ReactPlatform;
 import com.xatkit.plugins.react.platform.io.ReactEventProvider;
 import com.xatkit.plugins.react.platform.io.ReactIntentProvider;
@@ -10,14 +9,12 @@ import lombok.val;
 import org.apache.commons.configuration2.BaseConfiguration;
 import org.apache.commons.configuration2.Configuration;
 
-import static com.xatkit.dsl.DSL.any;
 import static com.xatkit.dsl.DSL.eventIs;
 import static com.xatkit.dsl.DSL.fallbackState;
 import static com.xatkit.dsl.DSL.intent;
 import static com.xatkit.dsl.DSL.intentIs;
 import static com.xatkit.dsl.DSL.model;
 import static com.xatkit.dsl.DSL.state;
-import static java.util.Objects.nonNull;
 
 public class SimpleQABot {
 
@@ -56,12 +53,7 @@ public class SimpleQABot {
         val giveInfo = state("GiveInfo");
         val askBotSize = state("AskBotSize");
         val answerSmallBot = state("AnswerSmallBot");
-        val answerBigBot = state("AnswerBitBot");
-
-        /*
-         * We use the Greetings and Help intents defined in the CoreLibrary.
-         */
-        CoreLibrary coreLibrary = new CoreLibrary();
+        val answerBigBot = state("AnswerBigBot");
 
         /*
          * Specify the content of the bot states (i.e. the behavior of the bot).
@@ -93,7 +85,7 @@ public class SimpleQABot {
                  * }
                  * </pre>
                  */
-                .when(intentIs(coreLibrary.Greetings)).moveTo(handleGreetings)
+                .when(intentIs(CoreLibrary.Greetings)).moveTo(handleGreetings)
                 .when(intentIs(xatkitInfo)).moveTo(giveInfo)
                 .when(intentIs(wantBot)).moveTo(askBotSize);
 
@@ -111,14 +103,12 @@ public class SimpleQABot {
         askBotSize
                 .body(context -> reactPlatform.reply(context, "Sure, how many intents do you want?"))
                 .next()
-                    .when(intentIs(coreLibrary.NumberValue).and(context -> {
-                        int numberOfIntents = Integer.parseInt((String) context.getIntent().getContextValue("Value",
-                                "value"));
+                    .when(intentIs(CoreLibrary.NumberValue).and(context -> {
+                        int numberOfIntents = Integer.parseInt((String) context.getIntent().getValue("value"));
                         return numberOfIntents <= 10;
                     })).moveTo(answerSmallBot)
-                    .when(intentIs(coreLibrary.NumberValue).and(context -> {
-                        int numberOfIntents = Integer.parseInt((String) context.getIntent().getContextValue("Value",
-                                "value"));
+                    .when(intentIs(CoreLibrary.NumberValue).and(context -> {
+                        int numberOfIntents = Integer.parseInt((String) context.getIntent().getValue("value"));
                         return numberOfIntents > 10;
                     })).moveTo(answerBigBot)
                 .fallback(context -> {
@@ -168,20 +158,20 @@ public class SimpleQABot {
          * transition in a state and the state doesn't contain a fallback.
          */
         val botModel = model()
-                .useIntent(coreLibrary.Greetings)
+                .useIntent(CoreLibrary.Greetings)
                 .useIntent(xatkitInfo)
                 .useIntent(wantBot)
-                .useIntent(coreLibrary.NumberValue)
+                .useIntent(CoreLibrary.NumberValue)
                 .usePlatform(reactPlatform)
                 .listenTo(reactEventProvider)
                 .listenTo(reactIntentProvider)
-                .state(greetUser)
-                .state(awaitingInput)
-                .state(handleGreetings)
-                .state(giveInfo)
-                .state(askBotSize)
-                .state(answerSmallBot)
-                .state(answerBigBot)
+                .useState(greetUser)
+                .useState(awaitingInput)
+                .useState(handleGreetings)
+                .useState(giveInfo)
+                .useState(askBotSize)
+                .useState(answerSmallBot)
+                .useState(answerBigBot)
                 .initState(init)
                 .defaultFallbackState(defaultFallback);
 
@@ -192,8 +182,8 @@ public class SimpleQABot {
          * their values.
          */
 
-        XatkitCore xatkitCore = new XatkitCore(botModel, botConfiguration);
-        xatkitCore.run();
+        XatkitBot xatkitBot = new XatkitBot(botModel, botConfiguration);
+        xatkitBot.run();
         /*
          * The bot is now started, you can check http://localhost:5000/admin to test it.
          * The logs of the bot are stored in the logs folder at the root of this project.
