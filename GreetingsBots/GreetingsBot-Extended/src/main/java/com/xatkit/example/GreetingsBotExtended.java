@@ -49,12 +49,12 @@ public class GreetingsBotExtended {
         /*
          * Instantiate the platform we will use in the bot definition.
          */
-        ReactPlatform reactPlatform = new ReactPlatform();
         /*
          * Similarly, instantiate the intent/event providers we want to use.
          */
-        ReactEventProvider reactEventProvider = new ReactEventProvider(reactPlatform);
-        ReactIntentProvider reactIntentProvider = new ReactIntentProvider(reactPlatform);
+        ReactPlatform reactPlatform = new ReactPlatform();
+        ReactEventProvider reactEventProvider = reactPlatform.getReactEventProvider();
+        ReactIntentProvider reactIntentProvider = reactPlatform.getReactIntentProvider();
 
         /*
          * Create the states we want to use in our bot.
@@ -130,30 +130,18 @@ public class GreetingsBotExtended {
          * Creates the bot model that will be executed by the Xatkit engine.
          * <p>
          * A bot model contains:
-         * - A list of intents/events (or libraries) used by the bot. This allows to register the events/intents to the NLP
-         * service.
          * - A list of platforms used by the bot. Xatkit will take care of starting and initializing the platforms
          * when starting the bot.
          * - A list of providers the bot should listen to for events/intents. As for the platforms Xatkit will take
          * care of initializing the provider when starting the bot.
-         * - The list of states the compose the bot (this list can contain the init/fallback state, but it is optional)
-         * - The entry point of the bot (a.k.a init state)
+         * - The entry point of the bot (a.k.a init state). Full list of intents and states are calculated based on this entry point
          * - The default fallback state: the state that is executed if the engine doesn't find any navigable
          * transition in a state and the state doesn't contain a fallback.
          */
         val botModel = model()
-                .useIntent(greetings)
-                .useIntent(howAreYou)
-                .useIntent(fine)
-                .useIntent(sad)
                 .usePlatform(reactPlatform)
                 .listenTo(reactEventProvider)
                 .listenTo(reactIntentProvider)
-                .useState(awaitingInput)
-                .useState(handleWelcome)
-                .useState(handleWhatsUp)
-                .useState(handleFine)
-                .useState(handleSad)
                 .initState(init)
                 .defaultFallbackState(defaultFallback);
 

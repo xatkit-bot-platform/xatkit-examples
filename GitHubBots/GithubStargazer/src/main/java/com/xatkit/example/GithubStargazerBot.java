@@ -1,7 +1,7 @@
 package com.xatkit.example;
 
 import com.google.gson.JsonElement;
-import com.xatkit.core.XatkitCore;
+import com.xatkit.core.XatkitBot;
 import com.xatkit.plugins.github.platform.GithubPlatform;
 import com.xatkit.plugins.github.platform.io.GithubWebhookEventProvider;
 import com.xatkit.plugins.slack.platform.SlackPlatform;
@@ -122,8 +122,6 @@ public class GithubStargazerBot {
                 .usePlatform(slackPlatform)
                 .usePlatform(githubPlatform)
                 .listenTo(githubProvider)
-                .state(handleNewStar)
-                .state(handleDeletedStar)
                 .initState(init)
                 .defaultFallbackState(defaultFallback);
 
@@ -140,8 +138,8 @@ public class GithubStargazerBot {
          */
         botConfiguration.addProperty("xatkit.github.oauth.token", "<Your Github OAuth Token>");
 
-        XatkitCore xatkitCore = new XatkitCore(botModel, botConfiguration);
-        xatkitCore.run();
+        XatkitBot xatkitBot = new XatkitBot(botModel, botConfiguration);
+        xatkitBot.run();
         /*
          * The bot is now started, you can check http://localhost:5000/admin to test it.
          * The logs of the bot are stored in the logs folder at the root of this project.
