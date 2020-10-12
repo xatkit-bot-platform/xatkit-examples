@@ -1,7 +1,7 @@
 package com.xatkit.example;
 
 import com.google.gson.JsonElement;
-import com.xatkit.core.XatkitCore;
+import com.xatkit.core.XatkitBot;
 import com.xatkit.plugins.react.platform.ReactPlatform;
 import com.xatkit.plugins.react.platform.io.ReactEventProvider;
 import com.xatkit.plugins.react.platform.io.ReactIntentProvider;
@@ -37,7 +37,6 @@ public class WeatherBot {
         val howIsTheWeather = intent("HowIsTheWeather")
                 .trainingSentence("How is the weather today in CITY?")
                 .trainingSentence("What is the forecast for today in CITY?")
-                .context("Weather")
                 .parameter("cityName").fromFragment("CITY").entity(city());
 
 
@@ -49,8 +48,8 @@ public class WeatherBot {
         /*
          * Similarly, instantiate the intent/event providers we want to use.
          */
-        ReactEventProvider reactEventProvider = new ReactEventProvider(reactPlatform);
-        ReactIntentProvider reactIntentProvider = new ReactIntentProvider(reactPlatform);
+        ReactEventProvider reactEventProvider = reactPlatform.getReactEventProvider();
+        ReactIntentProvider reactIntentProvider = reactPlatform.getReactIntentProvider();
 
         /*
          * Create the states we want to use in our bot.
@@ -89,7 +88,7 @@ public class WeatherBot {
 
         printWeather
                 .body(context -> {
-                    String cityName = (String) context.getNlpContext().get("Weather").get("cityName");
+                    String cityName = (String) context.getIntent().getValue("cityName");
                     Map<String, Object> queryParameters = new HashMap<>();
                     queryParameters.put("q", cityName);
                     ApiResponse<JsonElement> response = restPlatform.getJsonRequest(context, "http://api" +
@@ -136,26 +135,19 @@ public class WeatherBot {
          * Creates the bot model that will be executed by the Xatkit engine.
          * <p>
          * A bot model contains:
-         * - A list of intents/events (or libraries) used by the bot. This allows to register the events/intents to
-         * the NLP
-         * service.
          * - A list of platforms used by the bot. Xatkit will take care of starting and initializing the platforms
          * when starting the bot.
          * - A list of providers the bot should listen to for events/intents. As for the platforms Xatkit will take
          * care of initializing the provider when starting the bot.
-         * - The list of states the compose the bot (this list can contain the init/fallback state, but it is optional)
          * - The entry point of the bot (a.k.a init state)
          * - The default fallback state: the state that is executed if the engine doesn't find any navigable
          * transition in a state and the state doesn't contain a fallback.
          */
         val botModel = model()
-                .useIntent(howIsTheWeather)
                 .usePlatform(reactPlatform)
                 .usePlatform(restPlatform)
                 .listenTo(reactEventProvider)
                 .listenTo(reactIntentProvider)
-                .state(awaitingInput)
-                .state(printWeather)
                 .initState(init)
                 .defaultFallbackState(defaultFallback);
 
@@ -169,8 +161,8 @@ public class WeatherBot {
          */
         botConfiguration.addProperty("xatkit.rest.platform.default.query.parameters", "units=Metric&APPID=xxx");
 
-        XatkitCore xatkitCore = new XatkitCore(botModel, botConfiguration);
-        xatkitCore.run();
+        XatkitBot xatkitBot = new XatkitBot(botModel, botConfiguration);
+        xatkitBot.run();
         /*
          * The bot is now started, you can check http://localhost:5000/admin to test it.
          * The logs of the bot are stored in the logs folder at the root of this project.
