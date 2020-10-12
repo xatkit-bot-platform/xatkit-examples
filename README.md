@@ -10,16 +10,11 @@ The bots in this repository work with the [latest version of Xatkit](https://git
 
 ## Running a Bot Example
 
-Each bot directory contains a `.properties` file you need to edit to deploy the bot in your own environment. You can read [this article](https://github.com/xatkit-bot-platform/xatkit/wiki/Deploying-chatbots) to setup DialogFlow and Slack credentials for those that need them, and additional information is provided in the comments of the `.properties` file. If you have any issue to run your bot do not hesitate to report is on our [issue tracker](https://github.com/xatkit-bot-platform/xatkit-examples/issues)!
+These example bots are run as any other bot. You can read [our getting started guide](https://github.com/xatkit-bot-platform/xatkit/wiki/Getting-Started) 
+and our instructions for [configuring](https://github.com/xatkit-bot-platform/xatkit/wiki/Xatkit-Options) and deploying bots, e.g. in 
+[Slack](https://github.com/xatkit-bot-platform/xatkit/wiki/Deploying-on-Slack) if needed. More info on [our wiki](https://github.com/xatkit-bot-platform/xatkit/wiki).
 
-Once you have set up the credentials and required information in the `.properties` file you can run the following command to execute your bot:
-
-```bash
-cd $XATKIT/bin
-./start-xatkit-windows.sh <path to the bot property file>
-```
-
-The execution logs of the bot will be printed in the current console, and a `data/` folder will be created to store runtime results and monitoring information.
+If you have any issue to run your bot do not hesitate to report is on our [issue tracker](https://github.com/xatkit-bot-platform/xatkit-examples/issues)!
 
 ## List of sample bots 
 
