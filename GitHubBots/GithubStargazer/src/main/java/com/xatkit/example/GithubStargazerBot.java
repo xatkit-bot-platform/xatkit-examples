@@ -61,7 +61,7 @@ public class GithubStargazerBot {
 
         handleNewStar
                 .body(context -> {
-                    JsonElement githubPayload = ((JsonElement) context.getNlpContext().get("data").get("json"));
+                    JsonElement githubPayload = ((JsonElement) context.getEventInstance().getValue("json"));
                     String repositoryUrl = getRepositoryUrl(githubPayload);
                     String repositoryName = getRepositoryName(githubPayload);
                     String senderUrl = getSenderUrl(githubPayload);
@@ -78,7 +78,7 @@ public class GithubStargazerBot {
 
         handleDeletedStar
                 .body(context -> {
-                    JsonElement githubPayload = ((JsonElement) context.getNlpContext().get("data").get("json"));
+                    JsonElement githubPayload =  ((JsonElement) context.getEventInstance().getValue("json"));
                     String repositoryUrl = getRepositoryUrl(githubPayload);
                     String repositoryName = getRepositoryName(githubPayload);
                     String senderUrl = getSenderUrl(githubPayload);
@@ -117,8 +117,6 @@ public class GithubStargazerBot {
          * transition in a state and the state doesn't contain a fallback.
          */
         val botModel = model()
-                .useEvent(GithubWebhookEventProvider.StarCreated)
-                .useEvent(GithubWebhookEventProvider.StarDeleted)
                 .usePlatform(slackPlatform)
                 .usePlatform(githubPlatform)
                 .listenTo(githubProvider)

@@ -10,6 +10,8 @@ import com.xatkit.plugins.rest.platform.utils.ApiResponse;
 import lombok.val;
 import org.apache.commons.configuration2.BaseConfiguration;
 import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.configuration2.builder.fluent.Configurations;
+import org.apache.commons.configuration2.ex.ConfigurationException;
 
 import java.text.MessageFormat;
 import java.util.Collections;
@@ -26,64 +28,30 @@ import static com.xatkit.dsl.DSL.state;
 
 public class WeatherBot {
 
-    /*
-     * Your bot is a plain Java application: you need to define a main method to make the created jar executable.
-     */
     public static void main(String[] args) {
 
-        /*
-         * Define the intents our bot will react to.
-         */
         val howIsTheWeather = intent("HowIsTheWeather")
                 .trainingSentence("How is the weather today in CITY?")
                 .trainingSentence("What is the forecast for today in CITY?")
                 .parameter("cityName").fromFragment("CITY").entity(city());
 
 
-        /*
-         * Instantiate the platforms we will use in the bot definition.
-         */
         ReactPlatform reactPlatform = new ReactPlatform();
         RestPlatform restPlatform = new RestPlatform();
-        /*
-         * Similarly, instantiate the intent/event providers we want to use.
-         */
         ReactEventProvider reactEventProvider = reactPlatform.getReactEventProvider();
         ReactIntentProvider reactIntentProvider = reactPlatform.getReactIntentProvider();
 
-        /*
-         * Create the states we want to use in our bot.
-         */
         val init = state("Init");
         val awaitingInput = state("AwaitingInput");
         val printWeather = state("PrintWeather");
 
-        /*
-         * Specify the content of the bot states (i.e. the behavior of the bot).
-         */
         init
                 .next()
-                /*
-                 * We check that the received event matches the ClientReady event defined in the
-                 * ReactEventProvider. The list of events defined in a provider is available in the provider's
-                 * wiki page.
-                 */
                 .when(eventIs(ReactEventProvider.ClientReady)).moveTo(awaitingInput);
 
 
         awaitingInput
                 .next()
-                /*
-                 * The Xatkit DSL offers dedicated predicates (intentIs(IntentDefinition) and eventIs
-                 * (EventDefinition) to check received intents/events.
-                 * <p>
-                 * You can also check a condition over the underlying bot state using the following syntax:
-                 * <pre>
-                 * {@code
-                 * .when(context -> [condition manipulating the context]).moveTo(state);
-                 * }
-                 * </pre>
-                 */
                 .when(intentIs(howIsTheWeather)).moveTo(printWeather);
 
         printWeather
@@ -99,10 +67,10 @@ public class WeatherBot {
                                 "temp").getAsDouble());
                         long tempMin =
                                 Math.round(response.getBody().getAsJsonObject().get("main").getAsJsonObject().get(
-                                        "tempMin").getAsDouble());
+                                        "temp_min").getAsDouble());
                         long tempMax =
                                 Math.round(response.getBody().getAsJsonObject().get("main").getAsJsonObject().get(
-                                        "tempMax").getAsDouble());
+                                        "temp_max").getAsDouble());
                         String weather =
                                 response.getBody().getAsJsonObject().get("weather").getAsJsonArray().get(0).getAsJsonObject().get("description").getAsString();
                         String weatherIcon =
@@ -115,8 +83,7 @@ public class WeatherBot {
                     } else if (response.getStatus() == 400) {
                         reactPlatform.reply(context, "Oops, I couldn't find this city");
                     } else {
-                        reactPlatform.reply(context, "Sorry, an error occurred when accessing the openweathermap " +
-                                "service");
+                        reactPlatform.reply(context, "Sorry, an error " +  response.getStatus() + " " + response.getStatusText() + " occurred when accessing the openweathermap service");
                     }
 
                 })
@@ -124,25 +91,9 @@ public class WeatherBot {
                 .moveTo(awaitingInput);
 
 
-        /*
-         * The state that is executed if the engine doesn't find any navigable transition in a state and the state
-         * doesn't contain a fallback.
-         */
         val defaultFallback = fallbackState()
                 .body(context -> reactPlatform.reply(context, "Sorry, I didn't, get it"));
 
-        /*
-         * Creates the bot model that will be executed by the Xatkit engine.
-         * <p>
-         * A bot model contains:
-         * - A list of platforms used by the bot. Xatkit will take care of starting and initializing the platforms
-         * when starting the bot.
-         * - A list of providers the bot should listen to for events/intents. As for the platforms Xatkit will take
-         * care of initializing the provider when starting the bot.
-         * - The entry point of the bot (a.k.a init state)
-         * - The default fallback state: the state that is executed if the engine doesn't find any navigable
-         * transition in a state and the state doesn't contain a fallback.
-         */
         val botModel = model()
                 .usePlatform(reactPlatform)
                 .usePlatform(restPlatform)
@@ -152,20 +103,19 @@ public class WeatherBot {
                 .defaultFallbackState(defaultFallback);
 
         Configuration botConfiguration = new BaseConfiguration();
-        /*
-         * Xatkit configuration to add a delay before sending the bot's answers.
-         */
+        Configurations configurations = new Configurations();
+        try {
+            botConfiguration =
+                    configurations.properties(WeatherBot.class.getClassLoader().getResource("bot" +
+                            ".properties"));
+        } catch (ConfigurationException e) {
+            e.printStackTrace();
+            System.out.println("file not found");
+        }
         botConfiguration.addProperty("xatkit.message.delay", 500);
-        /*
-         * Rest platform configuration: the provided parameters are always added to the sent requests.
-         */
-        botConfiguration.addProperty("xatkit.rest.platform.default.query.parameters", "units=Metric&APPID=xxx");
+        botConfiguration.addProperty("xatkit.rest.default.query.parameters", "units=Metric&appid=XXX");
 
         XatkitBot xatkitBot = new XatkitBot(botModel, botConfiguration);
         xatkitBot.run();
-        /*
-         * The bot is now started, you can check http://localhost:5000/admin to test it.
-         * The logs of the bot are stored in the logs folder at the root of this project.
-         */
     }
 }
