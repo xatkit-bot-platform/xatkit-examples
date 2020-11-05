@@ -1,6 +1,7 @@
 package com.xatkit.example;
 
 import com.xatkit.core.XatkitBot;
+import com.xatkit.core.recognition.dialogflow.DialogFlowConfiguration;
 import com.xatkit.library.core.CoreLibrary;
 import com.xatkit.plugins.giphy.platform.GiphyPlatform;
 import com.xatkit.plugins.react.platform.ReactPlatform;
@@ -17,6 +18,7 @@ import static com.xatkit.dsl.DSL.intent;
 import static com.xatkit.dsl.DSL.intentIs;
 import static com.xatkit.dsl.DSL.model;
 import static com.xatkit.dsl.DSL.state;
+import static java.util.Objects.isNull;
 
 public class GiphyBot {
 
@@ -29,13 +31,21 @@ public class GiphyBot {
          * Define the intents our bot will react to.
          */
         val canYou = intent("CanYou")
-                .trainingSentence("Can you this?")
-                .trainingSentence("Have you seen this?")
-                .trainingSentence("Do you know this?")
-                .trainingSentence("Any thoughts about this?")
-                .trainingSentence("What do you think about this?")
+                .trainingSentence("Can you dance?")
+                .trainingSentence("Have you seen Scarface?")
+                .trainingSentence("Do you know Jim Carrey?")
+                .trainingSentence("Any thoughts about politics?")
+                .trainingSentence("What do you think about testing?")
+                .trainingSentence("dance?")
+
+                .trainingSentence("Can you dance")
+                .trainingSentence("Have you seen Scarface")
+                .trainingSentence("Do you know Jim Carrey")
+                .trainingSentence("Any thoughts about politics")
+                .trainingSentence("What do you think about testing")
+                .trainingSentence("dance")
                 .parameter("request")
-                .fromFragment("this")
+                .fromFragment("dance", "Scarface", "Jim Carrey", "politics", "testing")
                 .entity(any());
 
         /*
@@ -54,6 +64,7 @@ public class GiphyBot {
          */
         val init = state("Init");
         val awaitingInput = state("AwaitingInput");
+        val initialGreetings = state("InitialGreetings");
         val handleGreetings = state("HandleGreetings");
         val handleCanYou = state("HandleCanYou");
         val handleHelp = state("HandleHelp");
@@ -68,7 +79,16 @@ public class GiphyBot {
                  * ReactEventProvider. The list of events defined in a provider is available in the provider's
                  * wiki page.
                  */
-                .when(eventIs(ReactEventProvider.ClientReady)).moveTo(awaitingInput);
+                .when(eventIs(ReactEventProvider.ClientReady)).moveTo(initialGreetings);
+
+        initialGreetings
+                .body(context -> {
+                    reactPlatform.reply(context, "Hi! What can I do for you?  \nYou can " +
+                            "start with something like `Can you <whatever you want>?`  \nThis bot is inspired by [this " +
+                            "article](https://uxdesign.cc/wanna-build-a-superbot-that-can-do-anything-heres-how-d8eeeeef1882)");
+                })
+                .next()
+                    .moveTo(awaitingInput);
 
         awaitingInput
                 .next()
@@ -85,7 +105,8 @@ public class GiphyBot {
                  */
                 .when(intentIs(CoreLibrary.Greetings)).moveTo(handleGreetings)
                 .when(intentIs(canYou)).moveTo(handleCanYou)
-                .when(intentIs(CoreLibrary.Help)).moveTo(handleHelp);
+                .when(intentIs(CoreLibrary.Help)).moveTo(handleHelp)
+                .when(eventIs(ReactEventProvider.ClientReady)).moveTo(awaitingInput);
 
 
         handleGreetings
@@ -97,8 +118,14 @@ public class GiphyBot {
 
         handleCanYou
                 .body(context -> {
-                    String url = giphyPlatform.getGif(context, (String) context.getIntent().getValue("request"));
-                    reactPlatform.reply(context, "Sure! [look](" + url + ")");
+                    String request = (String) context.getIntent().getValue("request");
+                    if(isNull(request) || request.isEmpty()) {
+                        reactPlatform.reply(context, "Sorry, I didn't get it, could you rephrase?");
+                    } else {
+                        String url = giphyPlatform.getGif(context, request);
+                        reactPlatform.reply(context, "Sure!  \n![look](" + url + ")");
+                        reactPlatform.reply(context, "Anything else?");
+                    }
                 })
                 .next()
                     .moveTo(awaitingInput);
@@ -132,17 +159,10 @@ public class GiphyBot {
          * transition in a state and the state doesn't contain a fallback.
          */
         val botModel = model()
-                .useIntent(CoreLibrary.Greetings)
-                .useIntent(CoreLibrary.Help)
-                .useIntent(canYou)
                 .usePlatform(reactPlatform)
                 .usePlatform(giphyPlatform)
                 .listenTo(reactEventProvider)
                 .listenTo(reactIntentProvider)
-                .useState(awaitingInput)
-                .useState(handleGreetings)
-                .useState(handleCanYou)
-                .useState(handleHelp)
                 .initState(init)
                 .defaultFallbackState(defaultFallback);
 
@@ -150,12 +170,13 @@ public class GiphyBot {
         /*
          * Add you Giphy token here to have access to the Giphy API (this is required by the Giphy platform).
          */
-        botConfiguration.addProperty("xatkit.giphy.token", "<Your Giphy API token>");
+        botConfiguration.addProperty("xatkit.giphy.token", "<Your Giphy Token>");
         /*
          * Add configuration properties (e.g. authentication tokens, platform tuning, intent provider to use).
          * Check the corresponding platform's wiki page for further information on optional/mandatory parameters and
          * their values.
          */
+
 
         XatkitBot xatkitBot = new XatkitBot(botModel, botConfiguration);
         xatkitBot.run();
