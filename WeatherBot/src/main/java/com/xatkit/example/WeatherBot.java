@@ -10,8 +10,6 @@ import com.xatkit.plugins.rest.platform.utils.ApiResponse;
 import lombok.val;
 import org.apache.commons.configuration2.BaseConfiguration;
 import org.apache.commons.configuration2.Configuration;
-import org.apache.commons.configuration2.builder.fluent.Configurations;
-import org.apache.commons.configuration2.ex.ConfigurationException;
 
 import java.text.MessageFormat;
 import java.util.Collections;
@@ -103,15 +101,6 @@ public class WeatherBot {
                 .defaultFallbackState(defaultFallback);
 
         Configuration botConfiguration = new BaseConfiguration();
-        Configurations configurations = new Configurations();
-        try {
-            botConfiguration =
-                    configurations.properties(WeatherBot.class.getClassLoader().getResource("bot" +
-                            ".properties"));
-        } catch (ConfigurationException e) {
-            e.printStackTrace();
-            System.out.println("file not found");
-        }
         botConfiguration.addProperty("xatkit.message.delay", 500);
         botConfiguration.addProperty("xatkit.rest.default.query.parameters", "units=Metric&appid=XXX");
 
