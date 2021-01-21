@@ -14,6 +14,8 @@ These example bots are run as any other bot. You can read [our getting started g
 and our instructions for [configuring](https://github.com/xatkit-bot-platform/xatkit/wiki/Xatkit-Options) and deploying bots, e.g. in 
 [Slack](https://github.com/xatkit-bot-platform/xatkit/wiki/Deploying-on-Slack) if needed. More info on [our wiki](https://github.com/xatkit-bot-platform/xatkit/wiki).
 
+Make sure you take the time to read the documentation corresponding to the platform/s used by the bot before trying to run it.
+
 If you have any issue to run your bot do not hesitate to report is on our [issue tracker](https://github.com/xatkit-bot-platform/xatkit-examples/issues)!
 
 ## List of sample bots 
