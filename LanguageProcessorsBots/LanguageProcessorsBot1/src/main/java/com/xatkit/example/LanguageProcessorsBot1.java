@@ -8,6 +8,7 @@ import lombok.val;
 import org.apache.commons.configuration2.BaseConfiguration;
 import org.apache.commons.configuration2.Configuration;
 
+import static com.xatkit.dsl.DSL.any;
 import static com.xatkit.dsl.DSL.eventIs;
 import static com.xatkit.dsl.DSL.fallbackState;
 import static com.xatkit.dsl.DSL.intent;
@@ -30,64 +31,29 @@ public class LanguageProcessorsBot1 {
 
         /*
          * Define the intents our bot will react to.
-         * <p>
-         * In this example we want our bot to answer greetings inputs and "how are you" questions, so we create an
-         * intent for each, and we give a few example training sentences to configure the underlying NLP engine.
-         * <p>
-         * Note that we recommend the usage of Lombok's val when using the Xatkit DSL: the fluent API defines many
-         * interfaces that are not useful for bot designers. If you don't want to use val you can use our own
-         * interface IntentVar instead.
          */
-        val greetings = intent("Greetings")
-            .trainingSentence("Hi")
-            .trainingSentence("Hello")
-            .trainingSentence("Good morning")
-            .trainingSentence("Good afternoon");
+        val search = intent("Search")
+                .trainingSentence("KEYWORD")
+                .parameter("keyword").fromFragment("KEYWORD").entity(any());
 
-        val howAreYou = intent("HowAreYou")
-                .trainingSentence("How are you?")
-                .trainingSentence("What's up?")
-                .trainingSentence("How do you feel?");
 
         /*
          * Instantiate the platform we will use in the bot definition.
-         * <p>
-         * Instantiating the platform before specifying the bot's states creates a usable reference that can be
-         * accessed in the states, e.g:
-         * <pre>
-         * {@code
-         * myState
-         *   .body(context -> reactPlatform.reply(context, "Hi, nice to meet you!");
-         * }
-         * </pre>
          */
         ReactPlatform reactPlatform = new ReactPlatform();
         /*
          * Similarly, instantiate the intent/event providers we want to use.
-         * <p>
-         * In our example we want to receive intents (i.e. interpreted user inputs) from our react client, so we
-         * create a ReactIntentProvider instance. We also want to receive events from the react client (e.g. when the
-         * client's connection is ready), so we create a ReactEventProvider instance.
-         * <p>
-         * We can instantiate as many providers as we want, including providers from different platforms.
          */
         ReactEventProvider reactEventProvider = new ReactEventProvider(reactPlatform);
         ReactIntentProvider reactIntentProvider = new ReactIntentProvider(reactPlatform);
 
         /*
          * Create the states we want to use in our bot.
-         * <p>
-         * Similarly to platform/provider creation, we create the state variables first, and we specify their content
-         * later. This allows to define circular references between states (e.g. AwaitingQuestion -> HandleWelcome ->
-         * AwaitingQuestion).
-         * <p>
-         * This is not mandatory though, the important point is to have fully specified states when we build the
-         * final bot model.
          */
         val init = state("Init");
         val awaitingInput = state("AwaitingInput");
         val handleWelcome = state("HandleWelcome");
-        val handleWhatsUp = state("HandleWhatsUp");
+        val handleSearch = state("HandleSearch");
 
         /*
          * Specify the content of the bot states (i.e. the behavior of the bot).
@@ -108,42 +74,46 @@ public class LanguageProcessorsBot1 {
          */
         init
                 .next()
-                    /*
-                     * We check that the received event matches the ClientReady event defined in the
-                     * ReactEventProvider. The list of events defined in a provider is available in the provider's
-                     * wiki page.
-                     */
-                    .when(eventIs(ReactEventProvider.ClientReady)).moveTo(awaitingInput);
+                /*
+                 * We check that the received event matches the ClientReady event defined in the
+                 * ReactEventProvider. The list of events defined in a provider is available in the provider's
+                 * wiki page.
+                 */
+                .when(eventIs(ReactEventProvider.ClientReady)).moveTo(handleWelcome);
 
         awaitingInput
                 .next()
-                    /*
-                     * The Xatkit DSL offers dedicated predicates (intentIs(IntentDefinition) and eventIs
-                     * (EventDefinition) to check received intents/events.
-                     * <p>
-                     * You can also check a condition over the underlying bot state using the following syntax:
-                     * <pre>
-                     * {@code
-                     * .when(context -> [condition manipulating the context]).moveTo(state);
-                     * }
-                     * </pre>
-                     */
-                    .when(intentIs(greetings)).moveTo(handleWelcome)
-                    .when(intentIs(howAreYou)).moveTo(handleWhatsUp);
+                /*
+                 * The Xatkit DSL offers dedicated predicates (intentIs(IntentDefinition) and eventIs
+                 * (EventDefinition) to check received intents/events.
+                 * <p>
+                 * You can also check a condition over the underlying bot state using the following syntax:
+                 * <pre>
+                 * {@code
+                 * .when(context -> [condition manipulating the context]).moveTo(state);
+                 * }
+                 * </pre>
+                 */
+                .when(intentIs(search)).moveTo(handleSearch);
 
         handleWelcome
-                .body(context -> reactPlatform.reply(context, "Hi, nice to meet you!"))
+                .body(context -> reactPlatform.reply(context,
+                        "Hi, I am your favourite bot :)"))
                 .next()
-                    /*
-                     * A transition that is automatically navigated: in this case once we have answered the user we
-                     * want to go back in a state where we wait for the next intent.
-                     */
-                    .moveTo(awaitingInput);
+                /*
+                 * A transition that is automatically navigated: in this case once we have answered the user we
+                 * want to go back in a state where we wait for the next intent.
+                 */
+                .moveTo(awaitingInput);
 
-        handleWhatsUp
-                .body(context -> reactPlatform.reply(context, "I am fine and you?"))
+        handleSearch
+                .body(context -> {
+                    String keyword = (String) context.getIntent().getValue("keyword");
+                    Boolean isYesNo = (Boolean) context.getIntent().getNlpData().get("nlp.stanford.isYesNo");
+                    reactPlatform.reply(context, "Your keyword is: \"" + keyword + "\", and isYesNo = " + isYesNo);
+                })
                 .next()
-                    .moveTo(awaitingInput);
+                .moveTo(awaitingInput);
 
         /*
          * The state that is executed if the engine doesn't find any navigable transition in a state and the state
@@ -155,7 +125,7 @@ public class LanguageProcessorsBot1 {
          * Note that every Xatkit bot needs a default fallback state.
          */
         val defaultFallback = fallbackState()
-                .body(context -> reactPlatform.reply(context, "Sorry, I didn't, get it"));
+                .body(context -> reactPlatform.reply(context, "Sorry, I didn't get it"));
 
         /*
          * Creates the bot model that will be executed by the Xatkit engine.
@@ -182,6 +152,13 @@ public class LanguageProcessorsBot1 {
          * Check the corresponding platform's wiki page for further information on optional/mandatory parameters and
          * their values.
          */
+        botConfiguration.setProperty("xatkit.recognition.postprocessors", "IsEnglishYesNoQuestionPostProcessor");
+        //botConfiguration.setProperty("xatkit.recognition.postprocessors", "RemoveEnglishStopWordsPostProcessor");
+        botConfiguration.setProperty("xatkit.server.port", 5010);
+        botConfiguration.setProperty("xatkit.dialogflow.projectId", "languageprocessorsbot-oifc");
+        botConfiguration.setProperty("xatkit.dialogflow.credentials.path", "/home/marcos/GitHub/languageprocessorsbot-oifc-de502569be3a.json");
+        botConfiguration.setProperty("xatkit.dialogflow.language", "en-Us");
+        botConfiguration.setProperty("xatkit.dialogflow.clean_on_startup", true);
 
         XatkitBot xatkitBot = new XatkitBot(botModel, botConfiguration);
         xatkitBot.run();
