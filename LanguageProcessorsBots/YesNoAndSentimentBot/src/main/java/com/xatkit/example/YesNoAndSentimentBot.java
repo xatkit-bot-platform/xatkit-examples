@@ -15,6 +15,7 @@ import static com.xatkit.dsl.DSL.intent;
 import static com.xatkit.dsl.DSL.intentIs;
 import static com.xatkit.dsl.DSL.model;
 import static com.xatkit.dsl.DSL.state;
+import static com.xatkit.core.recognition.IntentRecognitionProviderFactoryConfiguration.*;
 
 import java.util.Random;
 
@@ -184,11 +185,10 @@ public class YesNoAndSentimentBot {
          * their values.
          */
 
-        botConfiguration.setProperty("xatkit.recognition.postprocessors", "IsEnglishYesNoQuestion, EnglishSentiment,"
-                /*+ "RemoveEnglishStopWords"*/);
-        botConfiguration.setProperty("xatkit.server.port", 5010);
-        botConfiguration.setProperty("xatkit.dialogflow.projectId", "languageprocessorsbot-oifc");
-        botConfiguration.setProperty("xatkit.dialogflow.credentials.path", "/home/marcos/GitHub/languageprocessorsbot-oifc-de502569be3a.json");
+        botConfiguration.addProperty(RECOGNITION_POSTPROCESSORS_KEY,
+                "IsEnglishYesNoQuestion, EnglishSentiment");
+        botConfiguration.setProperty("xatkit.dialogflow.projectId", "YOUR PROJECT ID");
+        botConfiguration.setProperty("xatkit.dialogflow.credentials.path", "YOUR CREDENTIALS FILE PATH");
         botConfiguration.setProperty("xatkit.dialogflow.language", "en-Us");
         botConfiguration.setProperty("xatkit.dialogflow.clean_on_startup", true);
 
