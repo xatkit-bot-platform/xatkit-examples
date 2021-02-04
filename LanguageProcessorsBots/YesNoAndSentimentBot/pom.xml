@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.xatkit</groupId>
-    <artifactId>lang-proc-bot1</artifactId>
+    <artifactId>yesno-sentiment-bot</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
     <packaging>jar</packaging>
