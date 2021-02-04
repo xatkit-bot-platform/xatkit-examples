@@ -159,10 +159,10 @@
                         </descriptorRefs>
                         <archive>
                             <manifest>
-                                <mainClass>com.xatkit.example.LanguageProcessorsBot1</mainClass>
+                                <mainClass>com.xatkit.example.YesNoAndSentimentBot</mainClass>
                             </manifest>
                         </archive>
-                        <finalName>lang-proc-bot1</finalName>
+                        <finalName>yesno-sentiment-bot</finalName>
                     </configuration>
                 </plugin>
 

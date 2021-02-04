@@ -16,13 +16,15 @@ import static com.xatkit.dsl.DSL.intentIs;
 import static com.xatkit.dsl.DSL.model;
 import static com.xatkit.dsl.DSL.state;
 
+import java.util.Random;
+
 /**
  * This is an example greetings bot designed with Xatkit.
  * <p>
  * You can check our <a href="https://github.com/xatkit-bot-platform/xatkit/wiki">wiki</a>
  * to learn more about bot creation, supported platforms, and advanced usage.
  */
-public class LanguageProcessorsBot1 {
+public class YesNoAndSentimentBot {
 
     /*
      * Your bot is a plain Java application: you need to define a main method to make the created jar executable.
@@ -32,11 +34,13 @@ public class LanguageProcessorsBot1 {
         /*
          * Define the intents our bot will react to.
          */
-        val search = intent("Search")
-                .trainingSentence("KEYWORD")
-                .parameter("keyword").fromFragment("KEYWORD").entity(any());
+        val question = intent("Question")
+                .trainingSentence("QUESTION?")
+                .parameter("question").fromFragment("QUESTION").entity(any());
 
-
+        val affirmation = intent("Affirmation")
+                .trainingSentence("AFFIRMATION")
+                .parameter("affirmation").fromFragment("AFFIRMATION").entity(any());
         /*
          * Instantiate the platform we will use in the bot definition.
          */
@@ -53,7 +57,8 @@ public class LanguageProcessorsBot1 {
         val init = state("Init");
         val awaitingInput = state("AwaitingInput");
         val handleWelcome = state("HandleWelcome");
-        val handleSearch = state("HandleSearch");
+        val handleQuestion = state("HandleQuestion");
+        val handleAffirmation = state("HandleAffirmation");
 
         /*
          * Specify the content of the bot states (i.e. the behavior of the bot).
@@ -81,6 +86,16 @@ public class LanguageProcessorsBot1 {
                  */
                 .when(eventIs(ReactEventProvider.ClientReady)).moveTo(handleWelcome);
 
+        handleWelcome
+                .body(context -> reactPlatform.reply(context,
+                        "Hi, I am your favourite bot :) I can answer yes/no questions and be your psychologist!"))
+                .next()
+                /*
+                 * A transition that is automatically navigated: in this case once we have answered the user we
+                 * want to go back in a state where we wait for the next intent.
+                 */
+                .moveTo(awaitingInput);
+
         awaitingInput
                 .next()
                 /*
@@ -94,23 +109,39 @@ public class LanguageProcessorsBot1 {
                  * }
                  * </pre>
                  */
-                .when(intentIs(search)).moveTo(handleSearch);
+                .when(intentIs(question)).moveTo(handleQuestion)
+                .when(intentIs(affirmation)).moveTo(handleAffirmation);
 
-        handleWelcome
-                .body(context -> reactPlatform.reply(context,
-                        "Hi, I am your favourite bot :)"))
+
+        handleQuestion
+                .body(context -> {
+                    //String keyword = (String) context.getIntent().getValue("keyword");
+                    Boolean isYesNo = (Boolean) context.getIntent().getNlpData().get("nlp.stanford.isYesNo");
+                    //String sentiment = (String) context.getIntent().getNlpData().get("nlp.stanford.sentiment");
+                    //reactPlatform.reply(context, "Your keyword is: \"" + keyword + "\", and isYesNo = "
+                    //        + isYesNo + ", and sentiment = " + sentiment);
+                    if (isYesNo) {
+                        Random rd = new Random();
+                        String answer;
+                        if (rd.nextBoolean()) {
+                            answer = "Yes.";
+                        }
+                        else {
+                            answer = "No.";
+                        }
+                        reactPlatform.reply(context, answer);
+                    }
+                    else {
+                        reactPlatform.reply(context, "Sorry, I only answer yes/no questions.");
+                    }
+                })
                 .next()
-                /*
-                 * A transition that is automatically navigated: in this case once we have answered the user we
-                 * want to go back in a state where we wait for the next intent.
-                 */
                 .moveTo(awaitingInput);
 
-        handleSearch
+        handleAffirmation
                 .body(context -> {
-                    String keyword = (String) context.getIntent().getValue("keyword");
-                    Boolean isYesNo = (Boolean) context.getIntent().getNlpData().get("nlp.stanford.isYesNo");
-                    reactPlatform.reply(context, "Your keyword is: \"" + keyword + "\", and isYesNo = " + isYesNo);
+                    String sentiment = (String) context.getIntent().getNlpData().get("nlp.stanford.sentiment");
+                    reactPlatform.reply(context, "You have a " + sentiment.toLowerCase() + " attitude.");
                 })
                 .next()
                 .moveTo(awaitingInput);
@@ -152,8 +183,9 @@ public class LanguageProcessorsBot1 {
          * Check the corresponding platform's wiki page for further information on optional/mandatory parameters and
          * their values.
          */
-        botConfiguration.setProperty("xatkit.recognition.postprocessors", "IsEnglishYesNoQuestionPostProcessor");
-        //botConfiguration.setProperty("xatkit.recognition.postprocessors", "RemoveEnglishStopWordsPostProcessor");
+
+        botConfiguration.setProperty("xatkit.recognition.postprocessors", "IsEnglishYesNoQuestion, EnglishSentiment,"
+                /*+ "RemoveEnglishStopWords"*/);
         botConfiguration.setProperty("xatkit.server.port", 5010);
         botConfiguration.setProperty("xatkit.dialogflow.projectId", "languageprocessorsbot-oifc");
         botConfiguration.setProperty("xatkit.dialogflow.credentials.path", "/home/marcos/GitHub/languageprocessorsbot-oifc-de502569be3a.json");
