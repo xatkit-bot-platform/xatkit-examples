@@ -17,15 +17,13 @@ import static com.xatkit.dsl.DSL.model;
 import static com.xatkit.dsl.DSL.state;
 import static com.xatkit.core.recognition.IntentRecognitionProviderFactoryConfiguration.*;
 
-import java.util.Random;
-
 /**
  * This is an example greetings bot designed with Xatkit.
  * <p>
  * You can check our <a href="https://github.com/xatkit-bot-platform/xatkit/wiki">wiki</a>
  * to learn more about bot creation, supported platforms, and advanced usage.
  */
-public class YesNoAndSentimentBot {
+public class RemoveStopWordsBot {
 
     /*
      * Your bot is a plain Java application: you need to define a main method to make the created jar executable.
@@ -35,13 +33,9 @@ public class YesNoAndSentimentBot {
         /*
          * Define the intents our bot will react to.
          */
-        val question = intent("Question")
-                .trainingSentence("QUESTION?")
-                .parameter("question").fromFragment("QUESTION").entity(any());
-
-        val affirmation = intent("Affirmation")
-                .trainingSentence("AFFIRMATION")
-                .parameter("affirmation").fromFragment("AFFIRMATION").entity(any());
+        val list = intent("List")
+                .trainingSentence("LIST")
+                .parameter("list").fromFragment("LIST").entity(any());
         /*
          * Instantiate the platform we will use in the bot definition.
          */
@@ -58,8 +52,7 @@ public class YesNoAndSentimentBot {
         val init = state("Init");
         val awaitingInput = state("AwaitingInput");
         val handleWelcome = state("HandleWelcome");
-        val handleQuestion = state("HandleQuestion");
-        val handleAffirmation = state("HandleAffirmation");
+        val handleList = state("HandleList");
 
         /*
          * Specify the content of the bot states (i.e. the behavior of the bot).
@@ -89,7 +82,7 @@ public class YesNoAndSentimentBot {
 
         handleWelcome
                 .body(context -> reactPlatform.reply(context,
-                        "Hi, I am your favourite bot :) I can answer yes/no questions and be your psychologist!"))
+                        "Hi, I am your favourite bot :)"))
                 .next()
                 /*
                  * A transition that is automatically navigated: in this case once we have answered the user we
@@ -110,35 +103,15 @@ public class YesNoAndSentimentBot {
                  * }
                  * </pre>
                  */
-                .when(intentIs(question)).moveTo(handleQuestion)
-                .when(intentIs(affirmation)).moveTo(handleAffirmation);
+                .when(intentIs(list)).moveTo(handleList);
 
-
-        handleQuestion
+        handleList
                 .body(context -> {
-                    Boolean isYesNo = (Boolean) context.getIntent().getNlpData().get("nlp.stanford.isYesNo");
-                    if (isYesNo) {
-                        Random rd = new Random();
-                        String answer;
-                        if (rd.nextBoolean()) {
-                            answer = "Yes.";
-                        }
-                        else {
-                            answer = "No.";
-                        }
-                        reactPlatform.reply(context, answer);
+                    String list_str = (String) context.getIntent().getValue("list");
+                    String[] items = list_str.split(",");
+                    for (String item : items) {
+                        reactPlatform.reply(context, item);
                     }
-                    else {
-                        reactPlatform.reply(context, "Sorry, I only answer yes/no questions.");
-                    }
-                })
-                .next()
-                .moveTo(awaitingInput);
-
-        handleAffirmation
-                .body(context -> {
-                    String sentiment = (String) context.getIntent().getNlpData().get("nlp.stanford.sentiment");
-                    reactPlatform.reply(context, "You have a " + sentiment.toLowerCase() + " attitude.");
                 })
                 .next()
                 .moveTo(awaitingInput);
@@ -181,10 +154,9 @@ public class YesNoAndSentimentBot {
          * their values.
          */
 
-        botConfiguration.addProperty(RECOGNITION_POSTPROCESSORS_KEY,
-                "IsEnglishYesNoQuestion, EnglishSentiment");
+        botConfiguration.setProperty(RECOGNITION_POSTPROCESSORS_KEY,"RemoveEnglishStopWords");
         botConfiguration.setProperty("xatkit.dialogflow.projectId", "YOUR PROJECT ID");
-        botConfiguration.setProperty("xatkit.dialogflow.credentials.path", "YOUR CREDENTIALS FILE PATH");
+        botConfiguration.setProperty("xatkit.dialogflow.credentials.path", "YOUR CREDENTIALS PATH");
         botConfiguration.setProperty("xatkit.dialogflow.language", "en-Us");
         botConfiguration.setProperty("xatkit.dialogflow.clean_on_startup", true);
 

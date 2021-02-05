@@ -1,6 +1,9 @@
 package com.xatkit.example;
 
+import com.google.api.services.youtube.YouTube;
 import com.xatkit.core.XatkitBot;
+import com.xatkit.example.utils.Video;
+import com.xatkit.execution.StateContext;
 import com.xatkit.plugins.react.platform.ReactPlatform;
 import com.xatkit.plugins.react.platform.io.ReactEventProvider;
 import com.xatkit.plugins.react.platform.io.ReactIntentProvider;
@@ -8,16 +11,20 @@ import lombok.val;
 import org.apache.commons.configuration2.BaseConfiguration;
 import org.apache.commons.configuration2.Configuration;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+
 import static com.xatkit.dsl.DSL.any;
+import static com.xatkit.dsl.DSL.integer;
 import static com.xatkit.dsl.DSL.eventIs;
 import static com.xatkit.dsl.DSL.fallbackState;
 import static com.xatkit.dsl.DSL.intent;
 import static com.xatkit.dsl.DSL.intentIs;
 import static com.xatkit.dsl.DSL.model;
 import static com.xatkit.dsl.DSL.state;
-import static com.xatkit.core.recognition.IntentRecognitionProviderFactoryConfiguration.*;
-
-import java.util.Random;
+import static com.xatkit.example.YoutubeAPI.getSearchListResponse;
+import static com.xatkit.example.YoutubeAPI.getService;
+import static com.xatkit.example.utils.ResponseParser.getData;
 
 /**
  * This is an example greetings bot designed with Xatkit.
@@ -25,23 +32,40 @@ import java.util.Random;
  * You can check our <a href="https://github.com/xatkit-bot-platform/xatkit/wiki">wiki</a>
  * to learn more about bot creation, supported platforms, and advanced usage.
  */
-public class YesNoAndSentimentBot {
+public class YoutubeBot {
+
+    private static void replyYoutubeBot(StateContext context, ReactPlatform reactPlatform, String response, String keyword) {
+        Video[] data = getData(response);
+        String msg = "I searched \"" + keyword + "\" and I found these videos for you...\n";
+        reactPlatform.reply(context, msg);
+
+        for (Video video : data) {
+            reactPlatform.replyLinkSnippet(context, video.getVideoTitle(), video.getVideoURL(), video.getThumbnailURL());
+        }
+    }
 
     /*
      * Your bot is a plain Java application: you need to define a main method to make the created jar executable.
      */
-    public static void main(String[] args) {
+    public static void main(String[] args)
+            throws GeneralSecurityException, IOException {
+
+        YouTube youtubeService = getService();
 
         /*
          * Define the intents our bot will react to.
          */
-        val question = intent("Question")
-                .trainingSentence("QUESTION?")
-                .parameter("question").fromFragment("QUESTION").entity(any());
+        val search = intent("Search")
+                .trainingSentence("Search KEYWORD")
+                .trainingSentence("Search NUM videos of KEYWORD")
+                .trainingSentence("Search NUM videos about KEYWORD")
+                .trainingSentence("Give me KEYWORD")
+                .trainingSentence("Give me NUM videos of KEYWORD")
+                .trainingSentence("Give me NUM videos about KEYWORD")
+                .trainingSentence("Search KEYWORD and give me NUM videos")
+                .parameter("keyword").fromFragment("KEYWORD").entity(any())
+                .parameter("num").fromFragment("NUM").entity(integer());
 
-        val affirmation = intent("Affirmation")
-                .trainingSentence("AFFIRMATION")
-                .parameter("affirmation").fromFragment("AFFIRMATION").entity(any());
         /*
          * Instantiate the platform we will use in the bot definition.
          */
@@ -58,8 +82,7 @@ public class YesNoAndSentimentBot {
         val init = state("Init");
         val awaitingInput = state("AwaitingInput");
         val handleWelcome = state("HandleWelcome");
-        val handleQuestion = state("HandleQuestion");
-        val handleAffirmation = state("HandleAffirmation");
+        val handleSearch = state("HandleSearch");
 
         /*
          * Specify the content of the bot states (i.e. the behavior of the bot).
@@ -80,68 +103,53 @@ public class YesNoAndSentimentBot {
          */
         init
                 .next()
-                /*
-                 * We check that the received event matches the ClientReady event defined in the
-                 * ReactEventProvider. The list of events defined in a provider is available in the provider's
-                 * wiki page.
-                 */
-                .when(eventIs(ReactEventProvider.ClientReady)).moveTo(handleWelcome);
-
-        handleWelcome
-                .body(context -> reactPlatform.reply(context,
-                        "Hi, I am your favourite bot :) I can answer yes/no questions and be your psychologist!"))
-                .next()
-                /*
-                 * A transition that is automatically navigated: in this case once we have answered the user we
-                 * want to go back in a state where we wait for the next intent.
-                 */
-                .moveTo(awaitingInput);
+                    /*
+                     * We check that the received event matches the ClientReady event defined in the
+                     * ReactEventProvider. The list of events defined in a provider is available in the provider's
+                     * wiki page.
+                     */
+                    .when(eventIs(ReactEventProvider.ClientReady)).moveTo(handleWelcome);
 
         awaitingInput
                 .next()
-                /*
-                 * The Xatkit DSL offers dedicated predicates (intentIs(IntentDefinition) and eventIs
-                 * (EventDefinition) to check received intents/events.
-                 * <p>
-                 * You can also check a condition over the underlying bot state using the following syntax:
-                 * <pre>
-                 * {@code
-                 * .when(context -> [condition manipulating the context]).moveTo(state);
-                 * }
-                 * </pre>
-                 */
-                .when(intentIs(question)).moveTo(handleQuestion)
-                .when(intentIs(affirmation)).moveTo(handleAffirmation);
+                    /*
+                     * The Xatkit DSL offers dedicated predicates (intentIs(IntentDefinition) and eventIs
+                     * (EventDefinition) to check received intents/events.
+                     * <p>
+                     * You can also check a condition over the underlying bot state using the following syntax:
+                     * <pre>
+                     * {@code
+                     * .when(context -> [condition manipulating the context]).moveTo(state);
+                     * }
+                     * </pre>
+                     */
+                    .when(intentIs(search)).moveTo(handleSearch);
 
-
-        handleQuestion
-                .body(context -> {
-                    Boolean isYesNo = (Boolean) context.getIntent().getNlpData().get("nlp.stanford.isYesNo");
-                    if (isYesNo) {
-                        Random rd = new Random();
-                        String answer;
-                        if (rd.nextBoolean()) {
-                            answer = "Yes.";
-                        }
-                        else {
-                            answer = "No.";
-                        }
-                        reactPlatform.reply(context, answer);
-                    }
-                    else {
-                        reactPlatform.reply(context, "Sorry, I only answer yes/no questions.");
-                    }
-                })
+        handleWelcome
+                .body(context -> reactPlatform.reply(context,
+                        "Hi, I am here to search Youtube videos for you! "+
+                                "You can ask me to search videos about whatever you want. "+
+                                "Feel free to specify the number of videos you want me to search."))
                 .next()
                 .moveTo(awaitingInput);
 
-        handleAffirmation
+        handleSearch
                 .body(context -> {
-                    String sentiment = (String) context.getIntent().getNlpData().get("nlp.stanford.sentiment");
-                    reactPlatform.reply(context, "You have a " + sentiment.toLowerCase() + " attitude.");
+                    String response = null;
+                    String keyword = (String) context.getIntent().getValue("keyword");
+                    String num_string = (String) context.getIntent().getValue("num");
+                    long num;
+                    if (num_string.equals("")) num = 3L;
+                    else num = Long.parseLong(num_string);
+                    try {
+                        response = getSearchListResponse(youtubeService, keyword, num).toString();
+                    } catch (GeneralSecurityException | IOException e) {
+                        e.printStackTrace();
+                    }
+                    replyYoutubeBot(context, reactPlatform, response, keyword);
                 })
                 .next()
-                .moveTo(awaitingInput);
+                    .moveTo(awaitingInput);
 
         /*
          * The state that is executed if the engine doesn't find any navigable transition in a state and the state
@@ -175,16 +183,14 @@ public class YesNoAndSentimentBot {
                 .defaultFallbackState(defaultFallback);
 
         Configuration botConfiguration = new BaseConfiguration();
+
         /*
          * Add configuration properties (e.g. authentication tokens, platform tuning, intent provider to use).
          * Check the corresponding platform's wiki page for further information on optional/mandatory parameters and
          * their values.
          */
-
-        botConfiguration.addProperty(RECOGNITION_POSTPROCESSORS_KEY,
-                "IsEnglishYesNoQuestion, EnglishSentiment");
         botConfiguration.setProperty("xatkit.dialogflow.projectId", "YOUR PROJECT ID");
-        botConfiguration.setProperty("xatkit.dialogflow.credentials.path", "YOUR CREDENTIALS FILE PATH");
+        botConfiguration.setProperty("xatkit.dialogflow.credentials.path", "PATH TO YOUR DIALOGFLOW CREDENTIALS");
         botConfiguration.setProperty("xatkit.dialogflow.language", "en-Us");
         botConfiguration.setProperty("xatkit.dialogflow.clean_on_startup", true);
 
