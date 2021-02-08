@@ -18,7 +18,7 @@ import static com.xatkit.dsl.DSL.state;
 import static com.xatkit.core.recognition.IntentRecognitionProviderFactoryConfiguration.*;
 
 /**
- * This is an example bot which uses the RemoveStopWordsPostProcessor, designed with Xatkit.
+ * This is an example bot which uses the RemoveEnglishStopWordsPostProcessor, designed with Xatkit.
  * <p>
  * You can check our <a href="https://github.com/xatkit-bot-platform/xatkit/wiki">wiki</a>
  * to learn more about bot creation, supported platforms, and advanced usage.
