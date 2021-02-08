@@ -107,8 +107,9 @@ public class YesNoAndSentimentBot {
                 "IsEnglishYesNoQuestion, EnglishSentiment");
         botConfiguration.setProperty("xatkit.dialogflow.projectId", "YOUR PROJECT ID");
         botConfiguration.setProperty("xatkit.dialogflow.credentials.path", "YOUR CREDENTIALS FILE PATH");
-        botConfiguration.setProperty("xatkit.dialogflow.language", "en-Us");
+        botConfiguration.setProperty("xatkit.dialogflow.language", "en-US");
         botConfiguration.setProperty("xatkit.dialogflow.clean_on_startup", true);
+        botConfiguration.setProperty(ENABLE_RECOGNITION_ANALYTICS, false);
 
         XatkitBot xatkitBot = new XatkitBot(botModel, botConfiguration);
         xatkitBot.run();
