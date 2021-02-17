@@ -1,5 +1,5 @@
 # Xatkit Bots Using Language Processors
-This folder contains Xatkit bots (built on [xatkit-bot-template](https://github.com/xatkit-bot-platform/xatkit-bot-template/)) which use some of the [Xatkit Language Processors](https://github.com/xatkit-bot-platform/xatkit/wiki/Processors)
+This folder contains Xatkit bots (built with the help of the [xatkit-bot-template](https://github.com/xatkit-bot-platform/xatkit-bot-template/)) which use some of the [Xatkit Language Processors](https://github.com/xatkit-bot-platform/xatkit/wiki/Processors)
 
 ## RemoveStopWordsBot
 
