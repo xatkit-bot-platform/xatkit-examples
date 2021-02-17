@@ -1,7 +1,5 @@
-# Xatkit Bot Youtube
-This repository contains a xatkit bot built on [xatkit-bot-template](https://github.com/xatkit-bot-platform/xatkit-bot-template/)
-
-This bot can search Youtube videos for you. You only need to ask him to search videos about whatever you want.
+# Xatkit Bot YouTube
+This bot can search YouTube videos for you. You only need to ask him to search videos about whatever you want.
 
 It uses [Dialogflow](https://dialogflow.cloud.google.com) as NLP engine and [Youtube Data API v3](https://developers.google.com/youtube/v3) to request Youtube contents.
 
