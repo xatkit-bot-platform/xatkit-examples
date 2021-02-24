@@ -1,6 +1,5 @@
 package com.xatkit.example;
 
-import com.mashape.unirest.http.exceptions.UnirestException;
 import com.xatkit.core.XatkitBot;
 import com.xatkit.plugins.react.platform.ReactPlatform;
 import com.xatkit.plugins.react.platform.io.ReactEventProvider;
@@ -18,12 +17,9 @@ import static com.xatkit.dsl.DSL.model;
 import static com.xatkit.dsl.DSL.state;
 import static com.xatkit.core.recognition.IntentRecognitionProviderFactoryConfiguration.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * This is an example bot which uses IsEnglishYesNoQuestion and EnglishSentiment postprocessors, designed with Xatkit.
+ * This is an example bot which uses ToxicityPostProcessor, designed with Xatkit.
  * <p>
  * You can check our <a href="https://github.com/xatkit-bot-platform/xatkit/wiki">wiki</a>
  * to learn more about bot creation, supported platforms, and advanced usage.
@@ -31,15 +27,8 @@ import java.util.concurrent.atomic.AtomicReference;
 public class ToxicityDetectorBot {
 
 
-    public static void main(String[] args) throws UnirestException {
+    public static void main(String[] args) {
 
-        String API_KEY = "YOUR PERSPECTIVEAPI KEY";
-        ArrayList<AttributeType> attribs = new ArrayList<>();
-        attribs.add(AttributeType.TOXICITY);
-        attribs.add(AttributeType.INSULT);
-        PerspectiveApiInterface perspectiveapi = new PerspectiveApiInterface(API_KEY, "helloworld", attribs,
-                null, null, null, null);
-        AtomicReference<HashMap<String, Double>> commentScores = new AtomicReference<>(new HashMap<>());
         val question = intent("comment")
                 .trainingSentence("COMMENT")
                 .parameter("comment").fromFragment("COMMENT").entity(any());
@@ -69,15 +58,21 @@ public class ToxicityDetectorBot {
 
         handleComment
                 .body(context -> {
-                    perspectiveapi.setCommentText(context.getIntent().getMatchedInput());
-                    try {
-                        commentScores.set(perspectiveapi.analyzeRequest());
-                    } catch (UnirestException e) {
-                        e.printStackTrace();
+                    Double toxicity1 = (Double) context.getIntent().getNlpData().get("nlp.perspectiveapi.TOXICITY");
+                    if (toxicity1 != -1.) {
+                        reactPlatform.reply(context, "[PerspectiveAPI] Your comment was " + Math.round(toxicity1*100) +
+                                "% toxic");
                     }
-                    for (String k : commentScores.get().keySet()) {
-                        String msg = k + ": " + commentScores.get().get(k);
-                        reactPlatform.reply(context, msg);
+                    else {
+                        reactPlatform.reply(context, "[PerspectiveAPI] Sorry, I can't compute your comment toxicity");
+                    }
+                    Double toxicity2 = (Double) context.getIntent().getNlpData().get("nlp.detoxify.original.TOXICITY");
+                    if (toxicity2 != -1.) {
+                        reactPlatform.reply(context, "[Detoxify] Your comment was " + Math.round(toxicity2*100) + "% "
+                                + "toxic");
+                    }
+                    else {
+                        reactPlatform.reply(context, "[Detoxify] Sorry, I can't compute your comment toxicity");
                     }
                 })
                 .next()
@@ -94,10 +89,13 @@ public class ToxicityDetectorBot {
                 .defaultFallbackState(defaultFallback);
 
         Configuration botConfiguration = new BaseConfiguration();
-
+        botConfiguration.setProperty("xatkit.perspectiveapi", true);
+        botConfiguration.setProperty("xatkit.perspectiveapi.apiKey", "YOUR PERSPECTIVEAPI KEY");
+        botConfiguration.setProperty("xatkit.perspectiveapi.language", "en");
+        botConfiguration.setProperty("xatkit.detoxify", true);
+        botConfiguration.setProperty(RECOGNITION_POSTPROCESSORS_KEY,"ToxicityPostProcessor");
         botConfiguration.setProperty("xatkit.dialogflow.projectId", "YOUR PROJECT ID");
-        botConfiguration.setProperty("xatkit.dialogflow.credentials.path",
-                "PATH TO YOUR CREDENTIALS");
+        botConfiguration.setProperty("xatkit.dialogflow.credentials.path", "PATH TO YOUR CREDENTIALS FILE");
         botConfiguration.setProperty("xatkit.dialogflow.language", "en-US");
         botConfiguration.setProperty("xatkit.dialogflow.clean_on_startup", true);
         botConfiguration.setProperty(ENABLE_RECOGNITION_ANALYTICS, false);
