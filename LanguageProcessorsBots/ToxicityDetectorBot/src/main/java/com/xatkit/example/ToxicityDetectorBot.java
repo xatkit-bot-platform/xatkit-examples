@@ -1,6 +1,10 @@
 package com.xatkit.example;
 
 import com.xatkit.core.XatkitBot;
+import com.xatkit.core.recognition.processor.toxicity.detoxify.DetoxifyConfiguration;
+import com.xatkit.core.recognition.processor.toxicity.detoxify.DetoxifyScore;
+import com.xatkit.core.recognition.processor.toxicity.perspectiveapi.PerspectiveApiConfiguration;
+import com.xatkit.core.recognition.processor.toxicity.perspectiveapi.PerspectiveApiScore;
 import com.xatkit.plugins.react.platform.ReactPlatform;
 import com.xatkit.plugins.react.platform.io.ReactEventProvider;
 import com.xatkit.plugins.react.platform.io.ReactIntentProvider;
@@ -8,6 +12,8 @@ import lombok.val;
 import org.apache.commons.configuration2.BaseConfiguration;
 import org.apache.commons.configuration2.Configuration;
 
+import static com.xatkit.core.recognition.processor.ToxicityPostProcessorConfiguration.USE_DETOXIFY;
+import static com.xatkit.core.recognition.processor.ToxicityPostProcessorConfiguration.USE_PERSPECTIVE_API;
 import static com.xatkit.dsl.DSL.any;
 import static com.xatkit.dsl.DSL.eventIs;
 import static com.xatkit.dsl.DSL.fallbackState;
@@ -58,18 +64,22 @@ public class ToxicityDetectorBot {
 
         handleComment
                 .body(context -> {
-                    Double toxicity1 = (Double) context.getIntent().getNlpData().get("nlp.perspectiveapi.TOXICITY");
-                    if (toxicity1 != -1.) {
-                        reactPlatform.reply(context, "[PerspectiveAPI] Your comment was " + Math.round(toxicity1*100) +
-                                "% toxic");
+                    PerspectiveApiScore score1 =
+                            (PerspectiveApiScore)context.getIntent().getNlpData().get("nlp.perspectiveapi");
+                    Double toxicity1 = score1.getToxicityScore();
+                    if (!toxicity1.equals(PerspectiveApiScore.DEFAULT_SCORE)) {
+                        reactPlatform.reply(context,
+                                "[PerspectiveAPI] Your comment was " + Math.round(toxicity1*100) + "% toxic");
                     }
                     else {
                         reactPlatform.reply(context, "[PerspectiveAPI] Sorry, I can't compute your comment toxicity");
                     }
-                    Double toxicity2 = (Double) context.getIntent().getNlpData().get("nlp.detoxify.original.TOXICITY");
-                    if (toxicity2 != -1.) {
-                        reactPlatform.reply(context, "[Detoxify] Your comment was " + Math.round(toxicity2*100) + "% "
-                                + "toxic");
+                    DetoxifyScore score2 =
+                            (DetoxifyScore) context.getIntent().getNlpData().get("nlp.detoxify");
+                    Double toxicity2 = score2.getToxicityScore();
+                    if (!toxicity2.equals(DetoxifyScore.DEFAULT_SCORE)) {
+                        reactPlatform.reply(context,
+                                "[Detoxify] Your comment was " + Math.round(toxicity2*100) + "% toxic");
                     }
                     else {
                         reactPlatform.reply(context, "[Detoxify] Sorry, I can't compute your comment toxicity");
@@ -89,13 +99,14 @@ public class ToxicityDetectorBot {
                 .defaultFallbackState(defaultFallback);
 
         Configuration botConfiguration = new BaseConfiguration();
-        botConfiguration.setProperty("xatkit.perspectiveapi", true);
-        botConfiguration.setProperty("xatkit.perspectiveapi.apiKey", "YOUR PERSPECTIVEAPI KEY");
-        botConfiguration.setProperty("xatkit.perspectiveapi.language", "en");
-        botConfiguration.setProperty("xatkit.detoxify", true);
         botConfiguration.setProperty(RECOGNITION_POSTPROCESSORS_KEY,"ToxicityPostProcessor");
-        botConfiguration.setProperty("xatkit.dialogflow.projectId", "YOUR PROJECT ID");
-        botConfiguration.setProperty("xatkit.dialogflow.credentials.path", "PATH TO YOUR CREDENTIALS FILE");
+        botConfiguration.setProperty(USE_PERSPECTIVE_API, true);
+        botConfiguration.setProperty(PerspectiveApiConfiguration.API_KEY, "YOUR-PERSPECTIVEAPI-KEY");
+        botConfiguration.setProperty(PerspectiveApiConfiguration.LANGUAGE, "en");
+        botConfiguration.setProperty(USE_DETOXIFY, true);
+        botConfiguration.setProperty(DetoxifyConfiguration.DETOXIFY_SERVER_URL, "YOUR-SERVER-URL");
+        botConfiguration.setProperty("xatkit.dialogflow.projectId", "YOUR-PROJECT-ID");
+        botConfiguration.setProperty("xatkit.dialogflow.credentials.path", "YOUR-CREDENTIALS-PATH");
         botConfiguration.setProperty("xatkit.dialogflow.language", "en-US");
         botConfiguration.setProperty("xatkit.dialogflow.clean_on_startup", true);
         botConfiguration.setProperty(ENABLE_RECOGNITION_ANALYTICS, false);
