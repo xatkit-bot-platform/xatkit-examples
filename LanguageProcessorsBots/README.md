@@ -22,6 +22,7 @@ If the input is a yes/no question, the bot answers randomly with "Yes" or "No". 
 This example bot uses the [ToxicityPostProcessor](https://github.com/xatkit-bot-platform/xatkit-runtime/blob/master/src/main/java/com/xatkit/core/recognition/processor/ToxicityPostProcessor.java)
 This chatbot can tell you the toxicity that your messages contain, computed using 2 language models: PerspectiveAPI and Detoxify.
 See the [wiki](https://github.com/xatkit-bot-platform/xatkit/wiki/Processors) to learn how to use them.
+You have to edit these lines of code in the bot, adding the proper parameters:
 
 ```java
 botConfiguration.setProperty(PerspectiveApiConfiguration.API_KEY, "YOUR PERSPECTIVEAPI KEY");        
