@@ -17,6 +17,22 @@ If the input is an affirmation, the bot acts like a psychologist and answers wit
 
 If the input is a yes/no question, the bot answers randomly with "Yes" or "No". Otherwise, he answers "I only answer yes/no questions".
 
+## ToxicityDetectorBot
+
+This example bot uses the [ToxicityPostProcessor](https://github.com/xatkit-bot-platform/xatkit-runtime/blob/master/src/main/java/com/xatkit/core/recognition/processor/ToxicityPostProcessor.java)
+
+This chatbot can tell you the toxicity that your messages contain, computed using 2 language models: PerspectiveAPI and Detoxify.
+
+See the [wiki](https://github.com/xatkit-bot-platform/xatkit/wiki/Processors) to learn how to use them.
+
+You have to edit these lines of code in the bot, adding the proper parameters:
+
+```java
+botConfiguration.setProperty(PerspectiveApiConfiguration.API_KEY, "YOUR PERSPECTIVEAPI KEY");        
+botConfiguration.setProperty(DetoxifyConfiguration.DETOXIFY_SERVER_URL, "ỲOUR SERVER URL");
+```
+
+
 ## Build the bots
 
 1- [Build the latest version of Xatkit](https://github.com/xatkit-bot-platform/xatkit/wiki/Build-Xatkit)
