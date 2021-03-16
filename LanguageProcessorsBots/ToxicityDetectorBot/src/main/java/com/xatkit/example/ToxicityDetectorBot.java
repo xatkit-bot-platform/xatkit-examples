@@ -22,6 +22,7 @@ import static com.xatkit.dsl.DSL.intentIs;
 import static com.xatkit.dsl.DSL.model;
 import static com.xatkit.dsl.DSL.state;
 import static com.xatkit.core.recognition.IntentRecognitionProviderFactoryConfiguration.*;
+import static java.util.Objects.nonNull;
 
 
 /**
@@ -66,23 +67,31 @@ public class ToxicityDetectorBot {
                 .body(context -> {
                     PerspectiveApiScore score1 =
                             (PerspectiveApiScore)context.getIntent().getNlpData().get("nlp.perspectiveapi");
+                    if(nonNull(score1)) {
+                        /*
+                         * Ignore this part if Perspective API is not enabled for the bot.
+                         */
                     Double toxicity1 = score1.getToxicityScore();
-                    if (!toxicity1.equals(PerspectiveApiScore.DEFAULT_SCORE)) {
-                        reactPlatform.reply(context,
-                                "[PerspectiveAPI] Your comment was " + Math.round(toxicity1*100) + "% toxic");
-                    }
-                    else {
-                        reactPlatform.reply(context, "[PerspectiveAPI] Sorry, I can't compute your comment toxicity");
+                        if (!toxicity1.equals(PerspectiveApiScore.DEFAULT_SCORE)) {
+                            reactPlatform.reply(context,
+                                    "[PerspectiveAPI] Your comment was " + Math.round(toxicity1 * 100) + "% toxic");
+                        } else {
+                            reactPlatform.reply(context, "[PerspectiveAPI] Sorry, I can't compute your comment toxicity");
+                        }
                     }
                     DetoxifyScore score2 =
                             (DetoxifyScore) context.getIntent().getNlpData().get("nlp.detoxify");
-                    Double toxicity2 = score2.getToxicityScore();
-                    if (!toxicity2.equals(DetoxifyScore.DEFAULT_SCORE)) {
-                        reactPlatform.reply(context,
-                                "[Detoxify] Your comment was " + Math.round(toxicity2*100) + "% toxic");
-                    }
-                    else {
-                        reactPlatform.reply(context, "[Detoxify] Sorry, I can't compute your comment toxicity");
+                    if(nonNull(score2)) {
+                        /*
+                         * Ignore this part if Detoxify is not enabled for the bot.
+                         */
+                        Double toxicity2 = score2.getToxicityScore();
+                        if (!toxicity2.equals(DetoxifyScore.DEFAULT_SCORE)) {
+                            reactPlatform.reply(context,
+                                    "[Detoxify] Your comment was " + Math.round(toxicity2 * 100) + "% toxic");
+                        } else {
+                            reactPlatform.reply(context, "[Detoxify] Sorry, I can't compute your comment toxicity");
+                        }
                     }
                 })
                 .next()
