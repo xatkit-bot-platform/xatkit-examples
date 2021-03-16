@@ -23,28 +23,12 @@ This example bot uses the [ToxicityPostProcessor](https://github.com/xatkit-bot-
 
 This chatbot can tell you the toxicity that your messages contain, computed using 2 language models: PerspectiveAPI and Detoxify.
 
-See the [wiki](https://github.com/xatkit-bot-platform/xatkit/wiki/Processors) to learn how to use them.
+See the [wiki](https://github.com/xatkit-bot-platform/xatkit/wiki/Processors) to learn how to install and use them.
 
-You have to edit these lines of code in the bot, adding the proper parameters:
+Moreover, you have to edit these lines of code in the bot, adding the proper parameters depending on your preferred toxicity model:
 
 ```java
 botConfiguration.setProperty(PerspectiveApiConfiguration.API_KEY, "YOUR PERSPECTIVEAPI KEY");        
-botConfiguration.setProperty(DetoxifyConfiguration.DETOXIFY_SERVER_URL, "ỲOUR SERVER URL");
+botConfiguration.setProperty(DetoxifyConfiguration.DETOXIFY_SERVER_URL, "YOUR SERVER URL");
 ```
 
-
-## Build the bots
-
-1- [Build the latest version of Xatkit](https://github.com/xatkit-bot-platform/xatkit/wiki/Build-Xatkit)
-
-2- [Create a Dialogflow agent](https://github.com/xatkit-bot-platform/xatkit/wiki/Integrating-DialogFlow) to use it with the bot (if needed).
-
-If the bot uses DialogFLow, you will have to edit these lines on the bot class.
-```java
-botConfiguration.setProperty("xatkit.dialogflow.projectId", "YOUR PROJECT ID");
-botConfiguration.setProperty("xatkit.dialogflow.credentials.path", "PATH TO YOUR DIALOGFLOW CREDENTIALS");
-```
-
-# Website
-
-[xatkit.com](https://xatkit.com/)
