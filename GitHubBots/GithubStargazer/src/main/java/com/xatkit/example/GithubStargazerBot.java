@@ -86,12 +86,14 @@ public class GithubStargazerBot {
                     int count = getStargazersCount(githubPayload);
                     slackPlatform.postMessage(context,
                             MessageFormat.format(":sob: <{0} | {1}> unstarred <{2} | {3}> :face_with_head_bandage: " +
-                                            "let's forget about it and build awesome features! " +
+                                            "let''s forget about it and build awesome features! " +
                                             ":kissing_heart:\nCurrent stargazer count: {4} :stars:", senderUrl,
                                     senderLogin, repositoryUrl, repositoryName, count),
                             (String) context.getConfiguration().get("slack.channel"),
                             (String) context.getConfiguration().get("slack.team"));
-                });
+                })
+                .next()
+                .moveTo(init);
 
 
         /*
