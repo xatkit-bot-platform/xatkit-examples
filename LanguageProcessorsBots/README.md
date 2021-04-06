@@ -32,3 +32,11 @@ botConfiguration.setProperty(PerspectiveApiConfiguration.API_KEY, "YOUR PERSPECT
 botConfiguration.setProperty(DetoxifyConfiguration.DETOXIFY_SERVER_URL, "YOUR SERVER URL");
 ```
 
+## LanguageDetectorBot
+
+This example bot uses the [LanguageDetectionPostProcessor](https://github.com/xatkit-bot-platform/xatkit-runtime/blob/master/src/main/java/com/xatkit/core/recognition/processor/LanguageDetectionPostProcessor.java)
+
+This chatbot can guess the language of the last user message and, for a more accurate prediction, the language of the last 10 messages.
+
+See the [wiki](https://github.com/xatkit-bot-platform/xatkit/wiki/Processors) to learn how to use it and set its parameters.
+
