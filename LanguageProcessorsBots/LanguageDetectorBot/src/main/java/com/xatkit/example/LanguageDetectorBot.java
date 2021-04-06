@@ -1,6 +1,7 @@
 package com.xatkit.example;
 
 import com.xatkit.core.XatkitBot;
+import com.xatkit.core.recognition.dialogflow.DialogFlowConfiguration;
 import com.xatkit.core.recognition.processor.LanguageDetectionPostProcessor;
 import com.xatkit.core.recognition.processor.LanguageDetectionScore;
 import com.xatkit.plugins.react.platform.ReactPlatform;
@@ -10,6 +11,10 @@ import lombok.val;
 import org.apache.commons.configuration2.BaseConfiguration;
 import org.apache.commons.configuration2.Configuration;
 
+import java.util.List;
+
+import static com.xatkit.core.recognition.IntentRecognitionProviderFactoryConfiguration.ENABLE_RECOGNITION_ANALYTICS;
+import static com.xatkit.core.recognition.IntentRecognitionProviderFactoryConfiguration.RECOGNITION_POSTPROCESSORS_KEY;
 import static com.xatkit.dsl.DSL.any;
 import static com.xatkit.dsl.DSL.eventIs;
 import static com.xatkit.dsl.DSL.fallbackState;
@@ -17,7 +22,6 @@ import static com.xatkit.dsl.DSL.intent;
 import static com.xatkit.dsl.DSL.intentIs;
 import static com.xatkit.dsl.DSL.model;
 import static com.xatkit.dsl.DSL.state;
-import static com.xatkit.core.recognition.IntentRecognitionProviderFactoryConfiguration.*;
 import static java.util.Objects.nonNull;
 
 
@@ -63,17 +67,18 @@ public class LanguageDetectorBot {
                 .body(context -> {
                     LanguageDetectionScore score1 = (LanguageDetectionScore)
                             context.getIntent().getNlpData().get("nlp.opennlp.langdetect.lastInput");
-                    if(nonNull(score1)) {
-                        String[] languages = score1.getLanguageNames();
+                    if (nonNull(score1)) {
+                        List<String> languages = score1.getLanguageNames();
                         reactPlatform.reply(context,
-                                "I think this message language is '" + languages[0] + "'");
+                                "I think this message language is '" + languages.get(0) + "'");
                     }
                     LanguageDetectionScore score2 =
                             (LanguageDetectionScore) context.getSession().get("nlp.opennlp.langdetect.lastNInputs");
-                    if(nonNull(score2)) {
-                        String[] languages = score2.getLanguageNames();
+                    if (nonNull(score2)) {
+                        List<String> languages = score2.getLanguageNames();
                         reactPlatform.reply(context,
-                                "And based on the entire conversation, I think you are writing in '" + languages[0] + "' language");
+                                "And based on the entire conversation, I think you are writing in '"
+                                        + languages.get(0) + "' language");
                     }
                 })
                 .next()
@@ -90,14 +95,13 @@ public class LanguageDetectorBot {
                 .defaultFallbackState(defaultFallback);
 
         Configuration botConfiguration = new BaseConfiguration();
-        botConfiguration.setProperty(RECOGNITION_POSTPROCESSORS_KEY,"LanguageDetectionPostProcessor");
+        botConfiguration.setProperty(RECOGNITION_POSTPROCESSORS_KEY, "LanguageDetectionPostProcessor");
         botConfiguration.setProperty(LanguageDetectionPostProcessor.MAX_NUM_USER_MESSAGES, 10);
         botConfiguration.setProperty(LanguageDetectionPostProcessor.MAX_NUM_LANGUAGES_IN_SCORE, 3);
-        botConfiguration.setProperty(LanguageDetectionPostProcessor.OPENNLP_MODEL_PATH_PARAMETER_KEY, "YOUR PATH HERE");
-        botConfiguration.setProperty("xatkit.dialogflow.projectId", "YOUR PROJECT ID");
-        botConfiguration.setProperty("xatkit.dialogflow.credentials.path", "YOUR CREDENTIALS PATH");
-        botConfiguration.setProperty("xatkit.dialogflow.language", "en-US");
-        botConfiguration.setProperty("xatkit.dialogflow.clean_on_startup", true);
+        botConfiguration.setProperty(LanguageDetectionPostProcessor.OPENNLP_MODEL_PATH_PARAMETER_KEY, "<Path to the "
+                + "OpenNLP model");
+        botConfiguration.setProperty(DialogFlowConfiguration.PROJECT_ID_KEY, "<DialogFlow Project ID>");
+        botConfiguration.setProperty(DialogFlowConfiguration.GOOGLE_CREDENTIALS_PATH_KEY, "<DialogFlow Credentials");
         botConfiguration.setProperty(ENABLE_RECOGNITION_ANALYTICS, false);
 
         XatkitBot xatkitBot = new XatkitBot(botModel, botConfiguration);
