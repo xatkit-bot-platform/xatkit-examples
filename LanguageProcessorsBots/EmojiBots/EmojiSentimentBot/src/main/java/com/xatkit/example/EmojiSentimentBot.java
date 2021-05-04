@@ -70,22 +70,23 @@ public class EmojiSentimentBot {
                         double sentiment = 0;
                         for (EmojiData e : emojis) {
                             double positiveSentiment = e.getPositiveSentiment() * e.getOccurrences();
-                            if (positiveSentiment != EmojiPostProcessor.UNSET_SENTIMENT) {
-                                sentiment += positiveSentiment;
-                            }
+                            sentiment += positiveSentiment;
                             double negativeSentiment = e.getNegativeSentiment() * e.getOccurrences();
-                            if (negativeSentiment != EmojiPostProcessor.UNSET_SENTIMENT) {
-                                sentiment -= negativeSentiment;
-                            }
+                            sentiment -= negativeSentiment;
                         }
+                        /*
+                         * sentiment is now in [-1,1]. -1 represents negative sentiment, while 1 represents positive
+                         * sentiment.
+                         * Note that this metric is probably too simple: it is used in this example to showcase what
+                         * can be done with the sentiment analysis processor for emojis, but it should be adapted to
+                         * your specific use case.
+                         */
                         reactPlatform.reply(context, String.valueOf(sentiment));
                         if (Math.abs(sentiment) < 0.1) {
                             message = "I think your mood is quite neutral... \uD83D\uDE10";
-                        }
-                        else if (sentiment > 0) {
+                        } else if (sentiment > 0) {
                             message = "You seem to be quite happy \uD83D\uDE09";
-                        }
-                        else {
+                        } else {
                             message = "You look sad...\uD83D\uDE15";
                         }
                     }
