@@ -73,7 +73,7 @@ public class EmojiToTextBot {
 
         handleIAmFrom
                 .body(context -> {
-                    Map<Object, Object> countryMap = (HashMap) context.getIntent().getValue("country");
+                    Map<Object, Object> countryMap = (Map<Object, Object>) context.getIntent().getValue("country");
                     String country = (String) countryMap.get("name");
                     reactPlatform.reply(context, country + "? That's cool!");
                     reactPlatform.reply(context,  "What is your favorite animal?");
