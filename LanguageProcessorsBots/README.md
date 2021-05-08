@@ -69,3 +69,8 @@ chatbot will translate it to the original country name.
 Then, it asks the user what is his/her favourite animal, which can be also answered with an emoji. Then, the chatbot 
 will write the animal (or whatever emoji the user provides) name to demonstrate that it knows the emoji name. 
 
+### SlangTranslatorBot
+
+This example bot uses the [InternetSlangPreProcessor](https://github.com/xatkit-bot-platform/xatkit-runtime/blob/master/src/main/java/com/xatkit/core/recognition/processor/InternetSlangPreProcessor.java)
+
+This chatbot allows you to use slang terms such as "omg" (oh my god), "r" (are), "u" (you), and so on. The chatbot simply answers with the translation to standard-English (e.g. it translates "idk who r u" to "I don't know who are you") so the user can see that these terms are actually recognized and translated.
